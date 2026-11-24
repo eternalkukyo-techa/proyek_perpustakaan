@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Buku - Koriko Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Quicksand', sans-serif; background: #F4F6F9; color: #333; }
+        .navbar { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .navbar a { text-decoration: none; color: #1E293B; font-weight: 700; font-size: 16px; }
+        .navbar .back-btn { color: #64748B; font-size: 14px; transition: 0.2s; }
+        .navbar .back-btn:hover { color: #D63344; }
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .detail-card { background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; overflow: hidden; border: 1px solid #E5E7EB; }
+        .detail-cover { width: 35%; background: #F8F9FA; padding: 30px; display: flex; justify-content: center; align-items: center; }
+        .detail-cover img { width: 100%; max-width: 250px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+        .detail-info { width: 65%; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .detail-info h1 { font-size: 32px; color: #1E293B; margin-bottom: 10px; line-height: 1.2; }
+        .meta-info { display: flex; gap: 20px; color: #64748B; font-size: 14px; margin-bottom: 25px; border-bottom: 2px dashed #E2E8F0; padding-bottom: 20px; }
+        .meta-info span i { color: #D63344; margin-right: 5px; }
+        .synopsis { font-size: 15px; color: #475569; line-height: 1.6; margin-bottom: 30px; }
+        .action-buttons { display: flex; gap: 15px; flex-wrap: wrap;}
+        .btn { padding: 15px 30px; border-radius: 12px; font-weight: 700; font-size: 16px; text-decoration: none; display: flex; align-items: center; gap: 10px; transition: 0.3s; border: none; cursor: pointer; font-family: 'Quicksand', sans-serif;}
+        .btn-pinjam { background: #D63344; color: white; box-shadow: 0 5px 15px rgba(214,51,68,0.3); }
+        .btn-pinjam:hover { background: #b52937; transform: translateY(-3px); }
+        .btn-disabled { background: #E2E8F0; color: #94A3B8; cursor: not-allowed; box-shadow: none; }
+        .alert { padding: 15px; border-radius: 10px; font-weight: 700; margin-bottom: 20px; font-size: 14px;}
+        .alert-success { background: #E8F5E9; color: #43A047; }
+        .alert-error { background: #FFEBEE; color: #E53935; }
+        .alert-info { background: #E3F2FD; color: #1E88E5; }
+    </style>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <a href="opac.html"><i class="fas fa-book-open" style="color: #D63344;"></i> Koriko Library</a>
+        <a href="opac.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Katalog</a>
+    </div>
+    <div class="container"><div class="detail-card" id="detail"></div></div>
+
+    <script>
+        var id = parseInt(K.param('id'), 10) || 0;
+        var pesan = '';
+        function currentUser() {
+            var s = K.getSession();
+            if (!s || !s.login || s.role !== 'user') return null;
+            return K.one('anggota', function (a) { return a.username === s.username; });
+        }
+        function ajukan() {
+            var s = K.getSession();
+            if (!s || !s.login || s.role !== 'user') { pesan = 'Anda harus login sebagai Pengguna untuk meminjam buku!'; return render(); }
+            var ang = currentUser();
+            if (ang) {
+                var cek = K.find('sirkulasi', function (r) { return r.id_anggota == ang.id_anggota && r.id_buku == id && (r.status === 'Menunggu' || r.status === 'Dipinjam'); });
+                if (cek.length) pesan = 'Anda sudah meminjam atau sedang mengajukan buku ini.';
+                else {
+                    K.load().sirkulasi.push({ id_sirkulasi: K.nextId('sirkulasi'), id_anggota: ang.id_anggota, id_buku: id, tanggal_pinjam: K.today(), tanggal_kembali_seharusnya: K.addDays(K.today(), 7), tanggal_dikembalikan: null, status: 'Menunggu', denda: 0, alasan_tolak: null });
+                    K.save();
+                    pesan = 'Berhasil! Pengajuan pinjaman Anda sedang menunggu ACC dari Pustakawan.';
+                }
+            }
+            render();
+        }
+        function render() {
+            var buku = K.byId('bibliografi', 'id_buku', id);
+            if (!buku) { alert('Buku tidak ditemukan!'); location.href = 'opac.html'; return; }
+            document.title = buku.judul + ' - Koriko Library';
+            var statusUser = '';
+            var s = K.getSession();
+            if (s && s.login && s.role === 'user') {
+                var ang = currentUser();
+                if (ang) {
+                    var trx = K.find('sirkulasi', function (r) { return r.id_anggota == ang.id_anggota && r.id_buku == id && (r.status === 'Menunggu' || r.status === 'Dipinjam'); }).sort(function (a, b) { return b.id_sirkulasi - a.id_sirkulasi; });
+                    if (trx.length) statusUser = trx[0].status;
+                }
+            }
+            var src = K.coverSrc(buku) || K.placeholder(250, 350);
+            var btn;
+            if (statusUser === 'Menunggu') btn = '<button class="btn btn-disabled" style="background:#FFF3E0; color:#FB8C00; width:100%; justify-content:center;"><i class="fas fa-clock"></i> Menunggu ACC Pustakawan</button>';
+            else if (statusUser === 'Dipinjam') btn = '<div class="alert alert-info" style="width:100%; margin-bottom:0; text-align:center;"><i class="fas fa-check-circle"></i> Anda sedang meminjam buku ini.</div>';
+            else if (buku.stok > 0) btn = '<button type="button" id="btnPinjam" class="btn btn-pinjam" style="width:100%; justify-content:center;"><i class="fas fa-hand-holding-heart"></i> Ajukan Pinjam</button>';
+            else btn = '<button class="btn btn-disabled" disabled style="width:100%; justify-content:center;"><i class="fas fa-times-circle"></i> Stok Habis</button>';
+            var ok = buku.stok > 0;
+            document.getElementById('detail').innerHTML =
+                '<div class="detail-cover"><img src="' + K.esc(src) + '" alt="Cover" onerror="this.onerror=null;this.src=K.placeholder(250,350)"></div>' +
+                '<div class="detail-info"><h1>' + K.esc(buku.judul) + '</h1>' +
+                '<div class="meta-info"><span><i class="fas fa-user-edit"></i> ' + K.esc(buku.pengarang) + '</span><span><i class="fas fa-building"></i> ' + K.esc(buku.penerbit) + '</span></div>' +
+                '<div style="margin-bottom: 20px;"><span style="background: ' + (ok ? '#E8F5E9' : '#FFEBEE') + '; color: ' + (ok ? '#43A047' : '#E53935') + '; padding: 8px 15px; border-radius: 8px; font-weight: 700; font-size: 14px;"><i class="fas fa-box"></i> Stok Tersedia: ' + buku.stok + '</span></div>' +
+                '<p class="synopsis">Buku ini berjudul <strong>' + K.esc(buku.judul) + '</strong> yang ditulis oleh ' + K.esc(buku.pengarang) + '. Silakan ajukan peminjaman jika Anda sudah login sebagai Pengguna. Peminjaman akan diproses setelah disetujui (ACC) oleh Pustakawan.</p>' +
+                (pesan ? '<div class="alert ' + (pesan.indexOf('Berhasil') !== -1 ? 'alert-success' : 'alert-error') + '">' + K.esc(pesan) + '</div>' : '') +
+                '<div class="action-buttons">' + btn + '</div></div>';
+            var b = document.getElementById('btnPinjam');
+            if (b) b.addEventListener('click', ajukan);
+        }
+        render();
+    </script>
+</body>
+</html>

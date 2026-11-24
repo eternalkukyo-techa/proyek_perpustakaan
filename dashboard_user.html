@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Portal Pemustaka - Koriko Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; }
+        body { background: #F4F6F9; color: #333; }
+        
+        /* Navbar Atas */
+        .navbar { background: #1E293B; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar-brand { font-size: 20px; font-weight: 700; }
+        .navbar-right { display: flex; align-items: center; gap: 15px; font-size: 14px; }
+        .btn-nav { background: #334155; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 700; transition: 0.2s; }
+        .btn-nav:hover { background: #475569; }
+        .btn-logout { background: #D63344; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 700; transition: 0.2s; }
+        .btn-logout:hover { background: #b52937; }
+        .btn-admin { background: white; color: #1E293B; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 700; transition: 0.2s; }
+        .btn-admin:hover { background: #E2E8F0; }
+
+        /* Hero Section */
+        .hero { text-align: center; padding: 60px 20px 40px; background: #F4F6F9; }
+        .hero h1 { font-size: 36px; color: #1E293B; margin-bottom: 20px; line-height: 1.3; }
+        .hero p { font-size: 16px; color: #64748B; max-width: 800px; margin: 0 auto 40px; line-height: 1.6; }
+
+        /* Kotak Interaktif */
+        .info-cards { display: flex; justify-content: center; gap: 20px; max-width: 1000px; margin: 0 auto 40px; padding: 0 20px; flex-wrap: wrap; }
+        .info-card { background: white; border: 2px solid #E2E8F0; border-radius: 12px; padding: 25px; width: 300px; text-align: left; cursor: pointer; transition: 0.2s; }
+        .info-card:hover { border-color: #CBD5E1; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .info-card:active { border-color: #D63344; background: #FFF5F5; transform: translateY(0); }
+        .info-card h3 { font-size: 18px; color: #1E293B; margin-bottom: 15px; }
+        .info-card p { font-size: 14px; color: #64748B; line-height: 1.5; }
+
+        .btn-opac { display: inline-block; background: #D63344; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 16px; transition: 0.2s; border: none; cursor: pointer; }
+        .btn-opac:hover { background: #b52937; }
+
+        /* Container Utama */
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .card { background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 30px; border: 1px solid #E5E7EB; }
+        
+        /* Katalog Header */
+        .katalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .katalog-header h2 { font-size: 22px; color: #1E293B; }
+        .katalog-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .filter-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-filter { background: white; color: #64748B; border: 1px solid #E2E8F0; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 700; font-size: 13px; text-decoration: none; display: inline-block; transition: 0.2s; }
+        .btn-filter.active { background: #1E293B; color: white; border-color: #1E293B; }
+
+        .search-group { display: flex; gap: 10px; align-items: center; }
+        .search-group input { padding: 9px 14px; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 13px; outline: none; width: 220px; background: #FFF; }
+        .search-group input:focus { border-color: #1E293B; }
+        .btn-search { background: #1E293B; color: white; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; }
+        .btn-search:hover { background: #D63344; }
+
+        /* Grid Buku */
+        .grid-buku { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .book-card { border: 1px solid #E2E8F0; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; transition: 0.2s; }
+        .book-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.08); transform: translateY(-3px); }
+        .book-cover { width: 100%; height: 200px; background: #F1F5F9; border-radius: 8px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; overflow: hidden; color: #94A3B8; }
+        .book-cover img { width: 100%; height: 100%; object-fit: cover; }
+        .book-title { font-size: 16px; font-weight: 700; color: #1E293B; margin-bottom: 5px; }
+        .book-meta { font-size: 12px; color: #64748B; margin-bottom: 10px; }
+        .book-desc { font-size: 12px; color: #94A3B8; margin-bottom: 15px; flex: 1; }
+        .btn-pinjam { background: #D63344; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.2s; }
+        .btn-pinjam:hover { background: #b52937; }
+        .btn-disabled { background: #E2E8F0; color: #94A3B8; cursor: not-allowed; }
+
+        /* Notif Penolakan */
+        .notif-ditolak { background: #FFF5F5; border: 1px solid #FED7D7; border-left: 4px solid #E53935; color: #9B2C2C; padding: 16px 20px; border-radius: 10px; margin-bottom: 20px; }
+        .notif-ditolak h4 { font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; color: #C53030; }
+        .notif-ditolak ul { margin-left: 20px; font-size: 13px; line-height: 1.6; }
+
+        /* Tabel Riwayat */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #E2E8F0; font-size: 14px; vertical-align: middle; }
+        th { background: #F8FAFC; color: #475569; font-weight: 700; }
+        .badge-status { padding: 5px 10px; border-radius: 6px; font-weight: 700; font-size: 12px; display:inline-block; }
+        .status-menunggu { background: #FFF3E0; color: #FB8C00; }
+        .status-dipinjam { background: #E3F2FD; color: #1E88E5; }
+        .status-kembali { background: #E8F5E9; color: #43A047; }
+        .status-ditolak { background: #FFEBEE; color: #E53935; }
+        .alasan-tolak-box { margin-top: 6px; font-size: 12px; color: #C62828; background: #FFF5F5; padding: 6px 10px; border-radius: 6px; border-left: 3px solid #E53935; }
+
+        /* Tombol Aksi E-Book & Kembalikan */
+        .action-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-baca-ebook { background: #1E88E5; color: white; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .btn-baca-ebook:hover { background: #1565C0; }
+        .btn-kembalikan { background: #43A047; color: white; border: none; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: 0.2s; }
+        .btn-kembalikan:hover { background: #2E7D32; }
+        
+        .alert { background: #E8F5E9; color: #43A047; padding: 15px; border-radius: 8px; font-weight: 700; margin-bottom: 20px; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-box { background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; text-align: center; position: relative; }
+        .modal-box h3 { color: #D63344; margin-bottom: 15px; font-size: 22px; }
+        .modal-box p { color: #475569; line-height: 1.6; margin-bottom: 20px; }
+        .btn-close-modal { background: #1E293B; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .btn-close-modal:hover { background: #D63344; }
+
+        .footer { text-align: center; padding: 20px; color: #64748B; font-size: 14px; border-top: 1px solid #E2E8F0; margin-top: 40px; }
+    </style>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-brand">Koriko Library System</div>
+        <div class="navbar-right">
+            <span>Halo, <b id="namaUser"></b></span>
+            <a href="dashboard.html" class="btn-admin"><i class="fas fa-shield-alt"></i> Pustakawan</a>
+            <a href="logout.html" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="hero">
+        <h1>Portal Literasi &amp; Pusat Informasi Koriko Library</h1>
+        <p>Selamat datang di sistem manajemen perpustakaan berbasis open-access. Kami menyediakan akses literasi digital, koleksi referensi akademik, serta layanan peminjaman terintegrasi.</p>
+        <div class="info-cards">
+            <div class="info-card" onclick="openModal('modalTentang')">
+                <h3>Tentang Kami (About)</h3>
+                <p>Koriko Library adalah perpustakaan online dan pusat literasi terbuka untuk mendukung kebutuhan membaca, riset, dan peminjaman koleksi secara mudah.</p>
+            </div>
+            <div class="info-card" onclick="openModal('modalLokasi')">
+                <h3>Lokasi &amp; Tempat</h3>
+                <p>Berbasis di FIB Universitas Diponegoro, Semarang. Layanan 100% portal online (24 jam, tanpa layanan fisik). Klik untuk peta &amp; detail.</p>
+            </div>
+            <div class="info-card" onclick="openModal('modalLayanan')">
+                <h3>Layanan Akses</h3>
+                <p>Cari katalog OPAC, ajukan peminjaman buku, cek status ACC &amp; alasan penolakan, serta akses baca e-book dan pengembalian mandiri.</p>
+            </div>
+        </div>
+
+        <a href="#katalog" class="btn-opac">Jelajahi Katalog Buku (OPAC)</a>
+    </div>
+
+    <div class="container" id="katalog">
+        <div id="pesanBox"></div>
+
+        <div class="card">
+            <div class="katalog-header">
+                <h2>Katalog Buku Koriko Library</h2>
+                <div class="katalog-controls">
+                    <div class="filter-group" id="filterGroup"></div>
+                    <form action="dashboard_user.html#katalog" method="GET" class="search-group" id="fCari">
+                        <input type="hidden" name="kategori" id="hidKat" disabled>
+                        <input type="text" name="cari" id="inpCari" placeholder="Cari judul buku...">
+                        <button type="submit" class="btn-search">Cari</button>
+                    </form>
+                </div>
+            </div>
+            <div class="grid-buku" id="gridBuku"></div>
+        </div>
+
+        <div class="card">
+            <h2 style="font-size: 22px; color: #1E293B; margin-bottom: 20px;">Status Peminjaman Saya</h2>
+            <div id="notifDitolak"></div>
+            <table>
+                <thead><tr><th>No</th><th>Judul Buku</th><th>Tanggal Ajukan</th><th>Status ACC</th><th>Aksi</th></tr></thead>
+                <tbody id="riwayat"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">&copy; 2026 Koriko Library System &bull; Universitas Diponegoro</div>
+
+    <div id="modalTentang" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Tentang Koriko Library</h3>
+            <p>Koriko Library adalah perpustakaan online dan pusat literasi digital berbasis open-access yang dirancang untuk menghadirkan pengalaman membaca yang nyaman, teratur, dan mudah diakses. Melalui portal ini, pembaca dapat menjelajahi koleksi buku, mengajukan peminjaman, membaca e-book, serta memantau status transaksi secara praktis dalam satu tempat.</p>
+            <button class="btn-close-modal" onclick="closeModal('modalTentang')">Tutup</button>
+        </div>
+    </div>
+
+    <div id="modalLokasi" class="modal-overlay">
+        <div class="modal-box" style="max-width: 600px;">
+            <h3>Lokasi &amp; Tempat — FIB UNDIP</h3>
+            <p style="margin-bottom: 12px;">
+                <b>Koriko Library (Portal Perpustakaan Online)</b><br>
+                Berbasis di kawasan Fakultas Ilmu Budaya (FIB) Universitas Diponegoro, Jl. Prof. Soedarto, SH, Tembalang, Semarang.<br>
+                <b>Jam Layanan:</b> <b>Buka 24 Jam (Online)</b> — 100% portal online, tanpa layanan fisik.
+            </p>
+            <div style="width: 100%; height: 260px; border-radius: 10px; overflow: hidden; border: 1px solid #E2E8F0; margin-bottom: 18px;">
+                <iframe src="https://maps.google.com/maps?q=Fakultas+Ilmu+Budaya+Universitas+Diponegoro+Semarang&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=&amp;output=embed" width="100%" height="100%" style="border: 0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                <a href="https://www.google.com/maps/search/?api=1&amp;query=Fakultas+Ilmu+Budaya+Universitas+Diponegoro+Semarang" target="_blank" rel="noopener noreferrer" style="background: #1E88E5; color: white; text-decoration: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; font-size: 14px;">Buka di Google Maps</a>
+                <button class="btn-close-modal" onclick="closeModal('modalLokasi')">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalLayanan" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Layanan Akses</h3>
+            <p><b>Katalog OPAC:</b> Mencari koleksi berdasarkan judul, kategori, penulis, cover, dan ketersediaan stok.<br><br><b>Peminjaman &amp; Status:</b> Mengajukan pinjaman buku, memantau status ACC/Dipinjam/Kembali, serta melihat alasan jika pengajuan ditolak.<br><br><b>E-Book &amp; Pengembalian:</b> Membaca file e-book PDF saat status sedang dipinjam dan melakukan pengembalian buku secara mandiri.</p>
+            <button class="btn-close-modal" onclick="closeModal('modalLayanan')">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) { event.target.style.display = 'none'; }
+        }
+    </script>
+
+    <script>
+        var sesi = K.requireRole('user');
+        var anggota = K.one('anggota', function (a) { return a.username === sesi.username; });
+        if (!anggota) { K.clearSession(); location.replace('index.html'); }
+        document.getElementById('namaUser').textContent = anggota.nama;
+
+        var KATEGORI = ['Fiksi', 'Fantasi', 'Anak-Anak', 'Referensi'];
+        var katAktif = (K.param('kategori') || 'semua').trim();
+        if (KATEGORI.indexOf(katAktif) === -1) katAktif = 'semua';
+        var cari = (K.param('cari') || '').trim();
+        var pesan = '';
+
+        document.getElementById('inpCari').value = cari;
+        if (katAktif !== 'semua') { var h = document.getElementById('hidKat'); h.disabled = false; h.value = katAktif; }
+
+        function ajukan(idBuku) {
+            var cek = K.find('sirkulasi', function (r) { return r.id_anggota == anggota.id_anggota && r.id_buku == idBuku && (r.status === 'Menunggu' || r.status === 'Dipinjam'); });
+            if (cek.length) pesan = 'Anda sudah meminjam atau sedang mengajukan buku ini.';
+            else {
+                K.load().sirkulasi.push({ id_sirkulasi: K.nextId('sirkulasi'), id_anggota: anggota.id_anggota, id_buku: idBuku, tanggal_pinjam: K.today(), tanggal_kembali_seharusnya: K.addDays(K.today(), 7), tanggal_dikembalikan: null, status: 'Menunggu', denda: 0, alasan_tolak: null });
+                K.save(); pesan = 'Berhasil! Pengajuan pinjaman menunggu ACC Pustakawan.';
+            }
+            render();
+        }
+        function kembalikan(idSirk) {
+            if (!confirm('Apakah Anda yakin ingin mengembalikan buku ini?')) return;
+            var t = K.one('sirkulasi', function (r) { return r.id_sirkulasi === idSirk && r.id_anggota == anggota.id_anggota && r.status === 'Dipinjam'; });
+            if (!t) return;
+            var skrg = K.today(), telat = K.dayDiff(t.tanggal_kembali_seharusnya, skrg), denda = telat > 0 ? telat * 1000 : 0;
+            t.tanggal_dikembalikan = skrg; t.status = 'Kembali'; t.denda = denda;
+            var b = K.byId('bibliografi', 'id_buku', t.id_buku); if (b) b.stok += 1;
+            K.save();
+            pesan = 'Buku berhasil dikembalikan!' + (denda > 0 ? ' Anda dikenakan denda Rp ' + K.rp(denda) : ' Terima kasih telah tepat waktu.');
+            alert(pesan); render();
+        }
+        function qs(kat) { var p = []; if (kat !== 'semua') p.push('kategori=' + encodeURIComponent(kat)); if (cari) p.push('cari=' + encodeURIComponent(cari)); return 'dashboard_user.html' + (p.length ? '?' + p.join('&') : '') + '#katalog'; }
+
+        function render() {
+            var db = K.load();
+            document.getElementById('pesanBox').innerHTML = pesan ? '<div class="alert"><i class="fas fa-check-circle"></i> ' + K.esc(pesan) + '</div>' : '';
+            document.getElementById('filterGroup').innerHTML = ['semua'].concat(KATEGORI).map(function (k) {
+                return '<a href="' + qs(k) + '" class="btn-filter ' + (katAktif === k ? 'active' : '') + '">' + (k === 'semua' ? 'Semua' : k) + '</a>'; }).join('');
+            var buku = db.bibliografi.filter(function (b) {
+                return (katAktif === 'semua' || b.kategori === katAktif) && (!cari || String(b.judul).toLowerCase().indexOf(cari.toLowerCase()) !== -1);
+            }).sort(function (a, b) { return b.id_buku - a.id_buku; });
+            document.getElementById('gridBuku').innerHTML = buku.length ? buku.map(function (b) {
+                var src = K.coverSrc(b);
+                return '<div class="book-card"><div class="book-cover">' + (src ? '<img src="' + K.esc(src) + '" alt="Cover">' : '<i class="fas fa-image fa-3x"></i>') + '</div>' +
+                    '<div class="book-title">' + K.esc(b.judul) + '</div>' +
+                    '<div class="book-meta">' + K.esc(b.pengarang) + ' &bull; ' + K.esc(b.kategori || 'Umum') + ' &bull; Stok: ' + b.stok + '</div>' +
+                    '<div class="book-desc">Koleksi bacaan Koriko Library.</div>' +
+                    (b.stok > 0 ? '<button type="button" class="btn-pinjam" onclick="ajukan(' + b.id_buku + ')">Ajukan Pinjam</button>' : '<button type="button" class="btn-pinjam btn-disabled" disabled>Stok Habis</button>') + '</div>';
+            }).join('') : '<p style="color:#64748B;">Belum ada buku yang sesuai dengan filter atau pencarian.</p>';
+
+            var rw = db.sirkulasi.filter(function (r) { return r.id_anggota == anggota.id_anggota; }).sort(function (a, b) { return b.id_sirkulasi - a.id_sirkulasi; });
+            var tolak = rw.filter(function (r) { return r.status === 'Ditolak'; });
+            document.getElementById('notifDitolak').innerHTML = !tolak.length ? '' :
+                '<div class="notif-ditolak"><h4><i class="fas fa-exclamation-circle"></i> Pemberitahuan Pengajuan Buku Ditolak</h4><ul>' + tolak.map(function (t) {
+                    var b = K.byId('bibliografi', 'id_buku', t.id_buku) || {};
+                    return '<li>Buku <strong>' + K.esc(b.judul) + '</strong> (diajukan ' + K.fmtD(t.tanggal_pinjam) + ') ditolak: <em>"' + K.esc(t.alasan_tolak || 'Tidak memenuhi syarat peminjaman.') + '"</em></li>';
+                }).join('') + '</ul></div>';
+            var no = 1;
+            document.getElementById('riwayat').innerHTML = rw.length ? rw.map(function (r) {
+                var b = K.byId('bibliografi', 'id_buku', r.id_buku); if (!b) return '';
+                var st, aksi = '<span style="color: #CBD5E1;">-</span>';
+                if (r.status === 'Menunggu') st = '<span class="badge-status status-menunggu"><i class="fas fa-clock"></i> Menunggu ACC</span>';
+                else if (r.status === 'Dipinjam') st = '<span class="badge-status status-dipinjam"><i class="fas fa-book-reader"></i> Sedang Dipinjam</span>';
+                else if (r.status === 'Ditolak') st = '<span class="badge-status status-ditolak"><i class="fas fa-times-circle"></i> Ditolak</span><div class="alasan-tolak-box"><b>Alasan:</b> ' + K.esc(r.alasan_tolak || 'Tidak ada alasan spesifik.') + '</div>';
+                else st = '<span class="badge-status status-kembali"><i class="fas fa-check"></i> Sudah Dikembalikan</span>';
+                if (r.status === 'Dipinjam') aksi = '<div class="action-buttons">' +
+                    (b.file_pdf ? '<a href="files/' + encodeURI(b.file_pdf) + '" target="_blank" class="btn-baca-ebook"><i class="fas fa-book-open"></i> Baca</a>' : '') +
+                    '<a href="#" class="btn-kembalikan" onclick="kembalikan(' + r.id_sirkulasi + '); return false;"><i class="fas fa-undo"></i> Kembalikan</a></div>';
+                return '<tr><td>' + (no++) + '</td><td><strong>' + K.esc(b.judul) + '</strong></td><td>' + K.fmtD(r.tanggal_pinjam) + '</td><td>' + st + '</td><td>' + aksi + '</td></tr>';
+            }).join('') : '<tr><td colspan="5" style="text-align:center; color:#94A3B8;">Belum pernah mengajukan peminjaman buku.</td></tr>';
+        }
+        render();
+    </script>
+</body>
+</html>

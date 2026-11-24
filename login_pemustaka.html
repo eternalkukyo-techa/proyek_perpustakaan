@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Pemustaka - Koriko Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Quicksand', sans-serif; background-color: #FDFBF7; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: white; border: 2px solid #2C3E50; border-radius: 18px; padding: 30px; width: 380px; box-shadow: 0 6px 0 #2C3E50; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 4px; font-size: 13px; }
+        .form-group input { width: 100%; padding: 9px; border: 2px solid #DCE1E7; border-radius: 10px; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+        .btn { background: #2C3E50; color: white; border: none; width: 100%; padding: 11px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: 'Quicksand', sans-serif; margin-top: 10px; }
+        .btn:hover { background: #1A252F; }
+        .link { display: block; text-align: center; margin-top: 15px; color: #2980B9; text-decoration: none; font-size: 13px; font-weight: 700; }
+    </style>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <div class="card">
+        <h2 style="margin-top: 0; text-align: center; color: #2C3E50;">🔐 Login Pemustaka</h2>
+        <div id="pesan" style="display:none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; text-align: center; margin-bottom: 15px; background: #F8D7DA; color: #721C24;"></div>
+        <form id="f">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" required placeholder="Masukkan username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" required placeholder="Masukkan password">
+            </div>
+            <button type="submit" class="btn">Masuk</button>
+        </form>
+        <a href="index.html#daftar" class="link">Belum punya akun? Daftar di sini</a>
+    </div>
+    <script>
+        K.load();
+        function tampil(m) { var p = document.getElementById('pesan'); p.textContent = m; p.style.display = 'block'; }
+        document.getElementById('f').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var u = e.target.username.value, h = K.sha256(e.target.password.value);
+            var d = K.one('anggota', function (a) { return a.username === u && a.password === h; });
+            if (!d) tampil('❌ Username atau Password salah!');
+            else if (d.status === 'Pending') tampil('⚠️ Akun kamu masih Pending (menunggu verifikasi Pustakawan). Mohon bersabar ya!');
+            else { K.setSession({ login: true, username: d.username, role: 'user' }); location.href = 'dashboard_user.html'; }
+        });
+    </script>
+</body>
+</html>

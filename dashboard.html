@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Pustakawan - Koriko Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; }
+        body { background: #F4F6F9; color: #333; display: flex; min-height: 100vh; }
+        
+        /* Sidebar - Disesuaikan dengan gambar */
+        .sidebar { width: 260px; background: #1A252F; color: white; display: flex; flex-direction: column; flex-shrink: 0; height: 100vh; position: sticky; top: 0; }
+        .sidebar-brand { padding: 25px 20px; font-weight: 700; font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; color: #D63344; }
+        .sidebar-menu { list-style: none; padding: 15px 0; flex: 1; }
+        
+        /* Efek Hover & Active Menu (Merah Transparan + Teks Merah) */
+        .sidebar-menu li a { display: flex; align-items: center; gap: 15px; padding: 15px 25px; color: #BDC3C7; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; border-left: 4px solid transparent; }
+        .sidebar-menu li a:hover, .sidebar-menu li a.active { background: rgba(214, 51, 68, 0.1); color: #D63344; border-left: 4px solid #D63344; }
+        
+        /* Main Content */
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow-x: hidden; }
+        .topbar { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .content { padding: 30px; }
+        
+        /* Welcome Box */
+        .welcome-box { background: white; padding: 25px; border-radius: 12px; border-left: 5px solid #D63344; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .welcome-box h2 { color: #1E293B; margin-bottom: 5px; }
+        .welcome-box p { color: #64748B; font-size: 14px; }
+
+        /* Statistik Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 15px; border: 1px solid #E2E8F0; }
+        .stat-icon { font-size: 24px; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 10px; }
+        .icon-blue { background: #E3F2FD; color: #1E88E5; }
+        .icon-orange { background: #FFF3E0; color: #FB8C00; }
+        .icon-green { background: #E8F5E9; color: #43A047; }
+        .stat-info h4 { font-size: 12px; color: #64748B; margin-bottom: 5px; text-transform: uppercase; }
+        .stat-info h3 { font-size: 20px; color: #1E293B; }
+
+        /* Bottom Grid */
+        .bottom-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 25px; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid #E2E8F0; }
+        .card h3 { font-size: 16px; color: #1E293B; margin-bottom: 20px; border-bottom: 2px solid #F1F5F9; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        
+        /* Form */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 8px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #CBD5E1; border-radius: 8px; font-family: 'Quicksand', sans-serif; outline: none; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #D63344; }
+        .btn-submit { background: #1E293B; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-submit:hover { background: #D63344; }
+
+        /* Table ACC */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #E2E8F0; font-size: 13px; }
+        th { background: #F8FAFC; color: #475569; }
+        .btn-acc { background: #43A047; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 700; margin-right: 5px; display: inline-block;}
+        .btn-tolak { background: #E53935; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 700; display: inline-block; border: none; cursor: pointer; }
+
+        /* Modal Tolak */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; justify-content: center; align-items: center; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { background: white; width: 100%; max-width: 450px; border-radius: 14px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #E2E8F0; }
+        .modal-close { background: none; border: none; font-size: 20px; color: #888; cursor: pointer; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+        .btn-batal { background: #E2E8F0; color: #334155; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .btn-kirim-tolak { background: #E53935; color: white; border: none; padding: 9px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    </style>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-brand"><i class="fas fa-book-open"></i> KorikoAdmin</div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html" class="active"><i class="fas fa-chart-pie"></i> Dasbor Admin</a></li>
+            <li><a href="bibliografi.html"><i class="fas fa-book"></i> Data Buku</a></li>
+            <li><a href="keanggotaan.html"><i class="fas fa-users"></i> Keanggotaan</a></li>
+            <li><a href="sirkulasi.html"><i class="fas fa-exchange-alt"></i> Sirkulasi</a></li>
+            <li><a href="tambah_admin.html"><i class="fas fa-user-plus"></i> Tambah Admin</a></li>
+            <li><a href="opac.html" target="_blank"><i class="fas fa-search"></i> Buka OPAC Publik</a></li>
+            <li><a href="logout.html" style="margin-top: 50px; color: #FF8A80;"><i class="fas fa-sign-out-alt"></i> Keluar Sistem</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="topbar">
+            <div style="font-weight: 700; color: #1E293B;"><i class="fas fa-user-shield"></i> Halo, (Petugas / Administrator) ✨</div>
+            <a href="logout.html" style="background: #D63344; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700;">Logout</a>
+        </div>
+
+        <div class="content">
+            <div class="welcome-box">
+                <h2>Selamat Datang di Sistem Otomasi Perpustakaan</h2>
+                <p>Sistem ini dirancang dengan gaya terbuka (*Open-Access*) terinspirasi dari SLiMS untuk memenuhi tugas kelompok praktikum aplikasi teknologi informasi.</p>
+            </div>
+
+            <div class="stats-grid" id="stats"></div>
+
+            <div class="bottom-grid">
+                <div class="card">
+                    <h3><i class="fas fa-upload" style="color: #D63344;"></i> Upload Buku &amp; Cover</h3>
+                    <form id="fBuku">
+                        <div class="form-group">
+                            <label>Judul Buku</label>
+                            <input type="text" name="judul" placeholder="Judul buku" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Penulis</label>
+                            <input type="text" name="pengarang" placeholder="Nama penulis" required>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="form-group" style="flex: 1;">
+                                <label>Kategori</label>
+                                <select name="kategori">
+                                    <option value="Fiksi">Fiksi</option>
+                                    <option value="Fantasi">Fantasi</option>
+                                    <option value="Anak-Anak">Anak-Anak</option>
+                                    <option value="Referensi">Referensi</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>Stok</label>
+                                <input type="number" name="stok" value="3" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cover Buku (JPG, PNG)</label>
+                            <input type="file" name="cover_buku" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Simpan Buku</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-check-circle" style="color: #43A047;"></i> ACC Peminjaman Buku</h3>
+                    <table>
+                        <thead><tr><th>Pemustaka</th><th>Judul Buku</th><th>Status</th><th>Aksi</th></tr></thead>
+                        <tbody id="antrean"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalTolak" class="modal-overlay" onclick="tutupBackdrop(event)">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fas fa-times-circle" style="color:#E53935;"></i> Tolak Pengajuan Buku</h3>
+                <button type="button" class="modal-close" onclick="tutupModalTolak()">&times;</button>
+            </div>
+            <form id="fTolak">
+                <input type="hidden" id="tolak_id">
+                <p style="font-size:13px; color:#555; margin-bottom:14px;">
+                    Buku: <strong id="tolak_judul"></strong><br>
+                    Pemohon: <strong id="tolak_nama"></strong>
+                </p>
+                <div class="form-group">
+                    <label>Alasan Penolakan *</label>
+                    <textarea id="alasan_tolak" rows="3" required placeholder="Tulis alasan penolakan..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-batal" onclick="tutupModalTolak()">Batal</button>
+                    <button type="submit" class="btn-kirim-tolak"><i class="fas fa-paper-plane"></i> Tolak &amp; Kirim Alasan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        K.requireRole('admin');
+        function card(icon, ic, label, val, extra) {
+            return '<div class="stat-card"><div class="stat-icon ' + ic + '"><i class="fas ' + icon + '"></i></div><div class="stat-info"><h4>' + label + '</h4><h3>' + val + '</h3></div>' + (extra || '') + '</div>';
+        }
+        function render() {
+            var db = K.load();
+            var eks = db.bibliografi.reduce(function (s, b) { return s + (+b.stok || 0); }, 0);
+            var n = function (st) { return db.sirkulasi.filter(function (r) { return r.status === st; }).length; };
+            var pend = db.anggota.filter(function (a) { return a.status === 'Pending'; }).length;
+            document.getElementById('stats').innerHTML =
+                card('fa-book', 'icon-orange', 'Judul Buku', db.bibliografi.length) +
+                card('fa-box', 'icon-orange', 'Total Eksemplar', eks) +
+                card('fa-id-card', 'icon-orange', 'Total Anggota', db.anggota.length) +
+                card('fa-book-reader', 'icon-blue', 'Buku Dipinjam', n('Dipinjam')) +
+                card('fa-hourglass-half', 'icon-orange', 'Menunggu ACC', n('Menunggu'), card('fa-user-plus', 'icon-green', 'Pendaftar Baru', pend));
+            var q = db.sirkulasi.filter(function (r) { return r.status === 'Menunggu'; }).sort(function (a, b) { return a.id_sirkulasi - b.id_sirkulasi; });
+            document.getElementById('antrean').innerHTML = q.length ? q.map(function (s) {
+                var a = K.byId('anggota', 'id_anggota', s.id_anggota) || {}, b = K.byId('bibliografi', 'id_buku', s.id_buku) || {};
+                return '<tr><td><strong>' + K.esc(a.nama) + '</strong></td><td>' + K.esc(b.judul) + '</td>' +
+                    '<td><span style="background:#FFF3E0; color:#FB8C00; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:700;">Menunggu</span></td>' +
+                    '<td><a href="#" class="btn-acc" onclick="accPeminjaman(' + s.id_sirkulasi + ', \'Setujui peminjaman ini?\'); return false;">ACC</a> ' +
+                    '<button type="button" class="btn-tolak" data-id="' + s.id_sirkulasi + '" data-judul="' + K.esc(b.judul) + '" data-nama="' + K.esc(a.nama) + '" onclick="bukaModalTolak(this)">Tolak</button></td></tr>';
+            }).join('') : '<tr><td colspan="4" style="text-align:center; color:#94A3B8;">Belum ada pengajuan pinjaman.</td></tr>';
+        }
+
+        function bukaModalTolak(btn) {
+            document.getElementById('tolak_id').value = btn.getAttribute('data-id');
+            document.getElementById('tolak_judul').textContent = btn.getAttribute('data-judul');
+            document.getElementById('tolak_nama').textContent = btn.getAttribute('data-nama');
+            document.getElementById('alasan_tolak').value = '';
+            document.getElementById('modalTolak').classList.add('show');
+            document.getElementById('alasan_tolak').focus();
+        }
+        function tutupModalTolak() { document.getElementById('modalTolak').classList.remove('show'); }
+        function tutupBackdrop(e) { if (e.target.id === 'modalTolak') tutupModalTolak(); }
+        document.getElementById('fTolak').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var id = +document.getElementById('tolak_id').value;
+            var alasan = document.getElementById('alasan_tolak').value.trim() || 'Pengajuan peminjaman tidak dapat disetujui oleh pustakawan.';
+            var t = K.byId('sirkulasi', 'id_sirkulasi', id);
+            if (t && t.status === 'Menunggu') { t.status = 'Ditolak'; t.alasan_tolak = alasan; K.save(); }
+            tutupModalTolak(); render();
+        });
+        function accPeminjaman(id, konfirmasi) {
+            if (!confirm(konfirmasi)) return;
+            var t = K.byId('sirkulasi', 'id_sirkulasi', id);
+            if (t && t.status === 'Menunggu') {
+                var b = K.byId('bibliografi', 'id_buku', t.id_buku);
+                if (b && b.stok > 0) { t.status = 'Dipinjam'; t.alasan_tolak = null; b.stok -= 1; K.save(); }
+                else if (typeof pesanGagal === 'function') pesanGagal('Gagal ACC! Stok buku ini keburu habis.');
+            }
+            render();
+        }
+
+        document.getElementById('fBuku').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            var f = e.target, db = K.load(), cover = null;
+            if (f.cover_buku.files[0]) { try { cover = await K.readImage(f.cover_buku.files[0], 400); } catch (x) {} }
+            db.bibliografi.push({
+                id_buku: K.nextId('bibliografi'), kode_buku: 'BK-' + Math.floor(Date.now() / 1000), judul: f.judul.value, pengarang: f.pengarang.value,
+                kategori: f.kategori.value, penerbit: 'Penerbit Umum', tahun_terbit: null, isbn: null, nomor_panggil: null,
+                stok: parseInt(f.stok.value, 10) || 0, file_pdf: null, cover_buku: cover
+            });
+            K.save(); f.reset(); f.stok.value = 3; render();
+            alert('Buku berhasil disimpan.');
+        });
+        render();
+    </script>
+</body>
+</html>

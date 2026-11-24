@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Cetak Kartu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(214, 51, 68, 0.08), transparent 40%),
+                #F1F5F9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 28px 16px;
+            color: #111827;
+        }
+
+        .kartu-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .kartu {
+            width: 360px;
+            height: 220px;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.22);
+            border: 2px solid #111827;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* ================= SISI DEPAN (NAVY, MERAH, PUTIH, HITAM) ================= */
+        .kartu-depan {
+            background: linear-gradient(140deg, #0F1E36 0%, #162B4D 62%, #0B1320 100%);
+            color: #FFFFFF;
+            padding: 18px 20px;
+        }
+
+        /* Aksen pita merah diagonal di pojok kanan atas */
+        .kartu-depan::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 118px;
+            height: 118px;
+            background: #D63344;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+            opacity: 0.95;
+        }
+
+        /* Garis aksen putih tipis di bawah pita merah */
+        .kartu-depan::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 112px;
+            width: 3px;
+            height: 122px;
+            background: rgba(255, 255, 255, 0.85);
+            transform: rotate(-45deg);
+            transform-origin: top right;
+        }
+
+        .card-header {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .ribbon-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            background: #D63344;
+            border: 1.5px solid #FFFFFF;
+            color: #FFFFFF;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        .brand-title h2 {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            color: #FFFFFF;
+            line-height: 1.1;
+        }
+
+        .brand-title span {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: #FCA5A5;
+            letter-spacing: 0.4px;
+        }
+
+        .sisi-tag {
+            position: relative;
+            z-index: 2;
+            font-size: 9.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #FFFFFF;
+            background: rgba(17, 24, 39, 0.65);
+            padding: 3px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            margin-right: 26px;
+        }
+
+        .card-body-front {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .member-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .member-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #CBD5E1;
+            margin-bottom: 3px;
+        }
+
+        .nama {
+            font-size: 19px;
+            font-weight: 700;
+            color: #FFFFFF;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .id-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #111827;
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-left: 4px solid #D63344;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .qr {
+            position: relative;
+            z-index: 2;
+            background: #FFFFFF;
+            padding: 6px;
+            border-radius: 10px;
+            border: 2px solid #111827;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .qr img {
+            display: block;
+            width: 68px;
+            height: 68px;
+        }
+
+        /* ================= SISI BELAKANG (PUTIH, HITAM, MERAH, NAVY) ================= */
+        .kartu-belakang {
+            background: #FFFFFF;
+            color: #111827;
+            padding: 0;
+        }
+
+        .back-top-stripe {
+            height: 28px;
+            background: #0F1E36;
+            border-bottom: 3px solid #D63344;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px;
+            color: #FFFFFF;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+        }
+
+        .back-top-stripe .accent-red {
+            color: #FF6B7B;
+        }
+
+        .back-content {
+            flex: 1;
+            padding: 14px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .back-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            color: #0F1E36;
+            border-bottom: 1.5px solid #E2E8F0;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-title i {
+            color: #D63344;
+        }
+
+        .ketentuan-list {
+            list-style: none;
+            font-size: 11px;
+            line-height: 1.48;
+            color: #1F2937;
+            font-weight: 600;
+        }
+
+        .ketentuan-list li {
+            position: relative;
+            padding-left: 14px;
+            margin-bottom: 5px;
+        }
+
+        .ketentuan-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 6px;
+            height: 6px;
+            border-radius: 2px;
+            background: #D63344;
+        }
+
+        .back-footer {
+            background: #111827;
+            color: #FFFFFF;
+            padding: 8px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 600;
+            border-top: 2px solid #D63344;
+        }
+
+        .back-footer strong {
+            color: #FF8A96;
+        }
+
+        @media print {
+            body {
+                background: #FFFFFF;
+                padding: 0;
+                min-height: auto;
+            }
+            .kartu-wrapper {
+                gap: 18px;
+            }
+            .kartu {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+    <script src="js/app.js"></script>
+</head>
+<body onload="window.print()">
+    <div class="kartu-wrapper">
+        <div class="kartu kartu-depan">
+            <div class="card-header">
+                <div class="brand-box">
+                    <span class="ribbon-badge"><i class="fas fa-ribbon"></i></span>
+                    <div class="brand-title"><h2>KORIKO LIBRARY</h2><span>KARTU TANDA ANGGOTA</span></div>
+                </div>
+                <span class="sisi-tag">Depan</span>
+            </div>
+            <div class="card-body-front">
+                <div class="member-info">
+                    <div class="member-label">Nama Anggota</div>
+                    <div class="nama" id="nama"></div>
+                    <div class="id-pill"><i class="fas fa-id-card"></i><span id="idn"></span></div>
+                </div>
+                <div class="qr"><img id="qr" alt="QR"></div>
+            </div>
+        </div>
+
+        <div class="kartu kartu-belakang">
+            <div class="back-top-stripe">
+                <span>KORIKO LIBRARY</span>
+                <span class="accent-red"><i class="fas fa-ribbon"></i> KEANGGOTAAN</span>
+            </div>
+            <div class="back-content">
+                <div>
+                    <div class="back-title"><i class="fas fa-info-circle"></i> Informasi &amp; Ketentuan Anggota</div>
+                    <ul class="ketentuan-list">
+                        <li>Kartu ini merupakan identitas resmi anggota portal Koriko Library.</li>
+                        <li>Gunakan ID Anggota dan kode QR untuk keperluan verifikasi serta peminjaman koleksi.</li>
+                        <li>Harap menjaga kerahasiaan akun dan mengembalikan koleksi tepat waktu.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="back-footer"><span>Layanan Digital 24 Jam</span><strong>Koriko Library</strong></div>
+        </div>
+    </div>
+    <script>
+        K.requireRole('admin');
+        var d = K.byId('anggota', 'id_anggota', K.param('id')) || {};
+        document.title = 'Cetak Kartu - ' + (d.nama || 'Anggota');
+        document.getElementById('nama').textContent = d.nama || '';
+        document.getElementById('idn').textContent = 'ID: ' + (d.nomor_anggota || '-');
+        document.getElementById('qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=70x70&data=' + encodeURIComponent(d.nomor_anggota || '');
+    </script>
+</body>
+</html>

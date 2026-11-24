@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Cetak Kartu Katalog - Koriko Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background:
+                radial-gradient(circle at 15% 15%, rgba(214, 51, 68, 0.08), transparent 40%),
+                #F1F5F9;
+            color: #111827;
+            padding: 24px 16px;
+        }
+
+        .katalog-grid {
+            max-width: 1040px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+            justify-items: center;
+            gap: 18px;
+        }
+
+        /* Kartu Katalog Tema Navy, Merah, Hitam & Putih (Ukuran Ringkas) */
+        .kartu-katalog {
+            width: 100%;
+            max-width: 490px;
+            background: #FFFFFF;
+            border: 2px solid #111827;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+            page-break-inside: avoid;
+        }
+
+        .kartu-header {
+            background: linear-gradient(90deg, #0F1E36 0%, #162B4D 75%, #111827 100%);
+            color: #FFFFFF;
+            padding: 8px 16px;
+            border-bottom: 3px solid #D63344;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+        }
+
+        .kartu-header .brand-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .kartu-header .ribbon-mini {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            background: #D63344;
+            border: 1px solid #FFFFFF;
+            color: #FFFFFF;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .kartu-header .kode-badge {
+            background: #111827;
+            color: #FF8A96;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 2px 9px;
+            border-radius: 999px;
+            font-size: 10.5px;
+        }
+
+        .kartu-body-wrap {
+            padding: 16px 18px 14px;
+            display: grid;
+            grid-template-columns: 74px 1fr;
+            column-gap: 14px;
+            background: #FFFFFF;
+        }
+
+        .call-number {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 12.5px;
+            line-height: 1.35;
+            font-weight: 700;
+            color: #0F1E36;
+            background: #F8FAFC;
+            border: 1.5px solid #0F1E36;
+            border-left: 4px solid #D63344;
+            border-radius: 8px;
+            padding: 7px 9px;
+            height: fit-content;
+        }
+
+        .call-number span {
+            display: block;
+        }
+
+        .bib-body {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 12.5px;
+            line-height: 1.48;
+            color: #111827;
+        }
+
+        .main-entry {
+            font-weight: 700;
+            color: #0F1E36;
+            margin-bottom: 4px;
+        }
+
+        .desc-area {
+            text-indent: 20px;
+            margin-bottom: 10px;
+            color: #1F2937;
+        }
+
+        .collation-area {
+            text-indent: 40px;
+            margin-bottom: 14px;
+            color: #374151;
+        }
+
+        .tracing-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding-left: 20px;
+            padding-top: 7px;
+            border-top: 1px dashed #CBD5E1;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .tracing-area span:first-child {
+            color: #D63344;
+        }
+
+        .kartu-footer {
+            background: #111827;
+            color: #FFFFFF;
+            padding: 6px 16px;
+            border-top: 2px solid #D63344;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .kartu-footer span:last-child {
+            color: #FF8A96;
+        }
+
+        @media (max-width: 520px) {
+            .katalog-grid {
+                grid-template-columns: 1fr;
+            }
+            .kartu-katalog {
+                max-width: 100%;
+            }
+        }
+
+        @media print {
+            body {
+                background: #FFFFFF;
+                padding: 0;
+            }
+            .katalog-grid {
+                max-width: 100%;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+            .kartu-katalog {
+                max-width: 100%;
+                box-shadow: none;
+            }
+        }
+    </style>
+    <script src="js/app.js"></script>
+</head>
+<body onload="window.print()">
+    <div class="katalog-grid" id="grid"></div>
+<script>
+    K.requireRole('admin');
+    var KELAS = { 'Fiksi': '800', 'Fantasi': '808', 'Anak-Anak': '028.5', 'Referensi': '011' };
+    function huruf(s) { return String(s || '').replace(/[^A-Za-z]/g, ''); }
+    function nomorPanggil(r) {
+        if (r.no_panggil) {
+            var b = String(r.no_panggil).trim().split(/\r\n|\r|\n/);
+            return { kelas: b[0] || '', cutter: b[1] || '', awal: b[2] || '' };
+        }
+        var pengarang = String(r.pengarang || '').trim(), judul = String(r.judul || '').trim(), kategori = String(r.kategori || '').trim();
+        var kelas = KELAS[kategori] || '020';
+        var cutter = huruf(pengarang !== '' ? pengarang : judul).substr(0, 3).toUpperCase() || 'KOR';
+        var awal = huruf(judul).substr(0, 1).toLowerCase() || 'k';
+        return { kelas: kelas, cutter: cutter, awal: awal };
+    }
+    var ids = K.param('ids');
+    var data = K.load().bibliografi.slice();
+    if (ids !== null) {
+        var set = ids.split(',').map(Number).filter(function (n) { return n > 0; });
+        if (!set.length) { alert('Anda belum memilih buku satupun!'); window.close(); }
+        data = data.filter(function (b) { return set.indexOf(b.id_buku) !== -1; });
+    }
+    data.sort(function (a, b) { return K.cmpText(a.judul, b.judul); });
+    document.getElementById('grid').innerHTML = data.map(function (d) {
+        var p = nomorPanggil(d), e = K.esc;
+        var judul = e(d.judul), pengarang = e(d.pengarang), penerbit = e(d.penerbit), kode = e(d.kode_buku);
+        var subjek = e(String(d.subjek || d.kategori || 'UMUM').toUpperCase());
+        var tahun = d.tahun_terbit ? e(d.tahun_terbit) : '', halaman = d.halaman ? e(d.halaman) : '';
+        return '<div class="kartu-katalog">' +
+            '<div class="kartu-header"><div class="brand-tag"><span class="ribbon-mini"><i class="fas fa-ribbon"></i></span><span>KORIKO LIBRARY &bull; KARTU KATALOG</span></div>' +
+            '<span class="kode-badge">' + (kode !== '' ? kode : 'KATALOG') + '</span></div>' +
+            '<div class="kartu-body-wrap"><div class="call-number"><span>' + e(p.kelas) + '</span><span>' + e(p.cutter) + '</span><span>' + e(p.awal) + '</span></div>' +
+            '<div class="bib-body"><div class="main-entry">' + (pengarang !== '' ? pengarang : judul) + '</div>' +
+            '<div class="desc-area">' + judul + (pengarang !== '' ? ' / ' + pengarang : '') + '. ' + (penerbit !== '' ? '-- ' + penerbit : '') + (tahun !== '' ? ', ' + tahun : '') + '. ' + (kode !== '' ? '[' + kode + ']' : '') + '</div>' +
+            (halaman !== '' ? '<div class="collation-area">' + halaman + '</div>' : '') +
+            '<div class="tracing-area"><span>1. ' + subjek + '</span><span>I. Judul</span></div></div></div>' +
+            '<div class="kartu-footer"><span>Sistem Otomasi Koriko Library</span><span>Koleksi Terkatalog</span></div></div>';
+    }).join('');
+</script>
+</body>
+</html>

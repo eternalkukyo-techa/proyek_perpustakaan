@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Buku - Koriko Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Quicksand', sans-serif; background-color: #F4F6F9; display: flex; height: 100vh; overflow: hidden; }
+        .sidebar { width: 260px; background: #1A252F; color: white; display: flex; flex-direction: column; }
+        .sidebar-brand { padding: 25px 20px; font-weight: 700; font-size: 20px; color: #D63344; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .sidebar-menu { list-style: none; padding: 15px 0; flex: 1; }
+        .sidebar-menu li a { display: flex; align-items: center; gap: 15px; padding: 15px 25px; color: #BDC3C7; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; border-left: 4px solid transparent; }
+        .sidebar-menu li a:hover, .sidebar-menu li a.active { background: rgba(214,51,68,0.1); color: #D63344; border-left: 4px solid #D63344; }
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 30px; }
+        .page-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 25px; border: 1px solid #E5E7EB; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 13px; color: #555; }
+        .form-group input { width: 100%; padding: 12px; border: 2px solid #E5E7EB; border-radius: 10px; font-family: 'Quicksand', sans-serif; }
+        .form-group input[type="file"] { border: 1px dashed #1E88E5; background: #F0F8FF; padding: 9px; }
+        
+        .btn { background: #2C3E50; color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; font-family: 'Quicksand', sans-serif;}
+        .btn:hover { background: #1A252F; }
+        .btn-cancel { background: #E5E7EB; color: #475569; margin-left: 10px;}
+        .btn-cancel:hover { background: #CBD5E1; }
+        .btn-cetak { background: #D63344; color: white; padding: 10px 20px; border-radius: 10px; font-weight: 700; font-size: 14px; text-decoration: none;}
+        
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; border: 1px solid #E5E7EB; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #E5E7EB; font-size: 14px; vertical-align: middle; }
+        th { background: #F8F9FA; color: #555; font-weight: 700; font-size: 12px; }
+        
+        .btn-label { background: #E3F2FD; color: #1E88E5; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 700; display: inline-block; margin-bottom: 5px;}
+        .btn-edit { background: #FFF3E0; color: #FB8C00; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 700; display: inline-block; margin-bottom: 5px; }
+        .btn-hapus { background: #FFEBEE; color: #E53935; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 700; display: inline-block; }
+        
+        .cover-img { width: 50px; height: 70px; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); border: 1px solid #ddd; }
+        .badge-green { background: #E8F5E9; color: #43A047; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; }
+    </style>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-brand"><i class="fas fa-book-open"></i> KorikoAdmin</div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-chart-pie"></i> Dasbor Admin</a></li>
+            <li><a href="bibliografi.html" class="active"><i class="fas fa-book"></i> Data Buku</a></li>
+            <li><a href="keanggotaan.html"><i class="fas fa-users"></i> Keanggotaan</a></li>
+            <li><a href="sirkulasi.html"><i class="fas fa-exchange-alt"></i> Sirkulasi</a></li>
+            <li><a href="tambah_admin.html"><i class="fas fa-user-plus"></i> Tambah Admin</a></li>
+            <li><a href="opac.html" target="_blank"><i class="fas fa-search"></i> Buka OPAC Publik</a></li>
+            <li><a href="logout.html" style="margin-top: 50px; color: #FF8A80;"><i class="fas fa-sign-out-alt"></i> Keluar Sistem</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="page-title">
+            <h2 style="color: #2C3E50;">Manajemen Bibliografi</h2>
+            <a href="cetak_katalog.html?tipe=semua" target="_blank" class="btn-cetak"><i class="fas fa-print"></i> Cetak Semua Katalog</a>
+        </div>
+
+        <div class="card" id="cardForm">
+            <h3 style="margin-bottom: 15px; color: #2C3E50;" id="formTitle"></h3>
+            <form id="fBuku">
+                <div class="form-grid">
+                    <div class="form-group"><label>Kode Buku *</label><input type="text" name="kode_buku" required placeholder="BK-001"></div>
+                    <div class="form-group"><label>Judul Buku *</label><input type="text" name="judul" required placeholder="Judul"></div>
+                    <div class="form-group"><label>Pengarang *</label><input type="text" name="pengarang" required placeholder="Pengarang"></div>
+                    <div class="form-group"><label>Penerbit</label><input type="text" name="penerbit" placeholder="Penerbit"></div>
+                    <div class="form-group"><label>Stok *</label><input type="number" name="stok" required value="1"></div>
+                </div>
+                <div class="form-grid" style="margin-top: 15px;">
+                    <div class="form-group">
+                        <label id="lblCover">Upload Cover Buku</label>
+                        <input type="file" name="cover_buku" accept=".jpg, .jpeg, .png">
+                        <small id="infoCover" style="color:green;"></small>
+                    </div>
+                    <div class="form-group">
+                        <label>E-Book PDF</label>
+                        <input type="file" name="file_pdf" accept=".pdf" disabled>
+                        <small style="color:#999;">Upload PDF tidak tersedia di versi statis. Letakkan file di folder <code>files/</code> secara manual.</small>
+                        <small id="infoPdf" style="color:green; display:block;"></small>
+                    </div>
+                </div>
+                <div id="tombolForm"></div>
+            </form>
+        </div>
+
+        <form id="fCetak">
+            <div style="margin-bottom: 15px; display:flex; justify-content:space-between;">
+                <span style="font-weight:700; color:#555;">Centang buku yang ingin dicetak katalognya:</span>
+                <button type="submit" class="btn" style="background:#1E88E5; padding:8px 15px; font-size:13px;"><i class="fas fa-print"></i> Cetak Katalog Terpilih</button>
+            </div>
+            <table>
+                <thead><tr><th>Pilih</th><th>Cover</th><th>Kode</th><th>Judul</th><th>File PDF</th><th>Aksi</th></tr></thead>
+                <tbody id="rows"></tbody>
+            </table>
+        </form>
+    </div>
+
+    <script>
+        K.requireRole('admin');
+        var editId = parseInt(K.param('edit'), 10) || 0;
+        var f = document.getElementById('fBuku');
+
+        function render() {
+            var db = K.load();
+            var ed = editId ? K.byId('bibliografi', 'id_buku', editId) : null;
+            document.getElementById('cardForm').style.border = ed ? '2px solid #FB8C00' : '';
+            document.getElementById('formTitle').innerHTML = ed ? '<i class="fas fa-edit" style="color:#FB8C00;"></i> Edit Koleksi Buku' : '<i class="fas fa-plus-circle"></i> Tambah Koleksi Buku Baru';
+            document.getElementById('lblCover').textContent = 'Upload Cover Buku' + (ed ? ' (Biarkan kosong jika tidak diganti)' : '');
+            f.kode_buku.value = ed ? ed.kode_buku : ''; f.judul.value = ed ? ed.judul : ''; f.pengarang.value = ed ? ed.pengarang : '';
+            f.penerbit.value = ed ? (ed.penerbit || '') : ''; f.stok.value = ed ? ed.stok : '1'; f.cover_buku.value = '';
+            document.getElementById('infoCover').textContent = ed && ed.cover_buku ? 'Cover saat ini: ' + (ed.cover_buku.indexOf('data:') === 0 ? '(diunggah di browser)' : ed.cover_buku) : '';
+            document.getElementById('infoPdf').textContent = ed && ed.file_pdf ? 'PDF saat ini: ' + ed.file_pdf : '';
+            document.getElementById('tombolForm').innerHTML = ed
+                ? '<button type="submit" class="btn" style="background:#FB8C00; margin-top:15px;"><i class="fas fa-save"></i> Simpan Perubahan</button> <a href="bibliografi.html" class="btn btn-cancel" style="margin-top:15px;">Batal</a>'
+                : '<button type="submit" class="btn" style="margin-top:15px;"><i class="fas fa-save"></i> Simpan Buku</button>';
+            var data = db.bibliografi.slice().sort(function (a, b) { return b.id_buku - a.id_buku; });
+            document.getElementById('rows').innerHTML = data.map(function (r) {
+                var src = K.coverSrc(r);
+                return '<tr><td><input type="checkbox" name="selected_books" value="' + r.id_buku + '" style="width:20px; height:20px; cursor:pointer;"></td>' +
+                    '<td>' + (src ? '<img src="' + K.esc(src) + '" class="cover-img" alt="Cover">' : '<span style="font-size:11px; color:#999;">No Cover</span>') + '</td>' +
+                    '<td><strong>' + K.esc(r.kode_buku) + '</strong></td><td>' + K.esc(r.judul) + '</td>' +
+                    '<td>' + (r.file_pdf ? '<span class="badge-green"><i class="fas fa-check"></i> Tersedia</span>' : '<span style="font-size:11px; color:#999;">Belum Ada</span>') + '</td>' +
+                    '<td><a href="bibliografi.html?edit=' + r.id_buku + '" class="btn-edit"><i class="fas fa-edit"></i> Edit</a> ' +
+                    '<a href="cetak_label.html?id=' + r.id_buku + '" target="_blank" class="btn-label"><i class="fas fa-tags"></i> Label</a> ' +
+                    '<a href="#" class="btn-hapus" onclick="hapus(' + r.id_buku + '); return false;"><i class="fas fa-trash"></i> Hapus</a></td></tr>';
+            }).join('');
+        }
+
+        f.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            var db = K.load(), cover = null;
+            if (f.cover_buku.files[0]) { try { cover = await K.readImage(f.cover_buku.files[0], 400); } catch (x) {} }
+            var stok = parseInt(f.stok.value, 10) || 0;
+            if (editId) {
+                var b = K.byId('bibliografi', 'id_buku', editId);
+                if (b) {
+                    b.kode_buku = f.kode_buku.value; b.judul = f.judul.value; b.pengarang = f.pengarang.value; b.penerbit = f.penerbit.value; b.stok = stok;
+                    if (cover) b.cover_buku = cover;
+                }
+                K.save(); location.href = 'bibliografi.html';
+            } else {
+                if (K.one('bibliografi', function (x) { return x.kode_buku === f.kode_buku.value; })) { alert('Kode buku sudah dipakai.'); return; }
+                db.bibliografi.push({ id_buku: K.nextId('bibliografi'), kode_buku: f.kode_buku.value, judul: f.judul.value, pengarang: f.pengarang.value, kategori: 'Fiksi',
+                    penerbit: f.penerbit.value, tahun_terbit: null, isbn: null, nomor_panggil: null, stok: stok, file_pdf: null, cover_buku: cover });
+                K.save(); render();
+            }
+        });
+
+        function hapus(id) {
+            if (!confirm('Hapus buku ini?')) return;
+            var db = K.load();
+            db.bibliografi = db.bibliografi.filter(function (b) { return b.id_buku !== id; });
+            db.sirkulasi = db.sirkulasi.filter(function (s) { return s.id_buku !== id; });
+            K.save();
+            if (editId === id) location.href = 'bibliografi.html'; else render();
+        }
+
+        document.getElementById('fCetak').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var ids = Array.prototype.map.call(document.querySelectorAll('input[name=selected_books]:checked'), function (c) { return c.value; });
+            if (!ids.length) { alert('Anda belum memilih buku satupun!'); return; }
+            window.open('cetak_katalog.html?ids=' + ids.join(','), '_blank');
+        });
+        render();
+    </script>
+</body>
+</html>

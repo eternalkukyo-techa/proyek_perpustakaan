@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Pustakawan - Koriko Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Quicksand', sans-serif; background-color: #FDFBF7; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; border: 2px solid #2C3E50; border-radius: 18px; padding: 30px; width: 350px; box-shadow: 0 6px 0 #2C3E50; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 5px; font-size: 13px; }
+        .form-group input { width: 100%; padding: 10px; border: 2px solid #DCE1E7; border-radius: 10px; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+        .btn { background: #2C3E50; color: white; border: none; width: 100%; padding: 11px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: 'Quicksand', sans-serif; }
+        .btn:hover { background: #D63344; }
+        .back { display: block; text-align: center; margin-top: 15px; color: #2C3E50; text-decoration: none; font-size: 13px; font-weight: 700; }
+    </style>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <div class="card">
+        <h2 style="margin-top: 0; text-align: center; color: #2C3E50;">🔑 Login Pustakawan</h2>
+        <p id="err" style="color: #D63344; font-size: 12px; text-align: center; font-weight: 700;"></p>
+        <form id="f">
+            <div class="form-group">
+                <label>Username Admin</label>
+                <input type="text" name="username" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+            <button type="submit" class="btn">Masuk Dashboard</button>
+        </form>
+        <a href="index.html" class="back">← Kembali ke Beranda Utama</a>
+    </div>
+    <script>
+        K.load();
+        document.getElementById('f').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var u = e.target.username.value, h = K.sha256(e.target.password.value);
+            var ad = K.one('admin', function (a) { return a.username === u && a.password === h && a.role === 'admin'; });
+            if (ad) { K.setSession({ login: true, username: u, role: 'admin' }); location.href = 'dashboard.html'; }
+            else document.getElementById('err').textContent = 'Login Admin Gagal! Periksa username/password.';
+        });
+    </script>
+</body>
+</html>

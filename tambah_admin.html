@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Tambah Admin Baru - Koriko Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; }
+        body { background: #F4F6F9; color: #1E293B; }
+        .navbar { background: #0F1E36; color: #FFFFFF; padding: 15px 32px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar-brand { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .navbar-brand i { color: #FF6B7B; }
+        .btn-kembali { background: #FFFFFF; color: #0F1E36; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; }
+        .container { max-width: 920px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; }
+        .card { background: #FFFDF9; border: 1px solid #E2E8F0; border-radius: 16px; padding: 24px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); }
+        h2 { font-size: 20px; margin-bottom: 6px; color: #0F1E36; }
+        .sub { font-size: 13px; color: #64748B; margin-bottom: 18px; }
+        .form-group { margin-bottom: 14px; }
+        label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #334155; }
+        input { width: 100%; padding: 11px 14px; border: 2px solid #E2E8F0; border-radius: 10px; font-size: 14px; font-weight: 600; outline: none; }
+        input:focus { border-color: #D63344; }
+        .btn-simpan { width: 100%; background: #D63344; color: #FFFFFF; border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; }
+        .btn-simpan:hover { background: #B91C1C; }
+        .alert { padding: 12px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; margin-bottom: 14px; }
+        .alert-error { background: #FFE4E6; color: #BE123C; }
+        .alert-success { background: #DCFCE7; color: #15803D; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #E2E8F0; }
+        th { color: #475569; font-weight: 700; background: #F8FAFC; }
+        .badge { background: #EEF4F8; color: #0F1E36; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+        @media (max-width: 760px) { .container { grid-template-columns: 1fr; } }
+    </style>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-brand"><i class="fas fa-ribbon"></i> Tambah Admin — Koriko Library</div>
+        <a href="dashboard.html" class="btn-kembali"><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Form Admin Baru</h2>
+            <p class="sub">Tambahkan akun pustakawan/admin ke sistem.</p>
+            <div id="notif"></div>
+            <form id="f">
+                <div class="form-group"><label>Nama Lengkap</label><input type="text" name="nama_lengkap" required placeholder="Contoh: Kiki Pustakawan"></div>
+                <div class="form-group"><label>Username</label><input type="text" name="username" required placeholder="Username login admin"></div>
+                <div class="form-group"><label>Password</label><input type="text" name="password" required placeholder="Password admin"></div>
+                <button type="submit" class="btn-simpan"><i class="fas fa-user-plus"></i> Simpan Admin Baru</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Daftar Akun Admin</h2>
+            <p class="sub">Akun yang terdaftar pada tabel admin.</p>
+            <table>
+                <thead><tr><th>No</th><th>Nama Lengkap</th><th>Username</th><th>Role</th></tr></thead>
+                <tbody id="rows"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        K.requireRole('admin');
+        function notif(m, ok) { document.getElementById('notif').innerHTML = m ? '<div class="alert alert-' + (ok ? 'success' : 'error') + '">' + K.esc(m) + '</div>' : ''; }
+        function render() {
+            var list = K.load().admin.slice().sort(function (a, b) { return b.id_admin - a.id_admin; });
+            document.getElementById('rows').innerHTML = list.map(function (a, i) {
+                return '<tr><td>' + (i + 1) + '</td><td><strong>' + K.esc(a.nama_lengkap) + '</strong></td><td>' + K.esc(a.username) + '</td><td><span class="badge">' + K.esc(a.role) + '</span></td></tr>';
+            }).join('');
+        }
+        document.getElementById('f').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var f = e.target, nama = f.nama_lengkap.value.trim(), user = f.username.value.trim();
+            if (K.one('admin', function (a) { return a.username === user; })) { notif('Username admin sudah digunakan! Silakan pakai username lain.', false); return; }
+            K.load().admin.push({ id_admin: K.nextId('admin'), username: user, password: K.sha256(f.password.value), nama_lengkap: nama, role: 'admin' });
+            K.save(); f.reset(); notif('Akun admin baru berhasil ditambahkan!', true); render();
+        });
+        render();
+    </script>
+</body>
+</html>

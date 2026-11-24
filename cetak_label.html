@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Label Buku</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #eee; margin: 0; }
+        .label { background: white; border: 2px dashed #333; padding: 15px 30px; text-align: center; border-radius: 8px; }
+        .label h3 { margin: 0 0 10px 0; font-size: 16px; color: #333; }
+        @media print { body { background: white; } .label { border: 1px solid #333; } }
+    </style>
+    <script src="js/app.js"></script>
+</head>
+<body onload="window.print()">
+    <div class="label">
+        <h3>Koriko Library</h3>
+        <svg class="barcode" jsbarcode-format="CODE128" jsbarcode-textmargin="5" jsbarcode-fontoptions="bold"></svg>
+        <p style="margin: 10px 0 0 0; font-size: 12px;" id="judul"></p>
+    </div>
+    <script>
+        K.requireRole('admin');
+        var d = K.byId('bibliografi', 'id_buku', K.param('id')) || { kode_buku: '-', judul: '' };
+        document.title = 'Label Buku - ' + d.kode_buku;
+        document.querySelector('.barcode').setAttribute('jsbarcode-value', d.kode_buku);
+        document.getElementById('judul').textContent = d.judul;
+        JsBarcode(".barcode").init();
+    </script>
+</body>
+</html>
