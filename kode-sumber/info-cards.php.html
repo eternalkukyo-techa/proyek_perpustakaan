@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>info-cards.php — proyek_perpustakaan</title>
+<style>
+:root{--bg:#fdfbf7;--fg:#2c3e50;--muted:#6b7785;--card:#fff;--line:#dce1e7;--accent:#d63344}
+@media (prefers-color-scheme: dark){:root{--bg:#16191d;--fg:#e6e9ed;--muted:#9aa5b1;--card:#1e2328;--line:#323a43;--accent:#ff6b7a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:20px max(16px,4vw);border-bottom:1px solid var(--line)}
+header a{color:var(--accent);text-decoration:none;font-weight:600}
+h1{margin:6px 0 0;font-size:1.25rem;word-break:break-all}
+.meta{color:var(--muted);font-size:.85rem}
+main{padding:20px max(16px,4vw)}
+.code{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow-x:auto}
+.hl{margin:0;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.hl table{border-collapse:collapse;width:100%}
+.hl td{padding:0 12px;vertical-align:top}
+.hl .linenos{color:var(--muted);user-select:none;text-align:right;border-right:1px solid var(--line);width:1%}
+.hl pre{margin:0;background:transparent !important}
+.hl{background:transparent !important}
+table.list{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+table.list th,table.list td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+table.list th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+table.list a{color:var(--fg);font-weight:600;text-decoration:none}
+table.list a:hover{color:var(--accent)}
+pre { line-height: 125%; }
+td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hl .hll { background-color: #ffffcc }
+.hl { background: #f0f0f0; }
+.hl .c { color: #60A0B0; font-style: italic } /* Comment */
+.hl .err { border: 1px solid #F00 } /* Error */
+.hl .k { color: #007020; font-weight: bold } /* Keyword */
+.hl .o { color: #666 } /* Operator */
+.hl .ch { color: #60A0B0; font-style: italic } /* Comment.Hashbang */
+.hl .cm { color: #60A0B0; font-style: italic } /* Comment.Multiline */
+.hl .cp { color: #007020 } /* Comment.Preproc */
+.hl .cpf { color: #60A0B0; font-style: italic } /* Comment.PreprocFile */
+.hl .c1 { color: #60A0B0; font-style: italic } /* Comment.Single */
+.hl .cs { color: #60A0B0; background-color: #FFF0F0 } /* Comment.Special */
+.hl .gd { color: #A00000 } /* Generic.Deleted */
+.hl .ge { font-style: italic } /* Generic.Emph */
+.hl .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.hl .gr { color: #F00 } /* Generic.Error */
+.hl .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.hl .gi { color: #00A000 } /* Generic.Inserted */
+.hl .go { color: #888 } /* Generic.Output */
+.hl .gp { color: #C65D09; font-weight: bold } /* Generic.Prompt */
+.hl .gs { font-weight: bold } /* Generic.Strong */
+.hl .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.hl .gt { color: #04D } /* Generic.Traceback */
+.hl .kc { color: #007020; font-weight: bold } /* Keyword.Constant */
+.hl .kd { color: #007020; font-weight: bold } /* Keyword.Declaration */
+.hl .kn { color: #007020; font-weight: bold } /* Keyword.Namespace */
+.hl .kp { color: #007020 } /* Keyword.Pseudo */
+.hl .kr { color: #007020; font-weight: bold } /* Keyword.Reserved */
+.hl .kt { color: #902000 } /* Keyword.Type */
+.hl .m { color: #40A070 } /* Literal.Number */
+.hl .s { color: #4070A0 } /* Literal.String */
+.hl .na { color: #4070A0 } /* Name.Attribute */
+.hl .nb { color: #007020 } /* Name.Builtin */
+.hl .nc { color: #0E84B5; font-weight: bold } /* Name.Class */
+.hl .no { color: #60ADD5 } /* Name.Constant */
+.hl .nd { color: #555; font-weight: bold } /* Name.Decorator */
+.hl .ni { color: #D55537; font-weight: bold } /* Name.Entity */
+.hl .ne { color: #007020 } /* Name.Exception */
+.hl .nf { color: #06287E } /* Name.Function */
+.hl .nl { color: #002070; font-weight: bold } /* Name.Label */
+.hl .nn { color: #0E84B5; font-weight: bold } /* Name.Namespace */
+.hl .nt { color: #062873; font-weight: bold } /* Name.Tag */
+.hl .nv { color: #BB60D5 } /* Name.Variable */
+.hl .ow { color: #007020; font-weight: bold } /* Operator.Word */
+.hl .w { color: #BBB } /* Text.Whitespace */
+.hl .mb { color: #40A070 } /* Literal.Number.Bin */
+.hl .mf { color: #40A070 } /* Literal.Number.Float */
+.hl .mh { color: #40A070 } /* Literal.Number.Hex */
+.hl .mi { color: #40A070 } /* Literal.Number.Integer */
+.hl .mo { color: #40A070 } /* Literal.Number.Oct */
+.hl .sa { color: #4070A0 } /* Literal.String.Affix */
+.hl .sb { color: #4070A0 } /* Literal.String.Backtick */
+.hl .sc { color: #4070A0 } /* Literal.String.Char */
+.hl .dl { color: #4070A0 } /* Literal.String.Delimiter */
+.hl .sd { color: #4070A0; font-style: italic } /* Literal.String.Doc */
+.hl .s2 { color: #4070A0 } /* Literal.String.Double */
+.hl .se { color: #4070A0; font-weight: bold } /* Literal.String.Escape */
+.hl .sh { color: #4070A0 } /* Literal.String.Heredoc */
+.hl .si { color: #70A0D0; font-style: italic } /* Literal.String.Interpol */
+.hl .sx { color: #C65D09 } /* Literal.String.Other */
+.hl .sr { color: #235388 } /* Literal.String.Regex */
+.hl .s1 { color: #4070A0 } /* Literal.String.Single */
+.hl .ss { color: #517918 } /* Literal.String.Symbol */
+.hl .bp { color: #007020 } /* Name.Builtin.Pseudo */
+.hl .fm { color: #06287E } /* Name.Function.Magic */
+.hl .vc { color: #BB60D5 } /* Name.Variable.Class */
+.hl .vg { color: #BB60D5 } /* Name.Variable.Global */
+.hl .vi { color: #BB60D5 } /* Name.Variable.Instance */
+.hl .vm { color: #BB60D5 } /* Name.Variable.Magic */
+.hl .il { color: #40A070 } /* Literal.Number.Integer.Long */
+@media (prefers-color-scheme: dark){pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hl .hll { background-color: #49483e }
+.hl { background: #272822; color: #F8F8F2 }
+.hl .c { color: #959077 } /* Comment */
+.hl .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.hl .esc { color: #F8F8F2 } /* Escape */
+.hl .g { color: #F8F8F2 } /* Generic */
+.hl .k { color: #66D9EF } /* Keyword */
+.hl .l { color: #AE81FF } /* Literal */
+.hl .n { color: #F8F8F2 } /* Name */
+.hl .o { color: #FF4689 } /* Operator */
+.hl .x { color: #F8F8F2 } /* Other */
+.hl .p { color: #F8F8F2 } /* Punctuation */
+.hl .ch { color: #959077 } /* Comment.Hashbang */
+.hl .cm { color: #959077 } /* Comment.Multiline */
+.hl .cp { color: #959077 } /* Comment.Preproc */
+.hl .cpf { color: #959077 } /* Comment.PreprocFile */
+.hl .c1 { color: #959077 } /* Comment.Single */
+.hl .cs { color: #959077 } /* Comment.Special */
+.hl .gd { color: #FF4689 } /* Generic.Deleted */
+.hl .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.hl .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.hl .gr { color: #FF4689 } /* Generic.Error */
+.hl .gh { color: #F8F8F2 } /* Generic.Heading */
+.hl .gi { color: #A6E22E } /* Generic.Inserted */
+.hl .go { color: #66D9EF } /* Generic.Output */
+.hl .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.hl .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.hl .gu { color: #959077 } /* Generic.Subheading */
+.hl .gt { color: #66D9EF } /* Generic.Traceback */
+.hl .kc { color: #66D9EF } /* Keyword.Constant */
+.hl .kd { color: #66D9EF } /* Keyword.Declaration */
+.hl .kn { color: #FF4689 } /* Keyword.Namespace */
+.hl .kp { color: #66D9EF } /* Keyword.Pseudo */
+.hl .kr { color: #66D9EF } /* Keyword.Reserved */
+.hl .kt { color: #66D9EF } /* Keyword.Type */
+.hl .ld { color: #E6DB74 } /* Literal.Date */
+.hl .m { color: #AE81FF } /* Literal.Number */
+.hl .s { color: #E6DB74 } /* Literal.String */
+.hl .na { color: #A6E22E } /* Name.Attribute */
+.hl .nb { color: #A6E22E } /* Name.Builtin */
+.hl .nc { color: #A6E22E } /* Name.Class */
+.hl .no { color: #66D9EF } /* Name.Constant */
+.hl .nd { color: #A6E22E } /* Name.Decorator */
+.hl .ni { color: #F8F8F2 } /* Name.Entity */
+.hl .ne { color: #A6E22E } /* Name.Exception */
+.hl .nf { color: #A6E22E } /* Name.Function */
+.hl .nl { color: #F8F8F2 } /* Name.Label */
+.hl .nn { color: #F8F8F2 } /* Name.Namespace */
+.hl .nx { color: #A6E22E } /* Name.Other */
+.hl .py { color: #F8F8F2 } /* Name.Property */
+.hl .nt { color: #FF4689 } /* Name.Tag */
+.hl .nv { color: #F8F8F2 } /* Name.Variable */
+.hl .ow { color: #FF4689 } /* Operator.Word */
+.hl .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.hl .w { color: #F8F8F2 } /* Text.Whitespace */
+.hl .mb { color: #AE81FF } /* Literal.Number.Bin */
+.hl .mf { color: #AE81FF } /* Literal.Number.Float */
+.hl .mh { color: #AE81FF } /* Literal.Number.Hex */
+.hl .mi { color: #AE81FF } /* Literal.Number.Integer */
+.hl .mo { color: #AE81FF } /* Literal.Number.Oct */
+.hl .sa { color: #E6DB74 } /* Literal.String.Affix */
+.hl .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.hl .sc { color: #E6DB74 } /* Literal.String.Char */
+.hl .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.hl .sd { color: #E6DB74 } /* Literal.String.Doc */
+.hl .s2 { color: #E6DB74 } /* Literal.String.Double */
+.hl .se { color: #AE81FF } /* Literal.String.Escape */
+.hl .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.hl .si { color: #E6DB74 } /* Literal.String.Interpol */
+.hl .sx { color: #E6DB74 } /* Literal.String.Other */
+.hl .sr { color: #E6DB74 } /* Literal.String.Regex */
+.hl .s1 { color: #E6DB74 } /* Literal.String.Single */
+.hl .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.hl .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.hl .fm { color: #A6E22E } /* Name.Function.Magic */
+.hl .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.hl .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.hl .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.hl .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.hl .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+.hl .linenos pre{color:var(--muted) !important}}
+</style>
+</head>
+<body>
+<header><a href="index.html">&larr; Daftar file</a><h1>info-cards.php</h1><div class="meta">41 baris &middot; 2.6 KB</div></header><main><div class="code"><div class="hl"><table class="hltable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><span class="x">&lt;div class="info-cards"&gt;</span>
+<span class="x">    &lt;div class="info-card" onclick="openModal('modalTentang')"&gt;</span>
+<span class="x">        &lt;h3&gt;Tentang Kami (About)&lt;/h3&gt;</span>
+<span class="x">        &lt;p&gt;Koriko Library adalah perpustakaan online dan pusat literasi terbuka untuk mendukung kebutuhan membaca, riset, dan peminjaman koleksi secara mudah.&lt;/p&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+
+<span class="x">    &lt;div class="info-card" style="border-color: #D63344;" onclick="openModal('modalLokasi')"&gt;</span>
+<span class="x">        &lt;h3&gt;Lokasi &amp; Tempat&lt;/h3&gt;</span>
+<span class="x">        &lt;p&gt;Berlokasi di Fakultas Ilmu Budaya (FIB) Universitas Diponegoro, Semarang. Klik untuk info tempat dan buka Google Maps.&lt;/p&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+
+<span class="x">    &lt;div class="info-card" onclick="openModal('modalLayanan')"&gt;</span>
+<span class="x">        &lt;h3&gt;Layanan Akses&lt;/h3&gt;</span>
+<span class="x">        &lt;p&gt;Cari katalog OPAC, ajukan peminjaman buku, cek status ACC &amp; alasan penolakan, serta akses baca e-book dan pengembalian mandiri.&lt;/p&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">&lt;/div&gt;</span>
+
+<span class="x">&lt;!-- MODALS --&gt;</span>
+<span class="x">&lt;div id="modalTentang" class="modal-overlay"&gt;</span>
+<span class="x">    &lt;div class="modal-box"&gt;</span>
+<span class="x">        &lt;h3&gt;Tentang Koriko Library&lt;/h3&gt;</span>
+<span class="x">        &lt;p&gt;Koriko Library adalah perpustakaan online dan pusat literasi digital berbasis open-access yang dirancang untuk menghadirkan pengalaman membaca yang nyaman, teratur, dan mudah diakses. Melalui portal ini, pembaca dapat menjelajahi koleksi buku, mengajukan peminjaman, membaca e-book, serta memantau status transaksi secara praktis dalam satu tempat.&lt;/p&gt;</span>
+<span class="x">        &lt;button class="btn-close-modal" onclick="closeModal('modalTentang')"&gt;Tutup&lt;/button&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">&lt;/div&gt;</span>
+
+<span class="x">&lt;div id="modalLokasi" class="modal-overlay"&gt;</span>
+<span class="x">    &lt;div class="modal-box"&gt;</span>
+<span class="x">        &lt;h3&gt;Lokasi &amp; Tempat — FIB UNDIP&lt;/h3&gt;</span>
+<span class="x">        &lt;p&gt;&lt;b&gt;Fakultas Ilmu Budaya (FIB) Universitas Diponegoro&lt;/b&gt;&lt;br&gt;Jl. Prof. Soedarto, SH, Tembalang, Kec. Tembalang, Kota Semarang, Jawa Tengah 50275.&lt;br&gt;&lt;br&gt;&lt;a href="https://www.google.com/maps/search/?api=1&amp;query=Fakultas+Ilmu+Budaya+Universitas+Diponegoro+Semarang" target="_blank" rel="noopener noreferrer"&gt;Buka Lokasi di Google Maps&lt;/a&gt;&lt;/p&gt;</span>
+<span class="x">        &lt;button class="btn-close-modal" onclick="closeModal('modalLokasi')"&gt;Tutup&lt;/button&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">&lt;/div&gt;</span>
+
+<span class="x">&lt;div id="modalLayanan" class="modal-overlay"&gt;</span>
+<span class="x">    &lt;div class="modal-box"&gt;</span>
+<span class="x">        &lt;h3&gt;Layanan Akses&lt;/h3&gt;</span>
+<span class="x">        &lt;p&gt;&lt;b&gt;Katalog OPAC:&lt;/b&gt; Mencari koleksi berdasarkan judul, kategori, penulis, cover, dan ketersediaan stok.&lt;br&gt;&lt;br&gt;&lt;b&gt;Peminjaman &amp; Status:&lt;/b&gt; Mengajukan pinjaman buku, memantau status ACC/Dipinjam/Kembali, serta melihat alasan jika pengajuan ditolak.&lt;br&gt;&lt;br&gt;&lt;b&gt;E-Book &amp; Pengembalian:&lt;/b&gt; Membaca file e-book PDF saat status sedang dipinjam dan melakukan pengembalian buku secara mandiri.&lt;/p&gt;</span>
+<span class="x">        &lt;button class="btn-close-modal" onclick="closeModal('modalLayanan')"&gt;Tutup&lt;/button&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">&lt;/div&gt;</span>
+</pre></div></td></tr></table></div>
+</div></main>
+</body>
+</html>

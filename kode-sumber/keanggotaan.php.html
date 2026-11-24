@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>keanggotaan.php — proyek_perpustakaan</title>
+<style>
+:root{--bg:#fdfbf7;--fg:#2c3e50;--muted:#6b7785;--card:#fff;--line:#dce1e7;--accent:#d63344}
+@media (prefers-color-scheme: dark){:root{--bg:#16191d;--fg:#e6e9ed;--muted:#9aa5b1;--card:#1e2328;--line:#323a43;--accent:#ff6b7a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:20px max(16px,4vw);border-bottom:1px solid var(--line)}
+header a{color:var(--accent);text-decoration:none;font-weight:600}
+h1{margin:6px 0 0;font-size:1.25rem;word-break:break-all}
+.meta{color:var(--muted);font-size:.85rem}
+main{padding:20px max(16px,4vw)}
+.code{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow-x:auto}
+.hl{margin:0;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.hl table{border-collapse:collapse;width:100%}
+.hl td{padding:0 12px;vertical-align:top}
+.hl .linenos{color:var(--muted);user-select:none;text-align:right;border-right:1px solid var(--line);width:1%}
+.hl pre{margin:0;background:transparent !important}
+.hl{background:transparent !important}
+table.list{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+table.list th,table.list td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+table.list th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+table.list a{color:var(--fg);font-weight:600;text-decoration:none}
+table.list a:hover{color:var(--accent)}
+pre { line-height: 125%; }
+td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hl .hll { background-color: #ffffcc }
+.hl { background: #f0f0f0; }
+.hl .c { color: #60A0B0; font-style: italic } /* Comment */
+.hl .err { border: 1px solid #F00 } /* Error */
+.hl .k { color: #007020; font-weight: bold } /* Keyword */
+.hl .o { color: #666 } /* Operator */
+.hl .ch { color: #60A0B0; font-style: italic } /* Comment.Hashbang */
+.hl .cm { color: #60A0B0; font-style: italic } /* Comment.Multiline */
+.hl .cp { color: #007020 } /* Comment.Preproc */
+.hl .cpf { color: #60A0B0; font-style: italic } /* Comment.PreprocFile */
+.hl .c1 { color: #60A0B0; font-style: italic } /* Comment.Single */
+.hl .cs { color: #60A0B0; background-color: #FFF0F0 } /* Comment.Special */
+.hl .gd { color: #A00000 } /* Generic.Deleted */
+.hl .ge { font-style: italic } /* Generic.Emph */
+.hl .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.hl .gr { color: #F00 } /* Generic.Error */
+.hl .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.hl .gi { color: #00A000 } /* Generic.Inserted */
+.hl .go { color: #888 } /* Generic.Output */
+.hl .gp { color: #C65D09; font-weight: bold } /* Generic.Prompt */
+.hl .gs { font-weight: bold } /* Generic.Strong */
+.hl .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.hl .gt { color: #04D } /* Generic.Traceback */
+.hl .kc { color: #007020; font-weight: bold } /* Keyword.Constant */
+.hl .kd { color: #007020; font-weight: bold } /* Keyword.Declaration */
+.hl .kn { color: #007020; font-weight: bold } /* Keyword.Namespace */
+.hl .kp { color: #007020 } /* Keyword.Pseudo */
+.hl .kr { color: #007020; font-weight: bold } /* Keyword.Reserved */
+.hl .kt { color: #902000 } /* Keyword.Type */
+.hl .m { color: #40A070 } /* Literal.Number */
+.hl .s { color: #4070A0 } /* Literal.String */
+.hl .na { color: #4070A0 } /* Name.Attribute */
+.hl .nb { color: #007020 } /* Name.Builtin */
+.hl .nc { color: #0E84B5; font-weight: bold } /* Name.Class */
+.hl .no { color: #60ADD5 } /* Name.Constant */
+.hl .nd { color: #555; font-weight: bold } /* Name.Decorator */
+.hl .ni { color: #D55537; font-weight: bold } /* Name.Entity */
+.hl .ne { color: #007020 } /* Name.Exception */
+.hl .nf { color: #06287E } /* Name.Function */
+.hl .nl { color: #002070; font-weight: bold } /* Name.Label */
+.hl .nn { color: #0E84B5; font-weight: bold } /* Name.Namespace */
+.hl .nt { color: #062873; font-weight: bold } /* Name.Tag */
+.hl .nv { color: #BB60D5 } /* Name.Variable */
+.hl .ow { color: #007020; font-weight: bold } /* Operator.Word */
+.hl .w { color: #BBB } /* Text.Whitespace */
+.hl .mb { color: #40A070 } /* Literal.Number.Bin */
+.hl .mf { color: #40A070 } /* Literal.Number.Float */
+.hl .mh { color: #40A070 } /* Literal.Number.Hex */
+.hl .mi { color: #40A070 } /* Literal.Number.Integer */
+.hl .mo { color: #40A070 } /* Literal.Number.Oct */
+.hl .sa { color: #4070A0 } /* Literal.String.Affix */
+.hl .sb { color: #4070A0 } /* Literal.String.Backtick */
+.hl .sc { color: #4070A0 } /* Literal.String.Char */
+.hl .dl { color: #4070A0 } /* Literal.String.Delimiter */
+.hl .sd { color: #4070A0; font-style: italic } /* Literal.String.Doc */
+.hl .s2 { color: #4070A0 } /* Literal.String.Double */
+.hl .se { color: #4070A0; font-weight: bold } /* Literal.String.Escape */
+.hl .sh { color: #4070A0 } /* Literal.String.Heredoc */
+.hl .si { color: #70A0D0; font-style: italic } /* Literal.String.Interpol */
+.hl .sx { color: #C65D09 } /* Literal.String.Other */
+.hl .sr { color: #235388 } /* Literal.String.Regex */
+.hl .s1 { color: #4070A0 } /* Literal.String.Single */
+.hl .ss { color: #517918 } /* Literal.String.Symbol */
+.hl .bp { color: #007020 } /* Name.Builtin.Pseudo */
+.hl .fm { color: #06287E } /* Name.Function.Magic */
+.hl .vc { color: #BB60D5 } /* Name.Variable.Class */
+.hl .vg { color: #BB60D5 } /* Name.Variable.Global */
+.hl .vi { color: #BB60D5 } /* Name.Variable.Instance */
+.hl .vm { color: #BB60D5 } /* Name.Variable.Magic */
+.hl .il { color: #40A070 } /* Literal.Number.Integer.Long */
+@media (prefers-color-scheme: dark){pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hl .hll { background-color: #49483e }
+.hl { background: #272822; color: #F8F8F2 }
+.hl .c { color: #959077 } /* Comment */
+.hl .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.hl .esc { color: #F8F8F2 } /* Escape */
+.hl .g { color: #F8F8F2 } /* Generic */
+.hl .k { color: #66D9EF } /* Keyword */
+.hl .l { color: #AE81FF } /* Literal */
+.hl .n { color: #F8F8F2 } /* Name */
+.hl .o { color: #FF4689 } /* Operator */
+.hl .x { color: #F8F8F2 } /* Other */
+.hl .p { color: #F8F8F2 } /* Punctuation */
+.hl .ch { color: #959077 } /* Comment.Hashbang */
+.hl .cm { color: #959077 } /* Comment.Multiline */
+.hl .cp { color: #959077 } /* Comment.Preproc */
+.hl .cpf { color: #959077 } /* Comment.PreprocFile */
+.hl .c1 { color: #959077 } /* Comment.Single */
+.hl .cs { color: #959077 } /* Comment.Special */
+.hl .gd { color: #FF4689 } /* Generic.Deleted */
+.hl .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.hl .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.hl .gr { color: #FF4689 } /* Generic.Error */
+.hl .gh { color: #F8F8F2 } /* Generic.Heading */
+.hl .gi { color: #A6E22E } /* Generic.Inserted */
+.hl .go { color: #66D9EF } /* Generic.Output */
+.hl .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.hl .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.hl .gu { color: #959077 } /* Generic.Subheading */
+.hl .gt { color: #66D9EF } /* Generic.Traceback */
+.hl .kc { color: #66D9EF } /* Keyword.Constant */
+.hl .kd { color: #66D9EF } /* Keyword.Declaration */
+.hl .kn { color: #FF4689 } /* Keyword.Namespace */
+.hl .kp { color: #66D9EF } /* Keyword.Pseudo */
+.hl .kr { color: #66D9EF } /* Keyword.Reserved */
+.hl .kt { color: #66D9EF } /* Keyword.Type */
+.hl .ld { color: #E6DB74 } /* Literal.Date */
+.hl .m { color: #AE81FF } /* Literal.Number */
+.hl .s { color: #E6DB74 } /* Literal.String */
+.hl .na { color: #A6E22E } /* Name.Attribute */
+.hl .nb { color: #A6E22E } /* Name.Builtin */
+.hl .nc { color: #A6E22E } /* Name.Class */
+.hl .no { color: #66D9EF } /* Name.Constant */
+.hl .nd { color: #A6E22E } /* Name.Decorator */
+.hl .ni { color: #F8F8F2 } /* Name.Entity */
+.hl .ne { color: #A6E22E } /* Name.Exception */
+.hl .nf { color: #A6E22E } /* Name.Function */
+.hl .nl { color: #F8F8F2 } /* Name.Label */
+.hl .nn { color: #F8F8F2 } /* Name.Namespace */
+.hl .nx { color: #A6E22E } /* Name.Other */
+.hl .py { color: #F8F8F2 } /* Name.Property */
+.hl .nt { color: #FF4689 } /* Name.Tag */
+.hl .nv { color: #F8F8F2 } /* Name.Variable */
+.hl .ow { color: #FF4689 } /* Operator.Word */
+.hl .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.hl .w { color: #F8F8F2 } /* Text.Whitespace */
+.hl .mb { color: #AE81FF } /* Literal.Number.Bin */
+.hl .mf { color: #AE81FF } /* Literal.Number.Float */
+.hl .mh { color: #AE81FF } /* Literal.Number.Hex */
+.hl .mi { color: #AE81FF } /* Literal.Number.Integer */
+.hl .mo { color: #AE81FF } /* Literal.Number.Oct */
+.hl .sa { color: #E6DB74 } /* Literal.String.Affix */
+.hl .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.hl .sc { color: #E6DB74 } /* Literal.String.Char */
+.hl .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.hl .sd { color: #E6DB74 } /* Literal.String.Doc */
+.hl .s2 { color: #E6DB74 } /* Literal.String.Double */
+.hl .se { color: #AE81FF } /* Literal.String.Escape */
+.hl .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.hl .si { color: #E6DB74 } /* Literal.String.Interpol */
+.hl .sx { color: #E6DB74 } /* Literal.String.Other */
+.hl .sr { color: #E6DB74 } /* Literal.String.Regex */
+.hl .s1 { color: #E6DB74 } /* Literal.String.Single */
+.hl .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.hl .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.hl .fm { color: #A6E22E } /* Name.Function.Magic */
+.hl .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.hl .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.hl .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.hl .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.hl .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+.hl .linenos pre{color:var(--muted) !important}}
+</style>
+</head>
+<body>
+<header><a href="index.html">&larr; Daftar file</a><h1>keanggotaan.php</h1><div class="meta">340 baris &middot; 19.9 KB</div></header><main><div class="code"><div class="hl"><table class="hltable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">  1</span>
+<span class="normal">  2</span>
+<span class="normal">  3</span>
+<span class="normal">  4</span>
+<span class="normal">  5</span>
+<span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span></pre></div></td><td class="code"><div><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nb">session_start</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'login'</span><span class="p">])</span> <span class="o">||</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'role'</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">'admin'</span><span class="p">)</span> <span class="p">{</span> <span class="nb">header</span><span class="p">(</span><span class="s2">"Location: index.php"</span><span class="p">);</span> <span class="k">exit</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">include</span> <span class="s1">'koneksi.php'</span><span class="p">;</span>
+
+<span class="c1">// PROSES ACC PENDAFTAR (DENGAN INPUT NOMOR ANGGOTA)</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'acc_anggota'</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$id</span> <span class="o">=</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'id_anggota'</span><span class="p">];</span>
+    <span class="nv">$nomor</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'nomor_anggota'</span><span class="p">]);</span>
+    
+    <span class="c1">// Validasi apakah nomor anggota sudah dipakai</span>
+    <span class="nv">$cek</span> <span class="o">=</span> <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"SELECT * FROM anggota WHERE nomor_anggota='</span><span class="si">$nomor</span><span class="s2">'"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_num_rows</span><span class="p">(</span><span class="nv">$cek</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">"&lt;script&gt;alert('Gagal! Nomor Anggota </span><span class="si">$nomor</span><span class="s2"> sudah dipakai anggota lain.');&lt;/script&gt;"</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"UPDATE anggota SET status='Aktif', nomor_anggota='</span><span class="si">$nomor</span><span class="s2">' WHERE id_anggota=</span><span class="si">$id</span><span class="s2">"</span><span class="p">);</span>
+        <span class="nb">header</span><span class="p">(</span><span class="s2">"Location: keanggotaan.php"</span><span class="p">);</span> <span class="k">exit</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// PROSES TOLAK (HAPUS) PENDAFTAR</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'tolak'</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$id</span> <span class="o">=</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'tolak'</span><span class="p">];</span>
+    <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"DELETE FROM anggota WHERE id_anggota=</span><span class="si">$id</span><span class="s2">"</span><span class="p">);</span>
+    <span class="nb">header</span><span class="p">(</span><span class="s2">"Location: keanggotaan.php"</span><span class="p">);</span> <span class="k">exit</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// PROSES TAMBAH MANUAL (OLEH ADMIN)</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'tambah_anggota'</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$nomor</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'nomor_anggota'</span><span class="p">]);</span>
+    <span class="nv">$nama</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'nama'</span><span class="p">]);</span>
+    <span class="nv">$jk</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'jenis_kelamin'</span><span class="p">]);</span>
+    <span class="nv">$alamat</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'alamat'</span><span class="p">]);</span>
+    <span class="nv">$hp</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'no_hp'</span><span class="p">]);</span>
+    <span class="nv">$tgl</span> <span class="o">=</span> <span class="nb">date</span><span class="p">(</span><span class="s1">'Y-m-d'</span><span class="p">);</span>
+    <span class="nv">$auto_user</span> <span class="o">=</span> <span class="nb">strtolower</span><span class="p">(</span><span class="nb">str_replace</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="nv">$nomor</span><span class="p">));</span> 
+    <span class="nv">$auto_pass</span> <span class="o">=</span> <span class="s1">'123456'</span><span class="p">;</span> 
+
+    <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"INSERT INTO anggota (nomor_anggota, nama, jenis_kelamin, alamat, no_hp, tanggal_daftar, username, password, status) VALUES ('</span><span class="si">$nomor</span><span class="s2">', '</span><span class="si">$nama</span><span class="s2">', '</span><span class="si">$jk</span><span class="s2">', '</span><span class="si">$alamat</span><span class="s2">', '</span><span class="si">$hp</span><span class="s2">', '</span><span class="si">$tgl</span><span class="s2">', '</span><span class="si">$auto_user</span><span class="s2">', '</span><span class="si">$auto_pass</span><span class="s2">', 'Aktif')"</span><span class="p">);</span>
+    <span class="nb">header</span><span class="p">(</span><span class="s2">"Location: keanggotaan.php"</span><span class="p">);</span> <span class="k">exit</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// PROSES EDIT ANGGOTA (TERMASUK USERNAME &amp; PASSWORD)</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'edit_anggota'</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$id</span> <span class="o">=</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'id_anggota'</span><span class="p">];</span>
+    <span class="nv">$nomor</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'nomor_anggota'</span><span class="p">]);</span>
+    <span class="nv">$nama</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'nama'</span><span class="p">]);</span>
+    <span class="nv">$jk</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'jenis_kelamin'</span><span class="p">]);</span>
+    <span class="nv">$alamat</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'alamat'</span><span class="p">]);</span>
+    <span class="nv">$hp</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'no_hp'</span><span class="p">]);</span>
+    <span class="nv">$username</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'username'</span><span class="p">]);</span>
+    <span class="nv">$password</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]);</span>
+
+    <span class="c1">// Cek apakah nomor anggota dipakai anggota lain</span>
+    <span class="nv">$cek_nomor</span> <span class="o">=</span> <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"SELECT id_anggota FROM anggota WHERE nomor_anggota='</span><span class="si">$nomor</span><span class="s2">' AND id_anggota != </span><span class="si">$id</span><span class="s2">"</span><span class="p">);</span>
+    <span class="c1">// Cek apakah username dipakai anggota lain</span>
+    <span class="nv">$cek_user</span> <span class="o">=</span> <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"SELECT id_anggota FROM anggota WHERE username='</span><span class="si">$username</span><span class="s2">' AND id_anggota != </span><span class="si">$id</span><span class="s2">"</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_num_rows</span><span class="p">(</span><span class="nv">$cek_nomor</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">"&lt;script&gt;alert('Gagal! Nomor Anggota </span><span class="si">$nomor</span><span class="s2"> sudah digunakan anggota lain.');&lt;/script&gt;"</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nx">mysqli_num_rows</span><span class="p">(</span><span class="nv">$cek_user</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">"&lt;script&gt;alert('Gagal! Username </span><span class="si">$username</span><span class="s2"> sudah digunakan anggota lain.');&lt;/script&gt;"</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// Jika kolom password dikosongkan, pertahankan password lama</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$password</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$query_edit</span> <span class="o">=</span> <span class="s2">"UPDATE anggota SET </span>
+<span class="s2">                nomor_anggota='</span><span class="si">$nomor</span><span class="s2">', </span>
+<span class="s2">                nama='</span><span class="si">$nama</span><span class="s2">', </span>
+<span class="s2">                jenis_kelamin='</span><span class="si">$jk</span><span class="s2">', </span>
+<span class="s2">                alamat='</span><span class="si">$alamat</span><span class="s2">', </span>
+<span class="s2">                no_hp='</span><span class="si">$hp</span><span class="s2">', </span>
+<span class="s2">                username='</span><span class="si">$username</span><span class="s2">', </span>
+<span class="s2">                password='</span><span class="si">$password</span><span class="s2">' </span>
+<span class="s2">                WHERE id_anggota=</span><span class="si">$id</span><span class="s2">"</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$query_edit</span> <span class="o">=</span> <span class="s2">"UPDATE anggota SET </span>
+<span class="s2">                nomor_anggota='</span><span class="si">$nomor</span><span class="s2">', </span>
+<span class="s2">                nama='</span><span class="si">$nama</span><span class="s2">', </span>
+<span class="s2">                jenis_kelamin='</span><span class="si">$jk</span><span class="s2">', </span>
+<span class="s2">                alamat='</span><span class="si">$alamat</span><span class="s2">', </span>
+<span class="s2">                no_hp='</span><span class="si">$hp</span><span class="s2">', </span>
+<span class="s2">                username='</span><span class="si">$username</span><span class="s2">' </span>
+<span class="s2">                WHERE id_anggota=</span><span class="si">$id</span><span class="s2">"</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$query_edit</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nb">header</span><span class="p">(</span><span class="s2">"Location: keanggotaan.php"</span><span class="p">);</span> <span class="k">exit</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">echo</span> <span class="s2">"&lt;script&gt;alert('Terjadi kesalahan saat mengupdate data.');&lt;/script&gt;"</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// PROSES HAPUS ANGGOTA AKTIF</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'hapus'</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$id</span> <span class="o">=</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'hapus'</span><span class="p">];</span>
+    <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"DELETE FROM anggota WHERE id_anggota=</span><span class="si">$id</span><span class="s2">"</span><span class="p">);</span>
+    <span class="nb">header</span><span class="p">(</span><span class="s2">"Location: keanggotaan.php"</span><span class="p">);</span> <span class="k">exit</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Ambil Data</span>
+<span class="nv">$data_pending</span> <span class="o">=</span> <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"SELECT * FROM anggota WHERE status='Pending' ORDER BY id_anggota ASC"</span><span class="p">);</span>
+<span class="nv">$data_aktif</span> <span class="o">=</span> <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"SELECT * FROM anggota WHERE status='Aktif' ORDER BY id_anggota DESC"</span><span class="p">);</span>
+<span class="cp">?&gt;</span>
+<span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html lang="id"&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">    &lt;meta charset="UTF-8"&gt;</span>
+<span class="x">    &lt;title&gt;Keanggotaan - Koriko Library&lt;/title&gt;</span>
+<span class="x">    &lt;link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&amp;display=swap" rel="stylesheet"&gt;</span>
+<span class="x">    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"&gt;</span>
+<span class="x">    &lt;style&gt;</span>
+<span class="x">        * { box-sizing: border-box; margin: 0; padding: 0; }</span>
+<span class="x">        body { font-family: 'Quicksand', sans-serif; background-color: #F4F6F9; display: flex; height: 100vh; overflow: hidden; }</span>
+<span class="x">        .sidebar { width: 260px; background: #1A252F; color: white; display: flex; flex-direction: column; }</span>
+<span class="x">        .sidebar-brand { padding: 25px 20px; font-weight: 700; font-size: 20px; color: #D63344; border-bottom: 1px solid rgba(255,255,255,0.05); }</span>
+<span class="x">        .sidebar-menu { list-style: none; padding: 15px 0; flex: 1; }</span>
+<span class="x">        .sidebar-menu li a { display: flex; align-items: center; gap: 15px; padding: 15px 25px; color: #BDC3C7; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; border-left: 4px solid transparent; }</span>
+<span class="x">        .sidebar-menu li a:hover, .sidebar-menu li a.active { background: rgba(214,51,68,0.1); color: #D63344; border-left: 4px solid #D63344; }</span>
+<span class="x">        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 30px; }</span>
+<span class="x">        </span>
+<span class="x">        .page-title { margin-bottom: 25px; color: #2C3E50; font-size: 24px; display: flex; align-items: center; gap: 10px; }</span>
+<span class="x">        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 25px; border: 1px solid #E5E7EB; }</span>
+<span class="x">        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }</span>
+<span class="x">        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 13px; color: #555; }</span>
+<span class="x">        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #E5E7EB; border-radius: 10px; font-family: 'Quicksand', sans-serif; }</span>
+<span class="x">        .btn { background: #2C3E50; color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: 700; cursor: pointer; }</span>
+<span class="x">        </span>
+<span class="x">        table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; border: 1px solid #E5E7EB; }</span>
+<span class="x">        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #E5E7EB; font-size: 14px; vertical-align: middle; }</span>
+<span class="x">        th { background: #F8F9FA; color: #555; font-weight: 700; font-size: 12px; }</span>
+<span class="x">        </span>
+<span class="x">        .aksi-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }</span>
+<span class="x">        .btn-print-card { background: #E3F2FD; color: #1E88E5; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 12px; }</span>
+<span class="x">        .btn-edit { background: #FFF8E1; color: #F57C00; padding: 8px 12px; border-radius: 8px; border: none; font-weight: 700; font-size: 12px; cursor: pointer; font-family: 'Quicksand', sans-serif; }</span>
+<span class="x">        .btn-hapus { background: #FFEBEE; color: #E53935; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 12px; }</span>
+<span class="x">        </span>
+<span class="x">        /* Desain Khusus Pending */</span>
+<span class="x">        .alert-pending { background: #FFF3E0; color: #FB8C00; padding: 20px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid #FB8C00; }</span>
+<span class="x">        .form-acc { display: flex; gap: 8px; align-items: center; }</span>
+<span class="x">        .input-nomor { padding: 8px 12px; border: 2px solid #FB8C00; border-radius: 8px; font-family: 'Quicksand', sans-serif; font-size: 13px; width: 120px; outline:none;}</span>
+<span class="x">        .btn-acc { background: #43A047; color: white; padding: 8px 15px; border-radius: 8px; border: none; font-weight: 700; font-size: 12px; cursor:pointer; }</span>
+<span class="x">        .btn-tolak { background: #E53935; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 12px; }</span>
+
+<span class="x">        /* Modal Edit */</span>
+<span class="x">        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; justify-content: center; align-items: center; padding: 20px; }</span>
+<span class="x">        .modal-overlay.show { display: flex; }</span>
+<span class="x">        .modal-box { background: white; width: 100%; max-width: 600px; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }</span>
+<span class="x">        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #E5E7EB; }</span>
+<span class="x">        .modal-header h3 { font-size: 18px; color: #2C3E50; }</span>
+<span class="x">        .modal-close { background: none; border: none; font-size: 20px; color: #888; cursor: pointer; }</span>
+<span class="x">        .akun-box { background: #F8F9FA; border: 1px dashed #CBD5E1; border-radius: 10px; padding: 15px; margin-top: 15px; }</span>
+<span class="x">        .akun-box-title { font-size: 13px; font-weight: 700; color: #D63344; margin-bottom: 12px; }</span>
+<span class="x">        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }</span>
+<span class="x">        .btn-cancel { background: #E5E7EB; color: #374151; border: none; padding: 11px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: 'Quicksand', sans-serif; }</span>
+<span class="x">        .btn-save { background: #D63344; color: white; border: none; padding: 11px 22px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: 'Quicksand', sans-serif; }</span>
+<span class="x">    &lt;/style&gt;</span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+<span class="x">    &lt;div class="sidebar"&gt;</span>
+<span class="x">        &lt;div class="sidebar-brand"&gt;&lt;i class="fas fa-book-open"&gt;&lt;/i&gt; KorikoAdmin&lt;/div&gt;</span>
+<span class="x">        &lt;ul class="sidebar-menu"&gt;</span>
+<span class="x">            &lt;li&gt;&lt;a href="dashboard.php"&gt;&lt;i class="fas fa-chart-pie"&gt;&lt;/i&gt; Dasbor Admin&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">            &lt;li&gt;&lt;a href="bibliografi.php"&gt;&lt;i class="fas fa-book"&gt;&lt;/i&gt; Data Buku&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">            &lt;li&gt;&lt;a href="keanggotaan.php" class="active"&gt;&lt;i class="fas fa-users"&gt;&lt;/i&gt; Keanggotaan&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">            &lt;li&gt;&lt;a href="tambah_admin.php"&gt;&lt;i class="fas fa-user-plus"&gt;&lt;/i&gt; Tambah Admin&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">            &lt;li&gt;&lt;a href="sirkulasi.php"&gt;&lt;i class="fas fa-exchange-alt"&gt;&lt;/i&gt; Sirkulasi&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">            &lt;li&gt;&lt;a href="opac.php" target="_blank"&gt;&lt;i class="fas fa-search"&gt;&lt;/i&gt; Buka OPAC Publik&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">            &lt;li&gt;&lt;a href="logout.php" style="margin-top: 50px; color: #FF8A80;"&gt;&lt;i class="fas fa-sign-out-alt"&gt;&lt;/i&gt; Keluar Sistem&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">        &lt;/ul&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+
+<span class="x">    &lt;div class="main-content"&gt;</span>
+<span class="x">        &lt;h2 class="page-title"&gt;&lt;i class="fas fa-users" style="color: #D63344;"&gt;&lt;/i&gt; Manajemen Keanggotaan&lt;/h2&gt;</span>
+
+<span class="x">        &lt;!-- NOTIF PENDAFTAR BARU --&gt;</span>
+<span class="x">        </span><span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_num_rows</span><span class="p">(</span><span class="nv">$data_pending</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">        &lt;div class="alert-pending"&gt;</span>
+<span class="x">            &lt;h3 style="margin-bottom: 5px;"&gt;&lt;i class="fas fa-bell"&gt;&lt;/i&gt; Ada Pendaftar Baru!&lt;/h3&gt;</span>
+<span class="x">            &lt;p&gt;Silakan berikan &lt;b&gt;Nomor Anggota&lt;/b&gt; yang sesuai (contoh: AG-001), lalu klik ACC.&lt;/p&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        &lt;div class="card" style="border: 2px solid #FB8C00;"&gt;</span>
+<span class="x">            &lt;table&gt;</span>
+<span class="x">                &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Nama Lengkap&lt;/th&gt;&lt;th&gt;Username&lt;/th&gt;&lt;th&gt;No. HP&lt;/th&gt;&lt;th&gt;Beri No. Anggota &amp; ACC&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</span>
+<span class="x">                &lt;tbody&gt;</span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">while</span><span class="p">(</span><span class="nv">$p</span> <span class="o">=</span> <span class="nx">mysqli_fetch_assoc</span><span class="p">(</span><span class="nv">$data_pending</span><span class="p">))</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">                    &lt;tr&gt;</span>
+<span class="x">                        &lt;td&gt;&lt;strong&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$p</span><span class="p">[</span><span class="s1">'nama'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">&lt;/strong&gt;&lt;/td&gt;</span>
+<span class="x">                        &lt;td&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$p</span><span class="p">[</span><span class="s1">'username'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                        &lt;td&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$p</span><span class="p">[</span><span class="s1">'no_hp'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                        &lt;td&gt;</span>
+<span class="x">                            &lt;!-- Form ACC dengan Input Nomor Anggota --&gt;</span>
+<span class="x">                            &lt;form action="" method="POST" class="form-acc" onsubmit="return confirm('Setujui akun ini?')"&gt;</span>
+<span class="x">                                &lt;input type="hidden" name="id_anggota" value="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$p</span><span class="p">[</span><span class="s1">'id_anggota'</span><span class="p">];</span> <span class="cp">?&gt;</span><span class="x">"&gt;</span>
+<span class="x">                                &lt;input type="text" name="nomor_anggota" class="input-nomor" placeholder="AG-001" required&gt;</span>
+<span class="x">                                &lt;button type="submit" name="acc_anggota" class="btn-acc"&gt;&lt;i class="fas fa-check"&gt;&lt;/i&gt; ACC&lt;/button&gt;</span>
+<span class="x">                                &lt;a href="keanggotaan.php?tolak=</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$p</span><span class="p">[</span><span class="s1">'id_anggota'</span><span class="p">];</span> <span class="cp">?&gt;</span><span class="x">" class="btn-tolak" onclick="return confirm('Tolak dan hapus pendaftar ini?')"&gt;&lt;i class="fas fa-times"&gt;&lt;/i&gt;&lt;/a&gt;</span>
+<span class="x">                            &lt;/form&gt;</span>
+<span class="x">                        &lt;/td&gt;</span>
+<span class="x">                    &lt;/tr&gt;</span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">endwhile</span><span class="p">;</span> <span class="cp">?&gt;</span>
+<span class="x">                &lt;/tbody&gt;</span>
+<span class="x">            &lt;/table&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">        </span><span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span>
+
+<span class="x">        &lt;!-- FORM TAMBAH MANUAL --&gt;</span>
+<span class="x">        &lt;div class="card"&gt;</span>
+<span class="x">            &lt;h3 style="margin-bottom: 15px; font-size: 16px;"&gt;Tambah Anggota Manual (Langsung Aktif)&lt;/h3&gt;</span>
+<span class="x">            &lt;form action="" method="POST"&gt;</span>
+<span class="x">                &lt;div class="form-grid"&gt;</span>
+<span class="x">                    &lt;div class="form-group"&gt;&lt;label&gt;Nomor Anggota *&lt;/label&gt;&lt;input type="text" name="nomor_anggota" required placeholder="AG-001"&gt;&lt;/div&gt;</span>
+<span class="x">                    &lt;div class="form-group"&gt;&lt;label&gt;Nama Lengkap *&lt;/label&gt;&lt;input type="text" name="nama" required placeholder="Nama"&gt;&lt;/div&gt;</span>
+<span class="x">                    &lt;div class="form-group"&gt;&lt;label&gt;Jenis Kelamin *&lt;/label&gt;&lt;select name="jenis_kelamin" required&gt;&lt;option value="L"&gt;Laki-laki&lt;/option&gt;&lt;option value="P"&gt;Perempuan&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;</span>
+<span class="x">                    &lt;div class="form-group"&gt;&lt;label&gt;No. HP&lt;/label&gt;&lt;input type="text" name="no_hp" placeholder="08xxx"&gt;&lt;/div&gt;</span>
+<span class="x">                &lt;/div&gt;</span>
+<span class="x">                &lt;div class="form-group" style="margin-top: 15px;"&gt;&lt;label&gt;Alamat&lt;/label&gt;&lt;textarea name="alamat" rows="2"&gt;&lt;/textarea&gt;&lt;/div&gt;</span>
+<span class="x">                &lt;button type="submit" name="tambah_anggota" class="btn"&gt;&lt;i class="fas fa-user-plus"&gt;&lt;/i&gt; Simpan (Auto Pass: 123456)&lt;/button&gt;</span>
+<span class="x">            &lt;/form&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        &lt;!-- DATA ANGGOTA AKTIF --&gt;</span>
+<span class="x">        &lt;table&gt;</span>
+<span class="x">            &lt;thead&gt;&lt;tr&gt;&lt;th&gt;No. Anggota&lt;/th&gt;&lt;th&gt;Nama Lengkap&lt;/th&gt;&lt;th&gt;Akun Login&lt;/th&gt;&lt;th&gt;Aksi&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</span>
+<span class="x">            &lt;tbody&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">while</span><span class="p">(</span><span class="nv">$row</span> <span class="o">=</span> <span class="nx">mysqli_fetch_assoc</span><span class="p">(</span><span class="nv">$data_aktif</span><span class="p">))</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">                &lt;tr&gt;</span>
+<span class="x">                    &lt;td&gt;&lt;strong&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="s1">'nomor_anggota'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">&lt;/strong&gt;&lt;/td&gt;</span>
+<span class="x">                    &lt;td&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="s1">'nama'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                    &lt;td&gt;&lt;span style="font-size:12px; color:#555;"&gt;User: &lt;b&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="s1">'username'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">&lt;/b&gt; | Pass: &lt;b&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">&lt;/b&gt;&lt;/span&gt;&lt;/td&gt;</span>
+<span class="x">                    &lt;td&gt;</span>
+<span class="x">                        &lt;div class="aksi-group"&gt;</span>
+<span class="x">                            &lt;button type="button" class="btn-edit"</span>
+<span class="x">                                data-id="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$row</span><span class="p">[</span><span class="s1">'id_anggota'</span><span class="p">];</span> <span class="cp">?&gt;</span><span class="x">"</span>
+<span class="x">                                data-nomor="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="s1">'nomor_anggota'</span><span class="p">],</span> <span class="nx">ENT_QUOTES</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">"</span>
+<span class="x">                                data-nama="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="s1">'nama'</span><span class="p">],</span> <span class="nx">ENT_QUOTES</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">"</span>
+<span class="x">                                data-jk="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="s1">'jenis_kelamin'</span><span class="p">],</span> <span class="nx">ENT_QUOTES</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">"</span>
+<span class="x">                                data-hp="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="s1">'no_hp'</span><span class="p">],</span> <span class="nx">ENT_QUOTES</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">"</span>
+<span class="x">                                data-alamat="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="s1">'alamat'</span><span class="p">],</span> <span class="nx">ENT_QUOTES</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">"</span>
+<span class="x">                                data-username="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="s1">'username'</span><span class="p">],</span> <span class="nx">ENT_QUOTES</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">"</span>
+<span class="x">                                data-password="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="s1">'password'</span><span class="p">],</span> <span class="nx">ENT_QUOTES</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">"</span>
+<span class="x">                                onclick="bukaModalEdit(this)"&gt;</span>
+<span class="x">                                &lt;i class="fas fa-edit"&gt;&lt;/i&gt; Edit</span>
+<span class="x">                            &lt;/button&gt;</span>
+<span class="x">                            &lt;a href="cetak_kartu.php?id=</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$row</span><span class="p">[</span><span class="s1">'id_anggota'</span><span class="p">];</span> <span class="cp">?&gt;</span><span class="x">" target="_blank" class="btn-print-card"&gt;&lt;i class="fas fa-id-card"&gt;&lt;/i&gt; Cetak Kartu&lt;/a&gt;</span>
+<span class="x">                            &lt;a href="keanggotaan.php?hapus=</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$row</span><span class="p">[</span><span class="s1">'id_anggota'</span><span class="p">];</span> <span class="cp">?&gt;</span><span class="x">" class="btn-hapus" onclick="return confirm('Hapus anggota ini?')"&gt;&lt;i class="fas fa-trash"&gt;&lt;/i&gt;&lt;/a&gt;</span>
+<span class="x">                        &lt;/div&gt;</span>
+<span class="x">                    &lt;/td&gt;</span>
+<span class="x">                &lt;/tr&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">endwhile</span><span class="p">;</span> <span class="cp">?&gt;</span>
+<span class="x">            &lt;/tbody&gt;</span>
+<span class="x">        &lt;/table&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+
+<span class="x">    &lt;!-- MODAL EDIT ANGGOTA --&gt;</span>
+<span class="x">    &lt;div id="modalEdit" class="modal-overlay" onclick="tutupModalBackdrop(event)"&gt;</span>
+<span class="x">        &lt;div class="modal-box"&gt;</span>
+<span class="x">            &lt;div class="modal-header"&gt;</span>
+<span class="x">                &lt;h3&gt;&lt;i class="fas fa-user-edit" style="color: #D63344;"&gt;&lt;/i&gt; Edit Data &amp; Akun Anggota&lt;/h3&gt;</span>
+<span class="x">                &lt;button type="button" class="modal-close" onclick="tutupModalEdit()"&gt;&amp;times;&lt;/button&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+<span class="x">            &lt;form action="" method="POST"&gt;</span>
+<span class="x">                &lt;input type="hidden" name="id_anggota" id="edit_id"&gt;</span>
+
+<span class="x">                &lt;div class="form-grid"&gt;</span>
+<span class="x">                    &lt;div class="form-group"&gt;</span>
+<span class="x">                        &lt;label&gt;Nomor Anggota *&lt;/label&gt;</span>
+<span class="x">                        &lt;input type="text" name="nomor_anggota" id="edit_nomor" required&gt;</span>
+<span class="x">                    &lt;/div&gt;</span>
+<span class="x">                    &lt;div class="form-group"&gt;</span>
+<span class="x">                        &lt;label&gt;Nama Lengkap *&lt;/label&gt;</span>
+<span class="x">                        &lt;input type="text" name="nama" id="edit_nama" required&gt;</span>
+<span class="x">                    &lt;/div&gt;</span>
+<span class="x">                    &lt;div class="form-group"&gt;</span>
+<span class="x">                        &lt;label&gt;Jenis Kelamin *&lt;/label&gt;</span>
+<span class="x">                        &lt;select name="jenis_kelamin" id="edit_jk" required&gt;</span>
+<span class="x">                            &lt;option value="L"&gt;Laki-laki&lt;/option&gt;</span>
+<span class="x">                            &lt;option value="P"&gt;Perempuan&lt;/option&gt;</span>
+<span class="x">                        &lt;/select&gt;</span>
+<span class="x">                    &lt;/div&gt;</span>
+<span class="x">                    &lt;div class="form-group"&gt;</span>
+<span class="x">                        &lt;label&gt;No. HP&lt;/label&gt;</span>
+<span class="x">                        &lt;input type="text" name="no_hp" id="edit_hp"&gt;</span>
+<span class="x">                    &lt;/div&gt;</span>
+<span class="x">                &lt;/div&gt;</span>
+
+<span class="x">                &lt;div class="form-group" style="margin-top: 15px;"&gt;</span>
+<span class="x">                    &lt;label&gt;Alamat&lt;/label&gt;</span>
+<span class="x">                    &lt;textarea name="alamat" id="edit_alamat" rows="2"&gt;&lt;/textarea&gt;</span>
+<span class="x">                &lt;/div&gt;</span>
+
+<span class="x">                &lt;div class="akun-box"&gt;</span>
+<span class="x">                    &lt;div class="akun-box-title"&gt;&lt;i class="fas fa-key"&gt;&lt;/i&gt; Pengaturan Akun Login Pengguna&lt;/div&gt;</span>
+<span class="x">                    &lt;div class="form-grid"&gt;</span>
+<span class="x">                        &lt;div class="form-group"&gt;</span>
+<span class="x">                            &lt;label&gt;Username *&lt;/label&gt;</span>
+<span class="x">                            &lt;input type="text" name="username" id="edit_username" required&gt;</span>
+<span class="x">                        &lt;/div&gt;</span>
+<span class="x">                        &lt;div class="form-group"&gt;</span>
+<span class="x">                            &lt;label&gt;Password&lt;/label&gt;</span>
+<span class="x">                            &lt;input type="text" name="password" id="edit_password" placeholder="Kosongkan jika tidak diubah"&gt;</span>
+<span class="x">                        &lt;/div&gt;</span>
+<span class="x">                    &lt;/div&gt;</span>
+<span class="x">                &lt;/div&gt;</span>
+
+<span class="x">                &lt;div class="modal-footer"&gt;</span>
+<span class="x">                    &lt;button type="button" class="btn-cancel" onclick="tutupModalEdit()"&gt;Batal&lt;/button&gt;</span>
+<span class="x">                    &lt;button type="submit" name="edit_anggota" class="btn-save"&gt;&lt;i class="fas fa-save"&gt;&lt;/i&gt; Simpan Perubahan&lt;/button&gt;</span>
+<span class="x">                &lt;/div&gt;</span>
+<span class="x">            &lt;/form&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+
+<span class="x">    &lt;script&gt;</span>
+<span class="x">        function bukaModalEdit(btn) {</span>
+<span class="x">            document.getElementById('edit_id').value = btn.getAttribute('data-id');</span>
+<span class="x">            document.getElementById('edit_nomor').value = btn.getAttribute('data-nomor');</span>
+<span class="x">            document.getElementById('edit_nama').value = btn.getAttribute('data-nama');</span>
+<span class="x">            document.getElementById('edit_jk').value = btn.getAttribute('data-jk');</span>
+<span class="x">            document.getElementById('edit_hp').value = btn.getAttribute('data-hp');</span>
+<span class="x">            document.getElementById('edit_alamat').value = btn.getAttribute('data-alamat');</span>
+<span class="x">            document.getElementById('edit_username').value = btn.getAttribute('data-username');</span>
+<span class="x">            document.getElementById('edit_password').value = btn.getAttribute('data-password');</span>
+
+<span class="x">            document.getElementById('modalEdit').classList.add('show');</span>
+<span class="x">        }</span>
+
+<span class="x">        function tutupModalEdit() {</span>
+<span class="x">            document.getElementById('modalEdit').classList.remove('show');</span>
+<span class="x">        }</span>
+
+<span class="x">        function tutupModalBackdrop(e) {</span>
+<span class="x">            if (e.target.id === 'modalEdit') {</span>
+<span class="x">                tutupModalEdit();</span>
+<span class="x">            }</span>
+<span class="x">        }</span>
+<span class="x">    &lt;/script&gt;</span>
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div></td></tr></table></div>
+</div></main>
+</body>
+</html>

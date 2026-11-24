@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cetak_kartu.php — proyek_perpustakaan</title>
+<style>
+:root{--bg:#fdfbf7;--fg:#2c3e50;--muted:#6b7785;--card:#fff;--line:#dce1e7;--accent:#d63344}
+@media (prefers-color-scheme: dark){:root{--bg:#16191d;--fg:#e6e9ed;--muted:#9aa5b1;--card:#1e2328;--line:#323a43;--accent:#ff6b7a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:20px max(16px,4vw);border-bottom:1px solid var(--line)}
+header a{color:var(--accent);text-decoration:none;font-weight:600}
+h1{margin:6px 0 0;font-size:1.25rem;word-break:break-all}
+.meta{color:var(--muted);font-size:.85rem}
+main{padding:20px max(16px,4vw)}
+.code{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow-x:auto}
+.hl{margin:0;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.hl table{border-collapse:collapse;width:100%}
+.hl td{padding:0 12px;vertical-align:top}
+.hl .linenos{color:var(--muted);user-select:none;text-align:right;border-right:1px solid var(--line);width:1%}
+.hl pre{margin:0;background:transparent !important}
+.hl{background:transparent !important}
+table.list{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+table.list th,table.list td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+table.list th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+table.list a{color:var(--fg);font-weight:600;text-decoration:none}
+table.list a:hover{color:var(--accent)}
+pre { line-height: 125%; }
+td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hl .hll { background-color: #ffffcc }
+.hl { background: #f0f0f0; }
+.hl .c { color: #60A0B0; font-style: italic } /* Comment */
+.hl .err { border: 1px solid #F00 } /* Error */
+.hl .k { color: #007020; font-weight: bold } /* Keyword */
+.hl .o { color: #666 } /* Operator */
+.hl .ch { color: #60A0B0; font-style: italic } /* Comment.Hashbang */
+.hl .cm { color: #60A0B0; font-style: italic } /* Comment.Multiline */
+.hl .cp { color: #007020 } /* Comment.Preproc */
+.hl .cpf { color: #60A0B0; font-style: italic } /* Comment.PreprocFile */
+.hl .c1 { color: #60A0B0; font-style: italic } /* Comment.Single */
+.hl .cs { color: #60A0B0; background-color: #FFF0F0 } /* Comment.Special */
+.hl .gd { color: #A00000 } /* Generic.Deleted */
+.hl .ge { font-style: italic } /* Generic.Emph */
+.hl .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.hl .gr { color: #F00 } /* Generic.Error */
+.hl .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.hl .gi { color: #00A000 } /* Generic.Inserted */
+.hl .go { color: #888 } /* Generic.Output */
+.hl .gp { color: #C65D09; font-weight: bold } /* Generic.Prompt */
+.hl .gs { font-weight: bold } /* Generic.Strong */
+.hl .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.hl .gt { color: #04D } /* Generic.Traceback */
+.hl .kc { color: #007020; font-weight: bold } /* Keyword.Constant */
+.hl .kd { color: #007020; font-weight: bold } /* Keyword.Declaration */
+.hl .kn { color: #007020; font-weight: bold } /* Keyword.Namespace */
+.hl .kp { color: #007020 } /* Keyword.Pseudo */
+.hl .kr { color: #007020; font-weight: bold } /* Keyword.Reserved */
+.hl .kt { color: #902000 } /* Keyword.Type */
+.hl .m { color: #40A070 } /* Literal.Number */
+.hl .s { color: #4070A0 } /* Literal.String */
+.hl .na { color: #4070A0 } /* Name.Attribute */
+.hl .nb { color: #007020 } /* Name.Builtin */
+.hl .nc { color: #0E84B5; font-weight: bold } /* Name.Class */
+.hl .no { color: #60ADD5 } /* Name.Constant */
+.hl .nd { color: #555; font-weight: bold } /* Name.Decorator */
+.hl .ni { color: #D55537; font-weight: bold } /* Name.Entity */
+.hl .ne { color: #007020 } /* Name.Exception */
+.hl .nf { color: #06287E } /* Name.Function */
+.hl .nl { color: #002070; font-weight: bold } /* Name.Label */
+.hl .nn { color: #0E84B5; font-weight: bold } /* Name.Namespace */
+.hl .nt { color: #062873; font-weight: bold } /* Name.Tag */
+.hl .nv { color: #BB60D5 } /* Name.Variable */
+.hl .ow { color: #007020; font-weight: bold } /* Operator.Word */
+.hl .w { color: #BBB } /* Text.Whitespace */
+.hl .mb { color: #40A070 } /* Literal.Number.Bin */
+.hl .mf { color: #40A070 } /* Literal.Number.Float */
+.hl .mh { color: #40A070 } /* Literal.Number.Hex */
+.hl .mi { color: #40A070 } /* Literal.Number.Integer */
+.hl .mo { color: #40A070 } /* Literal.Number.Oct */
+.hl .sa { color: #4070A0 } /* Literal.String.Affix */
+.hl .sb { color: #4070A0 } /* Literal.String.Backtick */
+.hl .sc { color: #4070A0 } /* Literal.String.Char */
+.hl .dl { color: #4070A0 } /* Literal.String.Delimiter */
+.hl .sd { color: #4070A0; font-style: italic } /* Literal.String.Doc */
+.hl .s2 { color: #4070A0 } /* Literal.String.Double */
+.hl .se { color: #4070A0; font-weight: bold } /* Literal.String.Escape */
+.hl .sh { color: #4070A0 } /* Literal.String.Heredoc */
+.hl .si { color: #70A0D0; font-style: italic } /* Literal.String.Interpol */
+.hl .sx { color: #C65D09 } /* Literal.String.Other */
+.hl .sr { color: #235388 } /* Literal.String.Regex */
+.hl .s1 { color: #4070A0 } /* Literal.String.Single */
+.hl .ss { color: #517918 } /* Literal.String.Symbol */
+.hl .bp { color: #007020 } /* Name.Builtin.Pseudo */
+.hl .fm { color: #06287E } /* Name.Function.Magic */
+.hl .vc { color: #BB60D5 } /* Name.Variable.Class */
+.hl .vg { color: #BB60D5 } /* Name.Variable.Global */
+.hl .vi { color: #BB60D5 } /* Name.Variable.Instance */
+.hl .vm { color: #BB60D5 } /* Name.Variable.Magic */
+.hl .il { color: #40A070 } /* Literal.Number.Integer.Long */
+@media (prefers-color-scheme: dark){pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hl .hll { background-color: #49483e }
+.hl { background: #272822; color: #F8F8F2 }
+.hl .c { color: #959077 } /* Comment */
+.hl .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.hl .esc { color: #F8F8F2 } /* Escape */
+.hl .g { color: #F8F8F2 } /* Generic */
+.hl .k { color: #66D9EF } /* Keyword */
+.hl .l { color: #AE81FF } /* Literal */
+.hl .n { color: #F8F8F2 } /* Name */
+.hl .o { color: #FF4689 } /* Operator */
+.hl .x { color: #F8F8F2 } /* Other */
+.hl .p { color: #F8F8F2 } /* Punctuation */
+.hl .ch { color: #959077 } /* Comment.Hashbang */
+.hl .cm { color: #959077 } /* Comment.Multiline */
+.hl .cp { color: #959077 } /* Comment.Preproc */
+.hl .cpf { color: #959077 } /* Comment.PreprocFile */
+.hl .c1 { color: #959077 } /* Comment.Single */
+.hl .cs { color: #959077 } /* Comment.Special */
+.hl .gd { color: #FF4689 } /* Generic.Deleted */
+.hl .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.hl .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.hl .gr { color: #FF4689 } /* Generic.Error */
+.hl .gh { color: #F8F8F2 } /* Generic.Heading */
+.hl .gi { color: #A6E22E } /* Generic.Inserted */
+.hl .go { color: #66D9EF } /* Generic.Output */
+.hl .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.hl .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.hl .gu { color: #959077 } /* Generic.Subheading */
+.hl .gt { color: #66D9EF } /* Generic.Traceback */
+.hl .kc { color: #66D9EF } /* Keyword.Constant */
+.hl .kd { color: #66D9EF } /* Keyword.Declaration */
+.hl .kn { color: #FF4689 } /* Keyword.Namespace */
+.hl .kp { color: #66D9EF } /* Keyword.Pseudo */
+.hl .kr { color: #66D9EF } /* Keyword.Reserved */
+.hl .kt { color: #66D9EF } /* Keyword.Type */
+.hl .ld { color: #E6DB74 } /* Literal.Date */
+.hl .m { color: #AE81FF } /* Literal.Number */
+.hl .s { color: #E6DB74 } /* Literal.String */
+.hl .na { color: #A6E22E } /* Name.Attribute */
+.hl .nb { color: #A6E22E } /* Name.Builtin */
+.hl .nc { color: #A6E22E } /* Name.Class */
+.hl .no { color: #66D9EF } /* Name.Constant */
+.hl .nd { color: #A6E22E } /* Name.Decorator */
+.hl .ni { color: #F8F8F2 } /* Name.Entity */
+.hl .ne { color: #A6E22E } /* Name.Exception */
+.hl .nf { color: #A6E22E } /* Name.Function */
+.hl .nl { color: #F8F8F2 } /* Name.Label */
+.hl .nn { color: #F8F8F2 } /* Name.Namespace */
+.hl .nx { color: #A6E22E } /* Name.Other */
+.hl .py { color: #F8F8F2 } /* Name.Property */
+.hl .nt { color: #FF4689 } /* Name.Tag */
+.hl .nv { color: #F8F8F2 } /* Name.Variable */
+.hl .ow { color: #FF4689 } /* Operator.Word */
+.hl .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.hl .w { color: #F8F8F2 } /* Text.Whitespace */
+.hl .mb { color: #AE81FF } /* Literal.Number.Bin */
+.hl .mf { color: #AE81FF } /* Literal.Number.Float */
+.hl .mh { color: #AE81FF } /* Literal.Number.Hex */
+.hl .mi { color: #AE81FF } /* Literal.Number.Integer */
+.hl .mo { color: #AE81FF } /* Literal.Number.Oct */
+.hl .sa { color: #E6DB74 } /* Literal.String.Affix */
+.hl .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.hl .sc { color: #E6DB74 } /* Literal.String.Char */
+.hl .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.hl .sd { color: #E6DB74 } /* Literal.String.Doc */
+.hl .s2 { color: #E6DB74 } /* Literal.String.Double */
+.hl .se { color: #AE81FF } /* Literal.String.Escape */
+.hl .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.hl .si { color: #E6DB74 } /* Literal.String.Interpol */
+.hl .sx { color: #E6DB74 } /* Literal.String.Other */
+.hl .sr { color: #E6DB74 } /* Literal.String.Regex */
+.hl .s1 { color: #E6DB74 } /* Literal.String.Single */
+.hl .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.hl .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.hl .fm { color: #A6E22E } /* Name.Function.Magic */
+.hl .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.hl .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.hl .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.hl .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.hl .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+.hl .linenos pre{color:var(--muted) !important}}
+</style>
+</head>
+<body>
+<header><a href="index.html">&larr; Daftar file</a><h1>cetak_kartu.php</h1><div class="meta">377 baris &middot; 10.8 KB</div></header><main><div class="code"><div class="hl"><table class="hltable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">  1</span>
+<span class="normal">  2</span>
+<span class="normal">  3</span>
+<span class="normal">  4</span>
+<span class="normal">  5</span>
+<span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span></pre></div></td><td class="code"><div><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">include</span> <span class="s1">'koneksi.php'</span><span class="p">;</span>
+<span class="nv">$id</span> <span class="o">=</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'id'</span><span class="p">])</span> <span class="o">?</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">'id'</span><span class="p">])</span> <span class="o">:</span> <span class="s1">''</span><span class="p">;</span>
+<span class="nv">$d</span> <span class="o">=</span> <span class="nx">mysqli_fetch_assoc</span><span class="p">(</span><span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"SELECT * FROM anggota WHERE id_anggota='</span><span class="si">$id</span><span class="s2">'"</span><span class="p">));</span>
+<span class="cp">?&gt;</span>
+<span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html lang="id"&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">    &lt;meta charset="UTF-8"&gt;</span>
+<span class="x">    &lt;title&gt;Cetak Kartu - </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$d</span><span class="p">[</span><span class="s1">'nama'</span><span class="p">]</span> <span class="o">??</span> <span class="s1">'Anggota'</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/title&gt;</span>
+<span class="x">    &lt;link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&amp;display=swap" rel="stylesheet"&gt;</span>
+<span class="x">    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"&gt;</span>
+<span class="x">    &lt;style&gt;</span>
+<span class="x">        * {</span>
+<span class="x">            box-sizing: border-box;</span>
+<span class="x">            margin: 0;</span>
+<span class="x">            padding: 0;</span>
+<span class="x">            -webkit-print-color-adjust: exact !important;</span>
+<span class="x">            print-color-adjust: exact !important;</span>
+<span class="x">        }</span>
+
+<span class="x">        body {</span>
+<span class="x">            font-family: 'Quicksand', sans-serif;</span>
+<span class="x">            min-height: 100vh;</span>
+<span class="x">            background:</span>
+<span class="x">                radial-gradient(circle at 20% 20%, rgba(214, 51, 68, 0.08), transparent 40%),</span>
+<span class="x">                #F1F5F9;</span>
+<span class="x">            display: flex;</span>
+<span class="x">            flex-direction: column;</span>
+<span class="x">            justify-content: center;</span>
+<span class="x">            align-items: center;</span>
+<span class="x">            padding: 28px 16px;</span>
+<span class="x">            color: #111827;</span>
+<span class="x">        }</span>
+
+<span class="x">        .kartu-wrapper {</span>
+<span class="x">            display: flex;</span>
+<span class="x">            flex-wrap: wrap;</span>
+<span class="x">            justify-content: center;</span>
+<span class="x">            align-items: center;</span>
+<span class="x">            gap: 28px;</span>
+<span class="x">        }</span>
+
+<span class="x">        .kartu {</span>
+<span class="x">            width: 360px;</span>
+<span class="x">            height: 220px;</span>
+<span class="x">            border-radius: 16px;</span>
+<span class="x">            position: relative;</span>
+<span class="x">            overflow: hidden;</span>
+<span class="x">            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.22);</span>
+<span class="x">            border: 2px solid #111827;</span>
+<span class="x">            display: flex;</span>
+<span class="x">            flex-direction: column;</span>
+<span class="x">            justify-content: space-between;</span>
+<span class="x">        }</span>
+
+<span class="x">        /* ================= SISI DEPAN (NAVY, MERAH, PUTIH, HITAM) ================= */</span>
+<span class="x">        .kartu-depan {</span>
+<span class="x">            background: linear-gradient(140deg, #0F1E36 0%, #162B4D 62%, #0B1320 100%);</span>
+<span class="x">            color: #FFFFFF;</span>
+<span class="x">            padding: 18px 20px;</span>
+<span class="x">        }</span>
+
+<span class="x">        /* Aksen pita merah diagonal di pojok kanan atas */</span>
+<span class="x">        .kartu-depan::before {</span>
+<span class="x">            content: '';</span>
+<span class="x">            position: absolute;</span>
+<span class="x">            top: 0;</span>
+<span class="x">            right: 0;</span>
+<span class="x">            width: 118px;</span>
+<span class="x">            height: 118px;</span>
+<span class="x">            background: #D63344;</span>
+<span class="x">            clip-path: polygon(0 0, 100% 0, 100% 100%);</span>
+<span class="x">            opacity: 0.95;</span>
+<span class="x">        }</span>
+
+<span class="x">        /* Garis aksen putih tipis di bawah pita merah */</span>
+<span class="x">        .kartu-depan::after {</span>
+<span class="x">            content: '';</span>
+<span class="x">            position: absolute;</span>
+<span class="x">            top: 0;</span>
+<span class="x">            right: 112px;</span>
+<span class="x">            width: 3px;</span>
+<span class="x">            height: 122px;</span>
+<span class="x">            background: rgba(255, 255, 255, 0.85);</span>
+<span class="x">            transform: rotate(-45deg);</span>
+<span class="x">            transform-origin: top right;</span>
+<span class="x">        }</span>
+
+<span class="x">        .card-header {</span>
+<span class="x">            position: relative;</span>
+<span class="x">            z-index: 2;</span>
+<span class="x">            display: flex;</span>
+<span class="x">            align-items: center;</span>
+<span class="x">            justify-content: space-between;</span>
+<span class="x">        }</span>
+
+<span class="x">        .brand-box {</span>
+<span class="x">            display: flex;</span>
+<span class="x">            align-items: center;</span>
+<span class="x">            gap: 9px;</span>
+<span class="x">        }</span>
+
+<span class="x">        .ribbon-badge {</span>
+<span class="x">            width: 30px;</span>
+<span class="x">            height: 30px;</span>
+<span class="x">            border-radius: 9px;</span>
+<span class="x">            background: #D63344;</span>
+<span class="x">            border: 1.5px solid #FFFFFF;</span>
+<span class="x">            color: #FFFFFF;</span>
+<span class="x">            display: inline-flex;</span>
+<span class="x">            align-items: center;</span>
+<span class="x">            justify-content: center;</span>
+<span class="x">            font-size: 14px;</span>
+<span class="x">            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);</span>
+<span class="x">        }</span>
+
+<span class="x">        .brand-title h2 {</span>
+<span class="x">            font-size: 15px;</span>
+<span class="x">            font-weight: 700;</span>
+<span class="x">            letter-spacing: 0.6px;</span>
+<span class="x">            color: #FFFFFF;</span>
+<span class="x">            line-height: 1.1;</span>
+<span class="x">        }</span>
+
+<span class="x">        .brand-title span {</span>
+<span class="x">            font-size: 10.5px;</span>
+<span class="x">            font-weight: 600;</span>
+<span class="x">            color: #FCA5A5;</span>
+<span class="x">            letter-spacing: 0.4px;</span>
+<span class="x">        }</span>
+
+<span class="x">        .sisi-tag {</span>
+<span class="x">            position: relative;</span>
+<span class="x">            z-index: 2;</span>
+<span class="x">            font-size: 9.5px;</span>
+<span class="x">            font-weight: 700;</span>
+<span class="x">            text-transform: uppercase;</span>
+<span class="x">            letter-spacing: 0.8px;</span>
+<span class="x">            color: #FFFFFF;</span>
+<span class="x">            background: rgba(17, 24, 39, 0.65);</span>
+<span class="x">            padding: 3px 8px;</span>
+<span class="x">            border-radius: 999px;</span>
+<span class="x">            border: 1px solid rgba(255, 255, 255, 0.35);</span>
+<span class="x">            margin-right: 26px;</span>
+<span class="x">        }</span>
+
+<span class="x">        .card-body-front {</span>
+<span class="x">            position: relative;</span>
+<span class="x">            z-index: 2;</span>
+<span class="x">            display: flex;</span>
+<span class="x">            justify-content: space-between;</span>
+<span class="x">            align-items: flex-end;</span>
+<span class="x">            gap: 12px;</span>
+<span class="x">        }</span>
+
+<span class="x">        .member-info {</span>
+<span class="x">            flex: 1;</span>
+<span class="x">            min-width: 0;</span>
+<span class="x">        }</span>
+
+<span class="x">        .member-label {</span>
+<span class="x">            font-size: 10px;</span>
+<span class="x">            font-weight: 700;</span>
+<span class="x">            text-transform: uppercase;</span>
+<span class="x">            letter-spacing: 1px;</span>
+<span class="x">            color: #CBD5E1;</span>
+<span class="x">            margin-bottom: 3px;</span>
+<span class="x">        }</span>
+
+<span class="x">        .nama {</span>
+<span class="x">            font-size: 19px;</span>
+<span class="x">            font-weight: 700;</span>
+<span class="x">            color: #FFFFFF;</span>
+<span class="x">            line-height: 1.2;</span>
+<span class="x">            margin-bottom: 8px;</span>
+<span class="x">            word-break: break-word;</span>
+<span class="x">        }</span>
+
+<span class="x">        .id-pill {</span>
+<span class="x">            display: inline-flex;</span>
+<span class="x">            align-items: center;</span>
+<span class="x">            gap: 6px;</span>
+<span class="x">            background: #111827;</span>
+<span class="x">            color: #FFFFFF;</span>
+<span class="x">            border: 1px solid rgba(255, 255, 255, 0.25);</span>
+<span class="x">            border-left: 4px solid #D63344;</span>
+<span class="x">            padding: 5px 10px;</span>
+<span class="x">            border-radius: 8px;</span>
+<span class="x">            font-size: 12px;</span>
+<span class="x">            font-weight: 700;</span>
+<span class="x">        }</span>
+
+<span class="x">        .qr {</span>
+<span class="x">            position: relative;</span>
+<span class="x">            z-index: 2;</span>
+<span class="x">            background: #FFFFFF;</span>
+<span class="x">            padding: 6px;</span>
+<span class="x">            border-radius: 10px;</span>
+<span class="x">            border: 2px solid #111827;</span>
+<span class="x">            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);</span>
+<span class="x">            flex-shrink: 0;</span>
+<span class="x">        }</span>
+
+<span class="x">        .qr img {</span>
+<span class="x">            display: block;</span>
+<span class="x">            width: 68px;</span>
+<span class="x">            height: 68px;</span>
+<span class="x">        }</span>
+
+<span class="x">        /* ================= SISI BELAKANG (PUTIH, HITAM, MERAH, NAVY) ================= */</span>
+<span class="x">        .kartu-belakang {</span>
+<span class="x">            background: #FFFFFF;</span>
+<span class="x">            color: #111827;</span>
+<span class="x">            padding: 0;</span>
+<span class="x">        }</span>
+
+<span class="x">        .back-top-stripe {</span>
+<span class="x">            height: 28px;</span>
+<span class="x">            background: #0F1E36;</span>
+<span class="x">            border-bottom: 3px solid #D63344;</span>
+<span class="x">            display: flex;</span>
+<span class="x">            align-items: center;</span>
+<span class="x">            justify-content: space-between;</span>
+<span class="x">            padding: 0 18px;</span>
+<span class="x">            color: #FFFFFF;</span>
+<span class="x">            font-size: 10.5px;</span>
+<span class="x">            font-weight: 700;</span>
+<span class="x">            letter-spacing: 0.6px;</span>
+<span class="x">        }</span>
+
+<span class="x">        .back-top-stripe .accent-red {</span>
+<span class="x">            color: #FF6B7B;</span>
+<span class="x">        }</span>
+
+<span class="x">        .back-content {</span>
+<span class="x">            flex: 1;</span>
+<span class="x">            padding: 14px 20px;</span>
+<span class="x">            display: flex;</span>
+<span class="x">            flex-direction: column;</span>
+<span class="x">            justify-content: space-between;</span>
+<span class="x">        }</span>
+
+<span class="x">        .back-title {</span>
+<span class="x">            font-size: 12px;</span>
+<span class="x">            font-weight: 700;</span>
+<span class="x">            text-transform: uppercase;</span>
+<span class="x">            letter-spacing: 0.7px;</span>
+<span class="x">            color: #0F1E36;</span>
+<span class="x">            border-bottom: 1.5px solid #E2E8F0;</span>
+<span class="x">            padding-bottom: 6px;</span>
+<span class="x">            margin-bottom: 8px;</span>
+<span class="x">            display: flex;</span>
+<span class="x">            align-items: center;</span>
+<span class="x">            gap: 6px;</span>
+<span class="x">        }</span>
+
+<span class="x">        .back-title i {</span>
+<span class="x">            color: #D63344;</span>
+<span class="x">        }</span>
+
+<span class="x">        .ketentuan-list {</span>
+<span class="x">            list-style: none;</span>
+<span class="x">            font-size: 11px;</span>
+<span class="x">            line-height: 1.48;</span>
+<span class="x">            color: #1F2937;</span>
+<span class="x">            font-weight: 600;</span>
+<span class="x">        }</span>
+
+<span class="x">        .ketentuan-list li {</span>
+<span class="x">            position: relative;</span>
+<span class="x">            padding-left: 14px;</span>
+<span class="x">            margin-bottom: 5px;</span>
+<span class="x">        }</span>
+
+<span class="x">        .ketentuan-list li::before {</span>
+<span class="x">            content: '';</span>
+<span class="x">            position: absolute;</span>
+<span class="x">            left: 0;</span>
+<span class="x">            top: 5px;</span>
+<span class="x">            width: 6px;</span>
+<span class="x">            height: 6px;</span>
+<span class="x">            border-radius: 2px;</span>
+<span class="x">            background: #D63344;</span>
+<span class="x">        }</span>
+
+<span class="x">        .back-footer {</span>
+<span class="x">            background: #111827;</span>
+<span class="x">            color: #FFFFFF;</span>
+<span class="x">            padding: 8px 18px;</span>
+<span class="x">            display: flex;</span>
+<span class="x">            justify-content: space-between;</span>
+<span class="x">            align-items: center;</span>
+<span class="x">            font-size: 10px;</span>
+<span class="x">            font-weight: 600;</span>
+<span class="x">            border-top: 2px solid #D63344;</span>
+<span class="x">        }</span>
+
+<span class="x">        .back-footer strong {</span>
+<span class="x">            color: #FF8A96;</span>
+<span class="x">        }</span>
+
+<span class="x">        @media print {</span>
+<span class="x">            body {</span>
+<span class="x">                background: #FFFFFF;</span>
+<span class="x">                padding: 0;</span>
+<span class="x">                min-height: auto;</span>
+<span class="x">            }</span>
+<span class="x">            .kartu-wrapper {</span>
+<span class="x">                gap: 18px;</span>
+<span class="x">            }</span>
+<span class="x">            .kartu {</span>
+<span class="x">                box-shadow: none;</span>
+<span class="x">                page-break-inside: avoid;</span>
+<span class="x">            }</span>
+<span class="x">        }</span>
+<span class="x">    &lt;/style&gt;</span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body onload="window.print()"&gt;</span>
+<span class="x">    &lt;div class="kartu-wrapper"&gt;</span>
+<span class="x">        &lt;!-- SISI DEPAN --&gt;</span>
+<span class="x">        &lt;div class="kartu kartu-depan"&gt;</span>
+<span class="x">            &lt;div class="card-header"&gt;</span>
+<span class="x">                &lt;div class="brand-box"&gt;</span>
+<span class="x">                    &lt;span class="ribbon-badge"&gt;&lt;i class="fas fa-ribbon"&gt;&lt;/i&gt;&lt;/span&gt;</span>
+<span class="x">                    &lt;div class="brand-title"&gt;</span>
+<span class="x">                        &lt;h2&gt;KORIKO LIBRARY&lt;/h2&gt;</span>
+<span class="x">                        &lt;span&gt;KARTU TANDA ANGGOTA&lt;/span&gt;</span>
+<span class="x">                    &lt;/div&gt;</span>
+<span class="x">                &lt;/div&gt;</span>
+<span class="x">                &lt;span class="sisi-tag"&gt;Depan&lt;/span&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">            &lt;div class="card-body-front"&gt;</span>
+<span class="x">                &lt;div class="member-info"&gt;</span>
+<span class="x">                    &lt;div class="member-label"&gt;Nama Anggota&lt;/div&gt;</span>
+<span class="x">                    &lt;div class="nama"&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$d</span><span class="p">[</span><span class="s1">'nama'</span><span class="p">]</span> <span class="o">??</span> <span class="s1">''</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/div&gt;</span>
+<span class="x">                    &lt;div class="id-pill"&gt;</span>
+<span class="x">                        &lt;i class="fas fa-id-card"&gt;&lt;/i&gt;</span>
+<span class="x">                        &lt;span&gt;ID: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$d</span><span class="p">[</span><span class="s1">'nomor_anggota'</span><span class="p">]</span> <span class="o">??</span> <span class="s1">'-'</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/span&gt;</span>
+<span class="x">                    &lt;/div&gt;</span>
+<span class="x">                &lt;/div&gt;</span>
+
+<span class="x">                &lt;div class="qr"&gt;</span>
+<span class="x">                    &lt;img src="https://api.qrserver.com/v1/create-qr-code/?size=70x70&amp;data=</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">urlencode</span><span class="p">(</span><span class="nv">$d</span><span class="p">[</span><span class="s1">'nomor_anggota'</span><span class="p">]</span> <span class="o">??</span> <span class="s1">''</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">" alt="QR"&gt;</span>
+<span class="x">                &lt;/div&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        &lt;!-- SISI BELAKANG --&gt;</span>
+<span class="x">        &lt;div class="kartu kartu-belakang"&gt;</span>
+<span class="x">            &lt;div class="back-top-stripe"&gt;</span>
+<span class="x">                &lt;span&gt;KORIKO LIBRARY&lt;/span&gt;</span>
+<span class="x">                &lt;span class="accent-red"&gt;&lt;i class="fas fa-ribbon"&gt;&lt;/i&gt; KEANGGOTAAN&lt;/span&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">            &lt;div class="back-content"&gt;</span>
+<span class="x">                &lt;div&gt;</span>
+<span class="x">                    &lt;div class="back-title"&gt;</span>
+<span class="x">                        &lt;i class="fas fa-info-circle"&gt;&lt;/i&gt; Informasi &amp;amp; Ketentuan Anggota</span>
+<span class="x">                    &lt;/div&gt;</span>
+<span class="x">                    &lt;ul class="ketentuan-list"&gt;</span>
+<span class="x">                        &lt;li&gt;Kartu ini merupakan identitas resmi anggota portal Koriko Library.&lt;/li&gt;</span>
+<span class="x">                        &lt;li&gt;Gunakan ID Anggota dan kode QR untuk keperluan verifikasi serta peminjaman koleksi.&lt;/li&gt;</span>
+<span class="x">                        &lt;li&gt;Harap menjaga kerahasiaan akun dan mengembalikan koleksi tepat waktu.&lt;/li&gt;</span>
+<span class="x">                    &lt;/ul&gt;</span>
+<span class="x">                &lt;/div&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">            &lt;div class="back-footer"&gt;</span>
+<span class="x">                &lt;span&gt;Layanan Digital 24 Jam&lt;/span&gt;</span>
+<span class="x">                &lt;strong&gt;Koriko Library&lt;/strong&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div></td></tr></table></div>
+</div></main>
+</body>
+</html>

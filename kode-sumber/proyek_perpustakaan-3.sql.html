@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>proyek_perpustakaan-3.sql — proyek_perpustakaan</title>
+<style>
+:root{--bg:#fdfbf7;--fg:#2c3e50;--muted:#6b7785;--card:#fff;--line:#dce1e7;--accent:#d63344}
+@media (prefers-color-scheme: dark){:root{--bg:#16191d;--fg:#e6e9ed;--muted:#9aa5b1;--card:#1e2328;--line:#323a43;--accent:#ff6b7a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:20px max(16px,4vw);border-bottom:1px solid var(--line)}
+header a{color:var(--accent);text-decoration:none;font-weight:600}
+h1{margin:6px 0 0;font-size:1.25rem;word-break:break-all}
+.meta{color:var(--muted);font-size:.85rem}
+main{padding:20px max(16px,4vw)}
+.code{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow-x:auto}
+.hl{margin:0;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.hl table{border-collapse:collapse;width:100%}
+.hl td{padding:0 12px;vertical-align:top}
+.hl .linenos{color:var(--muted);user-select:none;text-align:right;border-right:1px solid var(--line);width:1%}
+.hl pre{margin:0;background:transparent !important}
+.hl{background:transparent !important}
+table.list{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+table.list th,table.list td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+table.list th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+table.list a{color:var(--fg);font-weight:600;text-decoration:none}
+table.list a:hover{color:var(--accent)}
+pre { line-height: 125%; }
+td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hl .hll { background-color: #ffffcc }
+.hl { background: #f0f0f0; }
+.hl .c { color: #60A0B0; font-style: italic } /* Comment */
+.hl .err { border: 1px solid #F00 } /* Error */
+.hl .k { color: #007020; font-weight: bold } /* Keyword */
+.hl .o { color: #666 } /* Operator */
+.hl .ch { color: #60A0B0; font-style: italic } /* Comment.Hashbang */
+.hl .cm { color: #60A0B0; font-style: italic } /* Comment.Multiline */
+.hl .cp { color: #007020 } /* Comment.Preproc */
+.hl .cpf { color: #60A0B0; font-style: italic } /* Comment.PreprocFile */
+.hl .c1 { color: #60A0B0; font-style: italic } /* Comment.Single */
+.hl .cs { color: #60A0B0; background-color: #FFF0F0 } /* Comment.Special */
+.hl .gd { color: #A00000 } /* Generic.Deleted */
+.hl .ge { font-style: italic } /* Generic.Emph */
+.hl .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.hl .gr { color: #F00 } /* Generic.Error */
+.hl .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.hl .gi { color: #00A000 } /* Generic.Inserted */
+.hl .go { color: #888 } /* Generic.Output */
+.hl .gp { color: #C65D09; font-weight: bold } /* Generic.Prompt */
+.hl .gs { font-weight: bold } /* Generic.Strong */
+.hl .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.hl .gt { color: #04D } /* Generic.Traceback */
+.hl .kc { color: #007020; font-weight: bold } /* Keyword.Constant */
+.hl .kd { color: #007020; font-weight: bold } /* Keyword.Declaration */
+.hl .kn { color: #007020; font-weight: bold } /* Keyword.Namespace */
+.hl .kp { color: #007020 } /* Keyword.Pseudo */
+.hl .kr { color: #007020; font-weight: bold } /* Keyword.Reserved */
+.hl .kt { color: #902000 } /* Keyword.Type */
+.hl .m { color: #40A070 } /* Literal.Number */
+.hl .s { color: #4070A0 } /* Literal.String */
+.hl .na { color: #4070A0 } /* Name.Attribute */
+.hl .nb { color: #007020 } /* Name.Builtin */
+.hl .nc { color: #0E84B5; font-weight: bold } /* Name.Class */
+.hl .no { color: #60ADD5 } /* Name.Constant */
+.hl .nd { color: #555; font-weight: bold } /* Name.Decorator */
+.hl .ni { color: #D55537; font-weight: bold } /* Name.Entity */
+.hl .ne { color: #007020 } /* Name.Exception */
+.hl .nf { color: #06287E } /* Name.Function */
+.hl .nl { color: #002070; font-weight: bold } /* Name.Label */
+.hl .nn { color: #0E84B5; font-weight: bold } /* Name.Namespace */
+.hl .nt { color: #062873; font-weight: bold } /* Name.Tag */
+.hl .nv { color: #BB60D5 } /* Name.Variable */
+.hl .ow { color: #007020; font-weight: bold } /* Operator.Word */
+.hl .w { color: #BBB } /* Text.Whitespace */
+.hl .mb { color: #40A070 } /* Literal.Number.Bin */
+.hl .mf { color: #40A070 } /* Literal.Number.Float */
+.hl .mh { color: #40A070 } /* Literal.Number.Hex */
+.hl .mi { color: #40A070 } /* Literal.Number.Integer */
+.hl .mo { color: #40A070 } /* Literal.Number.Oct */
+.hl .sa { color: #4070A0 } /* Literal.String.Affix */
+.hl .sb { color: #4070A0 } /* Literal.String.Backtick */
+.hl .sc { color: #4070A0 } /* Literal.String.Char */
+.hl .dl { color: #4070A0 } /* Literal.String.Delimiter */
+.hl .sd { color: #4070A0; font-style: italic } /* Literal.String.Doc */
+.hl .s2 { color: #4070A0 } /* Literal.String.Double */
+.hl .se { color: #4070A0; font-weight: bold } /* Literal.String.Escape */
+.hl .sh { color: #4070A0 } /* Literal.String.Heredoc */
+.hl .si { color: #70A0D0; font-style: italic } /* Literal.String.Interpol */
+.hl .sx { color: #C65D09 } /* Literal.String.Other */
+.hl .sr { color: #235388 } /* Literal.String.Regex */
+.hl .s1 { color: #4070A0 } /* Literal.String.Single */
+.hl .ss { color: #517918 } /* Literal.String.Symbol */
+.hl .bp { color: #007020 } /* Name.Builtin.Pseudo */
+.hl .fm { color: #06287E } /* Name.Function.Magic */
+.hl .vc { color: #BB60D5 } /* Name.Variable.Class */
+.hl .vg { color: #BB60D5 } /* Name.Variable.Global */
+.hl .vi { color: #BB60D5 } /* Name.Variable.Instance */
+.hl .vm { color: #BB60D5 } /* Name.Variable.Magic */
+.hl .il { color: #40A070 } /* Literal.Number.Integer.Long */
+@media (prefers-color-scheme: dark){pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hl .hll { background-color: #49483e }
+.hl { background: #272822; color: #F8F8F2 }
+.hl .c { color: #959077 } /* Comment */
+.hl .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.hl .esc { color: #F8F8F2 } /* Escape */
+.hl .g { color: #F8F8F2 } /* Generic */
+.hl .k { color: #66D9EF } /* Keyword */
+.hl .l { color: #AE81FF } /* Literal */
+.hl .n { color: #F8F8F2 } /* Name */
+.hl .o { color: #FF4689 } /* Operator */
+.hl .x { color: #F8F8F2 } /* Other */
+.hl .p { color: #F8F8F2 } /* Punctuation */
+.hl .ch { color: #959077 } /* Comment.Hashbang */
+.hl .cm { color: #959077 } /* Comment.Multiline */
+.hl .cp { color: #959077 } /* Comment.Preproc */
+.hl .cpf { color: #959077 } /* Comment.PreprocFile */
+.hl .c1 { color: #959077 } /* Comment.Single */
+.hl .cs { color: #959077 } /* Comment.Special */
+.hl .gd { color: #FF4689 } /* Generic.Deleted */
+.hl .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.hl .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.hl .gr { color: #FF4689 } /* Generic.Error */
+.hl .gh { color: #F8F8F2 } /* Generic.Heading */
+.hl .gi { color: #A6E22E } /* Generic.Inserted */
+.hl .go { color: #66D9EF } /* Generic.Output */
+.hl .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.hl .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.hl .gu { color: #959077 } /* Generic.Subheading */
+.hl .gt { color: #66D9EF } /* Generic.Traceback */
+.hl .kc { color: #66D9EF } /* Keyword.Constant */
+.hl .kd { color: #66D9EF } /* Keyword.Declaration */
+.hl .kn { color: #FF4689 } /* Keyword.Namespace */
+.hl .kp { color: #66D9EF } /* Keyword.Pseudo */
+.hl .kr { color: #66D9EF } /* Keyword.Reserved */
+.hl .kt { color: #66D9EF } /* Keyword.Type */
+.hl .ld { color: #E6DB74 } /* Literal.Date */
+.hl .m { color: #AE81FF } /* Literal.Number */
+.hl .s { color: #E6DB74 } /* Literal.String */
+.hl .na { color: #A6E22E } /* Name.Attribute */
+.hl .nb { color: #A6E22E } /* Name.Builtin */
+.hl .nc { color: #A6E22E } /* Name.Class */
+.hl .no { color: #66D9EF } /* Name.Constant */
+.hl .nd { color: #A6E22E } /* Name.Decorator */
+.hl .ni { color: #F8F8F2 } /* Name.Entity */
+.hl .ne { color: #A6E22E } /* Name.Exception */
+.hl .nf { color: #A6E22E } /* Name.Function */
+.hl .nl { color: #F8F8F2 } /* Name.Label */
+.hl .nn { color: #F8F8F2 } /* Name.Namespace */
+.hl .nx { color: #A6E22E } /* Name.Other */
+.hl .py { color: #F8F8F2 } /* Name.Property */
+.hl .nt { color: #FF4689 } /* Name.Tag */
+.hl .nv { color: #F8F8F2 } /* Name.Variable */
+.hl .ow { color: #FF4689 } /* Operator.Word */
+.hl .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.hl .w { color: #F8F8F2 } /* Text.Whitespace */
+.hl .mb { color: #AE81FF } /* Literal.Number.Bin */
+.hl .mf { color: #AE81FF } /* Literal.Number.Float */
+.hl .mh { color: #AE81FF } /* Literal.Number.Hex */
+.hl .mi { color: #AE81FF } /* Literal.Number.Integer */
+.hl .mo { color: #AE81FF } /* Literal.Number.Oct */
+.hl .sa { color: #E6DB74 } /* Literal.String.Affix */
+.hl .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.hl .sc { color: #E6DB74 } /* Literal.String.Char */
+.hl .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.hl .sd { color: #E6DB74 } /* Literal.String.Doc */
+.hl .s2 { color: #E6DB74 } /* Literal.String.Double */
+.hl .se { color: #AE81FF } /* Literal.String.Escape */
+.hl .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.hl .si { color: #E6DB74 } /* Literal.String.Interpol */
+.hl .sx { color: #E6DB74 } /* Literal.String.Other */
+.hl .sr { color: #E6DB74 } /* Literal.String.Regex */
+.hl .s1 { color: #E6DB74 } /* Literal.String.Single */
+.hl .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.hl .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.hl .fm { color: #A6E22E } /* Name.Function.Magic */
+.hl .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.hl .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.hl .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.hl .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.hl .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+.hl .linenos pre{color:var(--muted) !important}}
+</style>
+</head>
+<body>
+<header><a href="index.html">&larr; Daftar file</a><h1>proyek_perpustakaan-3.sql</h1><div class="meta">232 baris &middot; 9.1 KB</div></header><main><div class="code"><div class="hl"><table class="hltable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">  1</span>
+<span class="normal">  2</span>
+<span class="normal">  3</span>
+<span class="normal">  4</span>
+<span class="normal">  5</span>
+<span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span></pre></div></td><td class="code"><div><pre><span></span><span class="c1">-- phpMyAdmin SQL Dump</span>
+<span class="c1">-- version 5.2.1</span>
+<span class="c1">-- https://www.phpmyadmin.net/</span>
+<span class="c1">--</span>
+<span class="c1">-- Host: localhost</span>
+<span class="c1">-- Waktu pembuatan: 23 Nov 2026 pada 07.01</span>
+<span class="c1">-- Versi server: 10.4.28-MariaDB</span>
+<span class="c1">-- Versi PHP: 8.2.4</span>
+
+<span class="k">SET</span><span class="w"> </span><span class="n">SQL_MODE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"NO_AUTO_VALUE_ON_ZERO"</span><span class="p">;</span>
+<span class="k">START</span><span class="w"> </span><span class="k">TRANSACTION</span><span class="p">;</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">time_zone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"+00:00"</span><span class="p">;</span>
+
+
+<span class="cm">/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */</span><span class="p">;</span>
+<span class="cm">/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */</span><span class="p">;</span>
+<span class="cm">/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */</span><span class="p">;</span>
+<span class="cm">/*!40101 SET NAMES utf8mb4 */</span><span class="p">;</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Database: `proyek_perpustakaan`</span>
+<span class="c1">--</span>
+
+<span class="c1">-- --------------------------------------------------------</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Struktur dari tabel `admin`</span>
+<span class="c1">--</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="k">admin</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">`</span><span class="n">id_admin</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">username</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">password</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">nama_lengkap</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="k">role</span><span class="o">`</span><span class="w"> </span><span class="n">enum</span><span class="p">(</span><span class="s1">'admin'</span><span class="p">,</span><span class="s1">'user'</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'admin'</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_general_ci</span><span class="p">;</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Dumping data untuk tabel `admin`</span>
+<span class="c1">--</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">`</span><span class="k">admin</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_admin</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">username</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">password</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">nama_lengkap</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="k">role</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'admin'</span><span class="p">,</span><span class="w"> </span><span class="s1">'********'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Administrator Perpus'</span><span class="p">,</span><span class="w"> </span><span class="s1">'admin'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'user'</span><span class="p">,</span><span class="w"> </span><span class="s1">'********'</span><span class="p">,</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span><span class="w"> </span><span class="s1">'user'</span><span class="p">);</span>
+
+<span class="c1">-- --------------------------------------------------------</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Struktur dari tabel `anggota`</span>
+<span class="c1">--</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">anggota</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">`</span><span class="n">id_anggota</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">nomor_anggota</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">nama</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">jenis_kelamin</span><span class="o">`</span><span class="w"> </span><span class="n">enum</span><span class="p">(</span><span class="s1">'L'</span><span class="p">,</span><span class="s1">'P'</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">alamat</span><span class="o">`</span><span class="w"> </span><span class="nb">text</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">no_hp</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">tanggal_daftar</span><span class="o">`</span><span class="w"> </span><span class="nb">date</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">username</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">password</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">status</span><span class="o">`</span><span class="w"> </span><span class="n">enum</span><span class="p">(</span><span class="s1">'Pending'</span><span class="p">,</span><span class="s1">'Aktif'</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'Aktif'</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_general_ci</span><span class="p">;</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Dumping data untuk tabel `anggota`</span>
+<span class="c1">--</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">`</span><span class="n">anggota</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_anggota</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">nomor_anggota</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">nama</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">jenis_kelamin</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">alamat</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">no_hp</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">tanggal_daftar</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">username</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">password</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">status</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'AG-0001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Afrian Bedari'</span><span class="p">,</span><span class="w"> </span><span class="s1">'L'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Meteseh'</span><span class="p">,</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span><span class="w"> </span><span class="s1">'2026-11-13'</span><span class="p">,</span><span class="w"> </span><span class="s1">'afrian'</span><span class="p">,</span><span class="w"> </span><span class="s1">'********'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktif'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'AG-0002'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Hizkia Barakh'</span><span class="p">,</span><span class="w"> </span><span class="s1">'L'</span><span class="p">,</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span><span class="w"> </span><span class="s1">'08'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2026-11-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'hizkia'</span><span class="p">,</span><span class="w"> </span><span class="s1">'********'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktif'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'AG-0003'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Dyna Hawa Oktavia'</span><span class="p">,</span><span class="w"> </span><span class="s1">'P'</span><span class="p">,</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span><span class="w"> </span><span class="s1">'08'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2026-11-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ag-0003'</span><span class="p">,</span><span class="w"> </span><span class="s1">'********'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktif'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'AG-0004'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Elsa Nugroho'</span><span class="p">,</span><span class="w"> </span><span class="s1">'P'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Ngaliyan'</span><span class="p">,</span><span class="w"> </span><span class="s1">'08754'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2026-11-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'elsa'</span><span class="p">,</span><span class="w"> </span><span class="s1">'********'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktif'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">'Ag-0005'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Nabella Khanza'</span><span class="p">,</span><span class="w"> </span><span class="s1">'P'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kalipancur'</span><span class="p">,</span><span class="w"> </span><span class="s1">'0812'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2026-11-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'bella'</span><span class="p">,</span><span class="w"> </span><span class="s1">'********'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktif'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">'AG-0006'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kikis'</span><span class="p">,</span><span class="w"> </span><span class="s1">'P'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Ghibli '</span><span class="p">,</span><span class="w"> </span><span class="s1">'0812345'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2026-11-23'</span><span class="p">,</span><span class="w"> </span><span class="s1">'kikis'</span><span class="p">,</span><span class="w"> </span><span class="s1">'********'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktif'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'AG-0007'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Qian'</span><span class="p">,</span><span class="w"> </span><span class="s1">'L'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Soul Land'</span><span class="p">,</span><span class="w"> </span><span class="s1">'00000'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2026-11-23'</span><span class="p">,</span><span class="w"> </span><span class="s1">'qian'</span><span class="p">,</span><span class="w"> </span><span class="s1">'********'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktif'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="s1">'AG-0008'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Tombo'</span><span class="p">,</span><span class="w"> </span><span class="s1">'L'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Ghibli'</span><span class="p">,</span><span class="w"> </span><span class="s1">'89898989'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2026-11-23'</span><span class="p">,</span><span class="w"> </span><span class="s1">'tombo'</span><span class="p">,</span><span class="w"> </span><span class="s1">'********'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktif'</span><span class="p">);</span>
+
+<span class="c1">-- --------------------------------------------------------</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Struktur dari tabel `bibliografi`</span>
+<span class="c1">--</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">bibliografi</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">`</span><span class="n">id_buku</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">kode_buku</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">judul</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">pengarang</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">kategori</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'Fiksi'</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">penerbit</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">tahun_terbit</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">isbn</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">nomor_panggil</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">stok</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">file_pdf</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">cover_buku</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_general_ci</span><span class="p">;</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Dumping data untuk tabel `bibliografi`</span>
+<span class="c1">--</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">`</span><span class="n">bibliografi</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_buku</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">kode_buku</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">judul</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">pengarang</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">kategori</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">penerbit</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">tahun_terbit</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">isbn</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">nomor_panggil</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">stok</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">file_pdf</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">cover_buku</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'BK-001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Laut Bercerita'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Leila S. Chudori'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Fiksi'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gramedia'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795154188_ebook.pdf'</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795154188_cover.jpg'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">'BK-002'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Apa yang Kita Pikirkan Ketika Kita Sendirian'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Desi Anwar'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Fiksi'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gramedia'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795157660_ebook.pdf'</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795157660_cover.jpg'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">'BK-003'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Herb Garden Guide'</span><span class="p">,</span><span class="w"> </span><span class="s1">'countryside'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Referensi'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gramedia'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795158263_ebook.pdf'</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795158263_cover.png'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'BK-004'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Jokowi Undercover'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Bambang Tri'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Fiksi'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gramedia'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795158639_ebook.pdf'</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795158639_cover.png'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="s1">'BK-005'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Master Gardener Manual'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Oklahoma State University Extension'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Referensi'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gramedia'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795159058_ebook.pdf'</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795159058_cover.png'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="s1">'BK-006'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Merayakan Kehilangan '</span><span class="p">,</span><span class="w"> </span><span class="s1">'Brian Khrisna'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Fiksi'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gramedia'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795159263_ebook.pdf'</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795159238_cover.jpg'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="s1">'BK-007'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Seporsi Mie Ayam Sebelum Mati '</span><span class="p">,</span><span class="w"> </span><span class="s1">'Brian Khrisna'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Fiksi'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gramedia'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795159552_ebook.pdf'</span><span class="p">,</span><span class="w"> </span><span class="s1">'1795159552_cover.png'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="s1">'BK-008'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Seed to Supper: A Beginner\'</span><span class="n">s</span><span class="w"> </span><span class="n">Guide</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">Gardening</span><span class="s1">', '</span><span class="n">Oregon</span><span class="w"> </span><span class="k">State</span><span class="w"> </span><span class="n">University</span><span class="w"> </span><span class="p">(</span><span class="n">OSU</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Oregon</span><span class="w"> </span><span class="n">Food</span><span class="w"> </span><span class="n">Bank</span><span class="w"> </span><span class="s1">', '</span><span class="n">Referensi</span><span class="s1">', '</span><span class="n">Gramedia</span><span class="s1">', NULL, NULL, NULL, 3, '</span><span class="mi">1795159864</span><span class="n">_ebook</span><span class="p">.</span><span class="n">pdf</span><span class="s1">', '</span><span class="mi">1795159864</span><span class="n">_cover</span><span class="p">.</span><span class="n">jpg</span><span class="s1">'),</span>
+<span class="s1">(14, '</span><span class="n">BK</span><span class="o">-</span><span class="mi">010</span><span class="s1">', '</span><span class="n">Vegetables</span><span class="p">,</span><span class="w"> </span><span class="n">Fruits</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Herbs</span><span class="w"> </span><span class="n">Book</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="n">Guide</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">Growing</span><span class="w"> </span><span class="k">Time</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Taste</span><span class="s1">', '</span><span class="n">Utah</span><span class="w"> </span><span class="k">State</span><span class="w"> </span><span class="n">University</span><span class="s1">', '</span><span class="n">Referensi</span><span class="s1">', '</span><span class="n">Gramedia</span><span class="s1">', NULL, NULL, NULL, 3, '</span><span class="mi">1795160539</span><span class="n">_ebook</span><span class="p">.</span><span class="n">pdf</span><span class="s1">', '</span><span class="mi">1795160539</span><span class="n">_cover</span><span class="p">.</span><span class="n">png</span><span class="s1">'),</span>
+<span class="s1">(15, '</span><span class="n">BK</span><span class="o">-</span><span class="mi">011</span><span class="s1">', '</span><span class="n">Nanti</span><span class="w"> </span><span class="n">Juga</span><span class="w"> </span><span class="n">Sembuh</span><span class="w"> </span><span class="n">Sendiri</span><span class="s1">', '</span><span class="n">Helobagas</span><span class="s1">', '</span><span class="n">Fiksi</span><span class="s1">', '</span><span class="n">Gradien</span><span class="w"> </span><span class="n">Mediatama</span><span class="s1">', NULL, NULL, NULL, 5, '</span><span class="mi">1795407171</span><span class="n">_ebook</span><span class="p">.</span><span class="n">pdf</span><span class="s1">', '</span><span class="mi">1795407171</span><span class="n">_cover</span><span class="p">.</span><span class="n">jpeg</span><span class="s1">'),</span>
+<span class="s1">(16, '</span><span class="n">BK</span><span class="o">-</span><span class="mi">012</span><span class="s1">', '</span><span class="n">Menghitung</span><span class="s1">', '</span><span class="n">Gay</span><span class="w"> </span><span class="n">Galsworthy</span><span class="s1">', '</span><span class="n">Anak</span><span class="o">-</span><span class="n">Anak</span><span class="s1">', '</span><span class="n">Bookbot</span><span class="s1">', NULL, NULL, NULL, 4, '</span><span class="mi">1795411481</span><span class="n">_ebook</span><span class="p">.</span><span class="n">pdf</span><span class="s1">', '</span><span class="mi">1795411481</span><span class="n">_cover</span><span class="p">.</span><span class="n">png</span><span class="s1">'),</span>
+<span class="s1">(17, '</span><span class="n">BK</span><span class="o">-</span><span class="mi">013</span><span class="s1">', '</span><span class="n">Di</span><span class="w"> </span><span class="n">Mana</span><span class="w"> </span><span class="n">Gogo</span><span class="o">?</span><span class="s1">', '</span><span class="n">Soumya</span><span class="w"> </span><span class="n">Menion</span><span class="s1">', '</span><span class="n">Anak</span><span class="o">-</span><span class="n">Anak</span><span class="s1">', '</span><span class="n">Bookbot</span><span class="s1">', NULL, NULL, NULL, 6, '</span><span class="mi">1795412228</span><span class="n">_ebook</span><span class="p">.</span><span class="n">pdf</span><span class="s1">', '</span><span class="mi">1795412228</span><span class="n">_cover</span><span class="p">.</span><span class="n">png</span><span class="s1">'),</span>
+<span class="s1">(18, '</span><span class="n">BK</span><span class="o">-</span><span class="mi">014</span><span class="s1">', '</span><span class="n">Peter</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">Wendy</span><span class="s1">', '</span><span class="n">J</span><span class="p">.</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="w"> </span><span class="n">Barrie</span><span class="s1">', '</span><span class="n">Fantasi</span><span class="s1">', '</span><span class="n">Hodder</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Stoughton</span><span class="s1">', NULL, NULL, NULL, 5, '</span><span class="mi">1795412616</span><span class="n">_ebook</span><span class="p">.</span><span class="n">pdf</span><span class="s1">', '</span><span class="mi">1795412616</span><span class="n">_cover</span><span class="p">.</span><span class="n">png</span><span class="s1">'),</span>
+<span class="s1">(19, '</span><span class="n">BK</span><span class="o">-</span><span class="mi">015</span><span class="s1">', '</span><span class="n">The</span><span class="w"> </span><span class="n">Merry</span><span class="w"> </span><span class="n">Adventures</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">Robin</span><span class="w"> </span><span class="n">Hood</span><span class="s1">', '</span><span class="n">Howard</span><span class="w"> </span><span class="n">Pyle</span><span class="s1">', '</span><span class="n">Fantasi</span><span class="s1">', '</span><span class="n">Planet</span><span class="w"> </span><span class="n">E</span><span class="o">-</span><span class="n">Book</span><span class="s1">', NULL, NULL, NULL, 7, '</span><span class="mi">1795412821</span><span class="n">_ebook</span><span class="p">.</span><span class="n">pdf</span><span class="s1">', '</span><span class="mi">1795412821</span><span class="n">_cover</span><span class="p">.</span><span class="n">png</span><span class="s1">');</span>
+
+<span class="s1">-- --------------------------------------------------------</span>
+
+<span class="s1">--</span>
+<span class="s1">-- Struktur dari tabel `sirkulasi`</span>
+<span class="s1">--</span>
+
+<span class="s1">CREATE TABLE `sirkulasi` (</span>
+<span class="s1">  `id_sirkulasi` int(11) NOT NULL,</span>
+<span class="s1">  `id_anggota` int(11) NOT NULL,</span>
+<span class="s1">  `id_buku` int(11) NOT NULL,</span>
+<span class="s1">  `tanggal_pinjam` date NOT NULL,</span>
+<span class="s1">  `tanggal_kembali_seharusnya` date NOT NULL,</span>
+<span class="s1">  `tanggal_dikembalikan` date DEFAULT NULL,</span>
+<span class="s1">  `status` varchar(30) NOT NULL DEFAULT '</span><span class="n">Menunggu</span><span class="s1">',</span>
+<span class="s1">  `denda` int(11) DEFAULT 0,</span>
+<span class="s1">  `alasan_tolak` text DEFAULT NULL</span>
+<span class="s1">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;</span>
+
+<span class="s1">--</span>
+<span class="s1">-- Dumping data untuk tabel `sirkulasi`</span>
+<span class="s1">--</span>
+
+<span class="s1">INSERT INTO `sirkulasi` (`id_sirkulasi`, `id_anggota`, `id_buku`, `tanggal_pinjam`, `tanggal_kembali_seharusnya`, `tanggal_dikembalikan`, `status`, `denda`, `alasan_tolak`) VALUES</span>
+<span class="s1">(4, 3, 5, '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">20</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">27</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">20</span><span class="s1">', '</span><span class="n">Kembali</span><span class="s1">', 0, NULL),</span>
+<span class="s1">(5, 3, 5, '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">20</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">27</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">20</span><span class="s1">', '</span><span class="n">Kembali</span><span class="s1">', 0, NULL),</span>
+<span class="s1">(6, 8, 5, '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">30</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="n">Kembali</span><span class="s1">', 0, NULL),</span>
+<span class="s1">(8, 8, 7, '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">30</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="n">Kembali</span><span class="s1">', 0, NULL),</span>
+<span class="s1">(10, 8, 7, '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">30</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="n">Kembali</span><span class="s1">', 0, NULL),</span>
+<span class="s1">(11, 8, 8, '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">30</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="n">Kembali</span><span class="s1">', 0, NULL),</span>
+<span class="s1">(14, 8, 5, '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">30</span><span class="s1">', NULL, '</span><span class="n">Ditolak</span><span class="s1">', 0, '</span><span class="k">limit</span><span class="w"> </span><span class="n">peminjaman</span><span class="w"> </span><span class="n">harian</span><span class="s1">'),</span>
+<span class="s1">(15, 7, 7, '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">30</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="n">Kembali</span><span class="s1">', 0, NULL),</span>
+<span class="s1">(16, 7, 9, '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">30</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="n">Kembali</span><span class="s1">', 0, NULL),</span>
+<span class="s1">(17, 7, 12, '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">23</span><span class="s1">', '</span><span class="mi">2026</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">30</span><span class="s1">', NULL, '</span><span class="n">Ditolak</span><span class="s1">', 0, '</span><span class="k">Limit</span><span class="w"> </span><span class="n">harian</span><span class="w"> </span><span class="n">telah</span><span class="w"> </span><span class="n">tercapai</span><span class="err">'</span><span class="p">);</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Indexes for dumped tables</span>
+<span class="c1">--</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Indeks untuk tabel `admin`</span>
+<span class="c1">--</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="k">admin</span><span class="o">`</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_admin</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">username</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">username</span><span class="o">`</span><span class="p">);</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Indeks untuk tabel `anggota`</span>
+<span class="c1">--</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">anggota</span><span class="o">`</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_anggota</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">nomor_anggota</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">nomor_anggota</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">username</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">username</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">nomor_anggota_2</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">nomor_anggota</span><span class="o">`</span><span class="p">);</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Indeks untuk tabel `bibliografi`</span>
+<span class="c1">--</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">bibliografi</span><span class="o">`</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_buku</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">kode_buku</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">kode_buku</span><span class="o">`</span><span class="p">);</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Indeks untuk tabel `sirkulasi`</span>
+<span class="c1">--</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">sirkulasi</span><span class="o">`</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_sirkulasi</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">id_anggota</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_anggota</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">id_buku</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_buku</span><span class="o">`</span><span class="p">);</span>
+
+<span class="c1">--</span>
+<span class="c1">-- AUTO_INCREMENT untuk tabel yang dibuang</span>
+<span class="c1">--</span>
+
+<span class="c1">--</span>
+<span class="c1">-- AUTO_INCREMENT untuk tabel `admin`</span>
+<span class="c1">--</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="k">admin</span><span class="o">`</span>
+<span class="w">  </span><span class="k">MODIFY</span><span class="w"> </span><span class="o">`</span><span class="n">id_admin</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>
+
+<span class="c1">--</span>
+<span class="c1">-- AUTO_INCREMENT untuk tabel `anggota`</span>
+<span class="c1">--</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">anggota</span><span class="o">`</span>
+<span class="w">  </span><span class="k">MODIFY</span><span class="w"> </span><span class="o">`</span><span class="n">id_anggota</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="c1">--</span>
+<span class="c1">-- AUTO_INCREMENT untuk tabel `bibliografi`</span>
+<span class="c1">--</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">bibliografi</span><span class="o">`</span>
+<span class="w">  </span><span class="k">MODIFY</span><span class="w"> </span><span class="o">`</span><span class="n">id_buku</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="o">=</span><span class="mi">20</span><span class="p">;</span>
+
+<span class="c1">--</span>
+<span class="c1">-- AUTO_INCREMENT untuk tabel `sirkulasi`</span>
+<span class="c1">--</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">sirkulasi</span><span class="o">`</span>
+<span class="w">  </span><span class="k">MODIFY</span><span class="w"> </span><span class="o">`</span><span class="n">id_sirkulasi</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="o">=</span><span class="mi">18</span><span class="p">;</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)</span>
+<span class="c1">--</span>
+
+<span class="c1">--</span>
+<span class="c1">-- Ketidakleluasaan untuk tabel `sirkulasi`</span>
+<span class="c1">--</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">sirkulasi</span><span class="o">`</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="o">`</span><span class="n">sirkulasi_ibfk_1</span><span class="o">`</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_anggota</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="o">`</span><span class="n">anggota</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_anggota</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="o">`</span><span class="n">sirkulasi_ibfk_2</span><span class="o">`</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_buku</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="o">`</span><span class="n">bibliografi</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id_buku</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span>
+<span class="k">COMMIT</span><span class="p">;</span>
+
+<span class="cm">/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */</span><span class="p">;</span>
+<span class="cm">/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */</span><span class="p">;</span>
+<span class="cm">/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */</span><span class="p">;</span>
+</pre></div></td></tr></table></div>
+</div></main>
+</body>
+</html>

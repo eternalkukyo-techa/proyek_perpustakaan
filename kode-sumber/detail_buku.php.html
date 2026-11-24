@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>detail_buku.php — proyek_perpustakaan</title>
+<style>
+:root{--bg:#fdfbf7;--fg:#2c3e50;--muted:#6b7785;--card:#fff;--line:#dce1e7;--accent:#d63344}
+@media (prefers-color-scheme: dark){:root{--bg:#16191d;--fg:#e6e9ed;--muted:#9aa5b1;--card:#1e2328;--line:#323a43;--accent:#ff6b7a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:20px max(16px,4vw);border-bottom:1px solid var(--line)}
+header a{color:var(--accent);text-decoration:none;font-weight:600}
+h1{margin:6px 0 0;font-size:1.25rem;word-break:break-all}
+.meta{color:var(--muted);font-size:.85rem}
+main{padding:20px max(16px,4vw)}
+.code{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow-x:auto}
+.hl{margin:0;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.hl table{border-collapse:collapse;width:100%}
+.hl td{padding:0 12px;vertical-align:top}
+.hl .linenos{color:var(--muted);user-select:none;text-align:right;border-right:1px solid var(--line);width:1%}
+.hl pre{margin:0;background:transparent !important}
+.hl{background:transparent !important}
+table.list{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+table.list th,table.list td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+table.list th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+table.list a{color:var(--fg);font-weight:600;text-decoration:none}
+table.list a:hover{color:var(--accent)}
+pre { line-height: 125%; }
+td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hl .hll { background-color: #ffffcc }
+.hl { background: #f0f0f0; }
+.hl .c { color: #60A0B0; font-style: italic } /* Comment */
+.hl .err { border: 1px solid #F00 } /* Error */
+.hl .k { color: #007020; font-weight: bold } /* Keyword */
+.hl .o { color: #666 } /* Operator */
+.hl .ch { color: #60A0B0; font-style: italic } /* Comment.Hashbang */
+.hl .cm { color: #60A0B0; font-style: italic } /* Comment.Multiline */
+.hl .cp { color: #007020 } /* Comment.Preproc */
+.hl .cpf { color: #60A0B0; font-style: italic } /* Comment.PreprocFile */
+.hl .c1 { color: #60A0B0; font-style: italic } /* Comment.Single */
+.hl .cs { color: #60A0B0; background-color: #FFF0F0 } /* Comment.Special */
+.hl .gd { color: #A00000 } /* Generic.Deleted */
+.hl .ge { font-style: italic } /* Generic.Emph */
+.hl .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.hl .gr { color: #F00 } /* Generic.Error */
+.hl .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.hl .gi { color: #00A000 } /* Generic.Inserted */
+.hl .go { color: #888 } /* Generic.Output */
+.hl .gp { color: #C65D09; font-weight: bold } /* Generic.Prompt */
+.hl .gs { font-weight: bold } /* Generic.Strong */
+.hl .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.hl .gt { color: #04D } /* Generic.Traceback */
+.hl .kc { color: #007020; font-weight: bold } /* Keyword.Constant */
+.hl .kd { color: #007020; font-weight: bold } /* Keyword.Declaration */
+.hl .kn { color: #007020; font-weight: bold } /* Keyword.Namespace */
+.hl .kp { color: #007020 } /* Keyword.Pseudo */
+.hl .kr { color: #007020; font-weight: bold } /* Keyword.Reserved */
+.hl .kt { color: #902000 } /* Keyword.Type */
+.hl .m { color: #40A070 } /* Literal.Number */
+.hl .s { color: #4070A0 } /* Literal.String */
+.hl .na { color: #4070A0 } /* Name.Attribute */
+.hl .nb { color: #007020 } /* Name.Builtin */
+.hl .nc { color: #0E84B5; font-weight: bold } /* Name.Class */
+.hl .no { color: #60ADD5 } /* Name.Constant */
+.hl .nd { color: #555; font-weight: bold } /* Name.Decorator */
+.hl .ni { color: #D55537; font-weight: bold } /* Name.Entity */
+.hl .ne { color: #007020 } /* Name.Exception */
+.hl .nf { color: #06287E } /* Name.Function */
+.hl .nl { color: #002070; font-weight: bold } /* Name.Label */
+.hl .nn { color: #0E84B5; font-weight: bold } /* Name.Namespace */
+.hl .nt { color: #062873; font-weight: bold } /* Name.Tag */
+.hl .nv { color: #BB60D5 } /* Name.Variable */
+.hl .ow { color: #007020; font-weight: bold } /* Operator.Word */
+.hl .w { color: #BBB } /* Text.Whitespace */
+.hl .mb { color: #40A070 } /* Literal.Number.Bin */
+.hl .mf { color: #40A070 } /* Literal.Number.Float */
+.hl .mh { color: #40A070 } /* Literal.Number.Hex */
+.hl .mi { color: #40A070 } /* Literal.Number.Integer */
+.hl .mo { color: #40A070 } /* Literal.Number.Oct */
+.hl .sa { color: #4070A0 } /* Literal.String.Affix */
+.hl .sb { color: #4070A0 } /* Literal.String.Backtick */
+.hl .sc { color: #4070A0 } /* Literal.String.Char */
+.hl .dl { color: #4070A0 } /* Literal.String.Delimiter */
+.hl .sd { color: #4070A0; font-style: italic } /* Literal.String.Doc */
+.hl .s2 { color: #4070A0 } /* Literal.String.Double */
+.hl .se { color: #4070A0; font-weight: bold } /* Literal.String.Escape */
+.hl .sh { color: #4070A0 } /* Literal.String.Heredoc */
+.hl .si { color: #70A0D0; font-style: italic } /* Literal.String.Interpol */
+.hl .sx { color: #C65D09 } /* Literal.String.Other */
+.hl .sr { color: #235388 } /* Literal.String.Regex */
+.hl .s1 { color: #4070A0 } /* Literal.String.Single */
+.hl .ss { color: #517918 } /* Literal.String.Symbol */
+.hl .bp { color: #007020 } /* Name.Builtin.Pseudo */
+.hl .fm { color: #06287E } /* Name.Function.Magic */
+.hl .vc { color: #BB60D5 } /* Name.Variable.Class */
+.hl .vg { color: #BB60D5 } /* Name.Variable.Global */
+.hl .vi { color: #BB60D5 } /* Name.Variable.Instance */
+.hl .vm { color: #BB60D5 } /* Name.Variable.Magic */
+.hl .il { color: #40A070 } /* Literal.Number.Integer.Long */
+@media (prefers-color-scheme: dark){pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hl .hll { background-color: #49483e }
+.hl { background: #272822; color: #F8F8F2 }
+.hl .c { color: #959077 } /* Comment */
+.hl .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.hl .esc { color: #F8F8F2 } /* Escape */
+.hl .g { color: #F8F8F2 } /* Generic */
+.hl .k { color: #66D9EF } /* Keyword */
+.hl .l { color: #AE81FF } /* Literal */
+.hl .n { color: #F8F8F2 } /* Name */
+.hl .o { color: #FF4689 } /* Operator */
+.hl .x { color: #F8F8F2 } /* Other */
+.hl .p { color: #F8F8F2 } /* Punctuation */
+.hl .ch { color: #959077 } /* Comment.Hashbang */
+.hl .cm { color: #959077 } /* Comment.Multiline */
+.hl .cp { color: #959077 } /* Comment.Preproc */
+.hl .cpf { color: #959077 } /* Comment.PreprocFile */
+.hl .c1 { color: #959077 } /* Comment.Single */
+.hl .cs { color: #959077 } /* Comment.Special */
+.hl .gd { color: #FF4689 } /* Generic.Deleted */
+.hl .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.hl .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.hl .gr { color: #FF4689 } /* Generic.Error */
+.hl .gh { color: #F8F8F2 } /* Generic.Heading */
+.hl .gi { color: #A6E22E } /* Generic.Inserted */
+.hl .go { color: #66D9EF } /* Generic.Output */
+.hl .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.hl .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.hl .gu { color: #959077 } /* Generic.Subheading */
+.hl .gt { color: #66D9EF } /* Generic.Traceback */
+.hl .kc { color: #66D9EF } /* Keyword.Constant */
+.hl .kd { color: #66D9EF } /* Keyword.Declaration */
+.hl .kn { color: #FF4689 } /* Keyword.Namespace */
+.hl .kp { color: #66D9EF } /* Keyword.Pseudo */
+.hl .kr { color: #66D9EF } /* Keyword.Reserved */
+.hl .kt { color: #66D9EF } /* Keyword.Type */
+.hl .ld { color: #E6DB74 } /* Literal.Date */
+.hl .m { color: #AE81FF } /* Literal.Number */
+.hl .s { color: #E6DB74 } /* Literal.String */
+.hl .na { color: #A6E22E } /* Name.Attribute */
+.hl .nb { color: #A6E22E } /* Name.Builtin */
+.hl .nc { color: #A6E22E } /* Name.Class */
+.hl .no { color: #66D9EF } /* Name.Constant */
+.hl .nd { color: #A6E22E } /* Name.Decorator */
+.hl .ni { color: #F8F8F2 } /* Name.Entity */
+.hl .ne { color: #A6E22E } /* Name.Exception */
+.hl .nf { color: #A6E22E } /* Name.Function */
+.hl .nl { color: #F8F8F2 } /* Name.Label */
+.hl .nn { color: #F8F8F2 } /* Name.Namespace */
+.hl .nx { color: #A6E22E } /* Name.Other */
+.hl .py { color: #F8F8F2 } /* Name.Property */
+.hl .nt { color: #FF4689 } /* Name.Tag */
+.hl .nv { color: #F8F8F2 } /* Name.Variable */
+.hl .ow { color: #FF4689 } /* Operator.Word */
+.hl .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.hl .w { color: #F8F8F2 } /* Text.Whitespace */
+.hl .mb { color: #AE81FF } /* Literal.Number.Bin */
+.hl .mf { color: #AE81FF } /* Literal.Number.Float */
+.hl .mh { color: #AE81FF } /* Literal.Number.Hex */
+.hl .mi { color: #AE81FF } /* Literal.Number.Integer */
+.hl .mo { color: #AE81FF } /* Literal.Number.Oct */
+.hl .sa { color: #E6DB74 } /* Literal.String.Affix */
+.hl .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.hl .sc { color: #E6DB74 } /* Literal.String.Char */
+.hl .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.hl .sd { color: #E6DB74 } /* Literal.String.Doc */
+.hl .s2 { color: #E6DB74 } /* Literal.String.Double */
+.hl .se { color: #AE81FF } /* Literal.String.Escape */
+.hl .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.hl .si { color: #E6DB74 } /* Literal.String.Interpol */
+.hl .sx { color: #E6DB74 } /* Literal.String.Other */
+.hl .sr { color: #E6DB74 } /* Literal.String.Regex */
+.hl .s1 { color: #E6DB74 } /* Literal.String.Single */
+.hl .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.hl .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.hl .fm { color: #A6E22E } /* Name.Function.Magic */
+.hl .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.hl .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.hl .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.hl .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.hl .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+.hl .linenos pre{color:var(--muted) !important}}
+</style>
+</head>
+<body>
+<header><a href="index.html">&larr; Daftar file</a><h1>detail_buku.php</h1><div class="meta">159 baris &middot; 9.1 KB</div></header><main><div class="code"><div class="hl"><table class="hltable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">  1</span>
+<span class="normal">  2</span>
+<span class="normal">  3</span>
+<span class="normal">  4</span>
+<span class="normal">  5</span>
+<span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span></pre></div></td><td class="code"><div><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nb">session_start</span><span class="p">();</span>
+<span class="k">include</span> <span class="s1">'koneksi.php'</span><span class="p">;</span>
+
+<span class="nv">$id</span> <span class="o">=</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'id'</span><span class="p">])</span> <span class="o">?</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+<span class="nv">$buku</span> <span class="o">=</span> <span class="nx">mysqli_fetch_assoc</span><span class="p">(</span><span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"SELECT * FROM bibliografi WHERE id_buku=</span><span class="si">$id</span><span class="s2">"</span><span class="p">));</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$buku</span><span class="p">)</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">"&lt;script&gt;alert('Buku tidak ditemukan!'); window.location='opac.php';&lt;/script&gt;"</span><span class="p">;</span> <span class="k">exit</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="c1">// PROSES AJUKAN PINJAM</span>
+<span class="nv">$pesan</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'ajukan_pinjam'</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'login'</span><span class="p">])</span> <span class="o">||</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'role'</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">'user'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$pesan</span> <span class="o">=</span> <span class="s2">"Anda harus login sebagai Pengguna untuk meminjam buku!"</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'username'</span><span class="p">];</span>
+        <span class="nv">$anggota</span> <span class="o">=</span> <span class="nx">mysqli_fetch_assoc</span><span class="p">(</span><span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"SELECT id_anggota FROM anggota WHERE username='</span><span class="si">$username</span><span class="s2">'"</span><span class="p">));</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$anggota</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$id_anggota</span> <span class="o">=</span> <span class="nv">$anggota</span><span class="p">[</span><span class="s1">'id_anggota'</span><span class="p">];</span>
+            <span class="nv">$tgl_pinjam</span> <span class="o">=</span> <span class="nb">date</span><span class="p">(</span><span class="s1">'Y-m-d'</span><span class="p">);</span>
+            <span class="nv">$tgl_kembali</span> <span class="o">=</span> <span class="nb">date</span><span class="p">(</span><span class="s1">'Y-m-d'</span><span class="p">,</span> <span class="nb">strtotime</span><span class="p">(</span><span class="s1">'+7 days'</span><span class="p">));</span>
+
+            <span class="c1">// Cek apakah user ini sudah mengajukan/meminjam buku yang sama</span>
+            <span class="nv">$cek</span> <span class="o">=</span> <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"SELECT * FROM sirkulasi WHERE id_anggota=</span><span class="si">$id_anggota</span><span class="s2"> AND id_buku=</span><span class="si">$id</span><span class="s2"> AND status IN('Menunggu','Dipinjam')"</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_num_rows</span><span class="p">(</span><span class="nv">$cek</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$pesan</span> <span class="o">=</span> <span class="s2">"Anda sudah meminjam atau sedang mengajukan buku ini."</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="c1">// Insert ke database dengan status MENUNGGU (stok belum berkurang)</span>
+                <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"INSERT INTO sirkulasi (id_anggota, id_buku, tanggal_pinjam, tanggal_kembali_seharusnya, status) VALUES (</span><span class="si">$id_anggota</span><span class="s2">, </span><span class="si">$id</span><span class="s2">, '</span><span class="si">$tgl_pinjam</span><span class="s2">', '</span><span class="si">$tgl_kembali</span><span class="s2">', 'Menunggu')"</span><span class="p">);</span>
+                <span class="nv">$pesan</span> <span class="o">=</span> <span class="s2">"Berhasil! Pengajuan pinjaman Anda sedang menunggu ACC dari Pustakawan."</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// CEK STATUS PEMINJAMAN USER SAAT INI</span>
+<span class="nv">$status_user</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'login'</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'role'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'user'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'username'</span><span class="p">];</span>
+    <span class="nv">$anggota</span> <span class="o">=</span> <span class="nx">mysqli_fetch_assoc</span><span class="p">(</span><span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"SELECT id_anggota FROM anggota WHERE username='</span><span class="si">$username</span><span class="s2">'"</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$anggota</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$id_anggota</span> <span class="o">=</span> <span class="nv">$anggota</span><span class="p">[</span><span class="s1">'id_anggota'</span><span class="p">];</span>
+        <span class="nv">$cek_trx</span> <span class="o">=</span> <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$koneksi</span><span class="p">,</span> <span class="s2">"SELECT status FROM sirkulasi WHERE id_anggota=</span><span class="si">$id_anggota</span><span class="s2"> AND id_buku=</span><span class="si">$id</span><span class="s2"> AND status IN('Menunggu','Dipinjam') ORDER BY id_sirkulasi DESC LIMIT 1"</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_num_rows</span><span class="p">(</span><span class="nv">$cek_trx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$status_user</span> <span class="o">=</span> <span class="nx">mysqli_fetch_assoc</span><span class="p">(</span><span class="nv">$cek_trx</span><span class="p">)[</span><span class="s1">'status'</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span>
+<span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html lang="id"&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">    &lt;meta charset="UTF-8"&gt;</span>
+<span class="x">    &lt;title&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$buku</span><span class="p">[</span><span class="s1">'judul'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x"> - Koriko Library&lt;/title&gt;</span>
+<span class="x">    &lt;link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&amp;display=swap" rel="stylesheet"&gt;</span>
+<span class="x">    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"&gt;</span>
+<span class="x">    &lt;style&gt;</span>
+<span class="x">        * { box-sizing: border-box; margin: 0; padding: 0; }</span>
+<span class="x">        body { font-family: 'Quicksand', sans-serif; background: #F4F6F9; color: #333; }</span>
+<span class="x">        .navbar { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }</span>
+<span class="x">        .navbar a { text-decoration: none; color: #1E293B; font-weight: 700; font-size: 16px; }</span>
+<span class="x">        .navbar .back-btn { color: #64748B; font-size: 14px; transition: 0.2s; }</span>
+<span class="x">        .navbar .back-btn:hover { color: #D63344; }</span>
+<span class="x">        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }</span>
+<span class="x">        .detail-card { background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; overflow: hidden; border: 1px solid #E5E7EB; }</span>
+<span class="x">        .detail-cover { width: 35%; background: #F8F9FA; padding: 30px; display: flex; justify-content: center; align-items: center; }</span>
+<span class="x">        .detail-cover img { width: 100%; max-width: 250px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }</span>
+<span class="x">        .detail-info { width: 65%; padding: 40px; display: flex; flex-direction: column; justify-content: center; }</span>
+<span class="x">        .detail-info h1 { font-size: 32px; color: #1E293B; margin-bottom: 10px; line-height: 1.2; }</span>
+<span class="x">        .meta-info { display: flex; gap: 20px; color: #64748B; font-size: 14px; margin-bottom: 25px; border-bottom: 2px dashed #E2E8F0; padding-bottom: 20px; }</span>
+<span class="x">        .meta-info span i { color: #D63344; margin-right: 5px; }</span>
+<span class="x">        .synopsis { font-size: 15px; color: #475569; line-height: 1.6; margin-bottom: 30px; }</span>
+<span class="x">        .action-buttons { display: flex; gap: 15px; flex-wrap: wrap;}</span>
+<span class="x">        .btn { padding: 15px 30px; border-radius: 12px; font-weight: 700; font-size: 16px; text-decoration: none; display: flex; align-items: center; gap: 10px; transition: 0.3s; border: none; cursor: pointer; font-family: 'Quicksand', sans-serif;}</span>
+<span class="x">        .btn-pinjam { background: #D63344; color: white; box-shadow: 0 5px 15px rgba(214,51,68,0.3); }</span>
+<span class="x">        .btn-pinjam:hover { background: #b52937; transform: translateY(-3px); }</span>
+<span class="x">        .btn-disabled { background: #E2E8F0; color: #94A3B8; cursor: not-allowed; box-shadow: none; }</span>
+<span class="x">        .alert { padding: 15px; border-radius: 10px; font-weight: 700; margin-bottom: 20px; font-size: 14px;}</span>
+<span class="x">        .alert-success { background: #E8F5E9; color: #43A047; }</span>
+<span class="x">        .alert-error { background: #FFEBEE; color: #E53935; }</span>
+<span class="x">        .alert-info { background: #E3F2FD; color: #1E88E5; }</span>
+<span class="x">    &lt;/style&gt;</span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+<span class="x">    &lt;div class="navbar"&gt;</span>
+<span class="x">        &lt;a href="opac.php"&gt;&lt;i class="fas fa-book-open" style="color: #D63344;"&gt;&lt;/i&gt; Koriko Library&lt;/a&gt;</span>
+<span class="x">        &lt;a href="opac.php" class="back-btn"&gt;&lt;i class="fas fa-arrow-left"&gt;&lt;/i&gt; Kembali ke Katalog&lt;/a&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+
+<span class="x">    &lt;div class="container"&gt;</span>
+<span class="x">        &lt;div class="detail-card"&gt;</span>
+<span class="x">            &lt;div class="detail-cover"&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$buku</span><span class="p">[</span><span class="s1">'cover_buku'</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">file_exists</span><span class="p">(</span><span class="s1">'covers/'</span> <span class="o">.</span> <span class="nv">$buku</span><span class="p">[</span><span class="s1">'cover_buku'</span><span class="p">]))</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">                    &lt;img src="covers/</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$buku</span><span class="p">[</span><span class="s1">'cover_buku'</span><span class="p">];</span> <span class="cp">?&gt;</span><span class="x">" alt="Cover"&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">else</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">                    &lt;img src="https://via.placeholder.com/250x350/E2E8F0/64748B?text=No+Cover" alt="No Cover"&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">            &lt;div class="detail-info"&gt;</span>
+<span class="x">                &lt;h1&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$buku</span><span class="p">[</span><span class="s1">'judul'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">&lt;/h1&gt;</span>
+<span class="x">                &lt;div class="meta-info"&gt;</span>
+<span class="x">                    &lt;span&gt;&lt;i class="fas fa-user-edit"&gt;&lt;/i&gt; </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$buku</span><span class="p">[</span><span class="s1">'pengarang'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">&lt;/span&gt;</span>
+<span class="x">                    &lt;span&gt;&lt;i class="fas fa-building"&gt;&lt;/i&gt; </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$buku</span><span class="p">[</span><span class="s1">'penerbit'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">&lt;/span&gt;</span>
+<span class="x">                &lt;/div&gt;</span>
+
+<span class="x">                &lt;div style="margin-bottom: 20px;"&gt;</span>
+<span class="x">                    &lt;!-- Tampilkan Stok --&gt;</span>
+<span class="x">                    &lt;span style="background: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$buku</span><span class="p">[</span><span class="s1">'stok'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="s1">'#E8F5E9'</span> <span class="o">:</span> <span class="s1">'#FFEBEE'</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x">; color: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$buku</span><span class="p">[</span><span class="s1">'stok'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="s1">'#43A047'</span> <span class="o">:</span> <span class="s1">'#E53935'</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x">; padding: 8px 15px; border-radius: 8px; font-weight: 700; font-size: 14px;"&gt;</span>
+<span class="x">                        &lt;i class="fas fa-box"&gt;&lt;/i&gt; Stok Tersedia: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$buku</span><span class="p">[</span><span class="s1">'stok'</span><span class="p">];</span> <span class="cp">?&gt;</span>
+<span class="x">                    &lt;/span&gt;</span>
+<span class="x">                &lt;/div&gt;</span>
+
+<span class="x">                &lt;p class="synopsis"&gt;</span>
+<span class="x">                    Buku ini berjudul &lt;strong&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$buku</span><span class="p">[</span><span class="s1">'judul'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">&lt;/strong&gt; yang ditulis oleh </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$buku</span><span class="p">[</span><span class="s1">'pengarang'</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="x">. </span>
+<span class="x">                    Silakan ajukan peminjaman jika Anda sudah login sebagai Pengguna. Peminjaman akan diproses setelah disetujui (ACC) oleh Pustakawan.</span>
+<span class="x">                &lt;/p&gt;</span>
+
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">if</span><span class="p">(</span><span class="nv">$pesan</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">                    &lt;div class="alert </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">strpos</span><span class="p">(</span><span class="nv">$pesan</span><span class="p">,</span> <span class="s1">'Berhasil'</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span> <span class="o">?</span> <span class="s1">'alert-success'</span> <span class="o">:</span> <span class="s1">'alert-error'</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x">"&gt;</span>
+<span class="x">                        </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$pesan</span><span class="p">;</span> <span class="cp">?&gt;</span>
+<span class="x">                    &lt;/div&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span>
+
+<span class="x">                &lt;!-- TAMPILAN TOMBOL BERDASARKAN STATUS --&gt;</span>
+<span class="x">                &lt;div class="action-buttons"&gt;</span>
+<span class="x">                    </span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$status_user</span> <span class="o">==</span> <span class="s1">'Menunggu'</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">                        &lt;!-- Jika user sudah ajukan, tampilkan status menunggu --&gt;</span>
+<span class="x">                        &lt;button class="btn btn-disabled" style="background:#FFF3E0; color:#FB8C00; width:100%; justify-content:center;"&gt;</span>
+<span class="x">                            &lt;i class="fas fa-clock"&gt;&lt;/i&gt; Menunggu ACC Pustakawan</span>
+<span class="x">                        &lt;/button&gt;</span>
+<span class="x">                    </span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$status_user</span> <span class="o">==</span> <span class="s1">'Dipinjam'</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">                        &lt;!-- Jika user ini adalah peminjamnya --&gt;</span>
+<span class="x">                        &lt;div class="alert alert-info" style="width:100%; margin-bottom:0; text-align:center;"&gt;</span>
+<span class="x">                            &lt;i class="fas fa-check-circle"&gt;&lt;/i&gt; Anda sedang meminjam buku ini.</span>
+<span class="x">                        &lt;/div&gt;</span>
+<span class="x">                    </span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$buku</span><span class="p">[</span><span class="s1">'stok'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">                        &lt;!-- Jika stok ada dan user belum pinjam --&gt;</span>
+<span class="x">                        &lt;form action="" method="POST" style="margin:0; width:100%;"&gt;</span>
+<span class="x">                            &lt;button type="submit" name="ajukan_pinjam" class="btn btn-pinjam" style="width:100%; justify-content:center;"&gt;</span>
+<span class="x">                                &lt;i class="fas fa-hand-holding-heart"&gt;&lt;/i&gt; Ajukan Pinjam</span>
+<span class="x">                            &lt;/button&gt;</span>
+<span class="x">                        &lt;/form&gt;</span>
+<span class="x">                    </span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">else</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">                        &lt;!-- Jika stok habis --&gt;</span>
+<span class="x">                        &lt;button class="btn btn-disabled" disabled style="width:100%; justify-content:center;"&gt;&lt;i class="fas fa-times-circle"&gt;&lt;/i&gt; Stok Habis&lt;/button&gt;</span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span>
+
+<span class="x">                &lt;/div&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div></td></tr></table></div>
+</div></main>
+</body>
+</html>
